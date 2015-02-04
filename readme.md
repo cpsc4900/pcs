@@ -64,4 +64,4 @@ Then, you'll need to restart your server.  You can now access the local website 
 localhost/pcs
 ```
 
-The first index.php page contains nothing right now.  You may want to place an _echo_ php command in it to make sure your php and apache server are working properly.
+The first index.php page contains a generic greeting to make sure your php and apache server are working properly.
