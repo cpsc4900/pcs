@@ -1,0 +1,12 @@
+
+
+/* Login.php  style*/
+#login_form {
+	border: 3px;
+/*	border-style:ridge;  */
+}
+
+/* Force the Login form to display lower */
+#spacer {
+	min-height: 80px;
+}
