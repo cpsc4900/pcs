@@ -17,7 +17,7 @@ readme.md
 This is a literal section.  Use these sections to give code examples,
 terminal command examples, etc
 ```
-this is a test
+
 ## Tables
 
 Tables are simple to make in md (markdown) files:
