@@ -1,12 +1,16 @@
 # Database Folder
 
 ## Include
-1. Keep copies of the script needed to generate the database
-2. Keep test scripts in here
-3. Keep pics of the ERD in here
-4. Keep a test TODO list (at the very end)
+1. Keep copies of the script needed to generate the database in "db_install_scripts"
+2. Keep test scripts in "db_test"
+3. Keep pics of the ERD in "db_model"
+4. Keep a test TODO list in "db_test"
+5. Keep the mysql workbench project in "db_model"
 
 ## General Note
+
+See db_install_scripts to install the pcs_db locally
+
 I am by no means a database tester, so if you find a more elegant way to handle testing, go for it.  Below is just a suggested method.  In any event, we need to document functional queries to the database AND have proof that they work.  The following is just a suggestion.
 
 ## Test Scripts

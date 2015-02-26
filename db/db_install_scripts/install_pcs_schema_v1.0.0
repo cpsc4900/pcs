@@ -1,0 +1,467 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `pcs_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+SHOW WARNINGS;
+USE `pcs_db` ;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`ADDRESS`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`ADDRESS` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`ADDRESS` (
+  `AddressID` INT NOT NULL AUTO_INCREMENT,
+  `Street` VARCHAR(45) NOT NULL,
+  `City` VARCHAR(45) NOT NULL,
+  `State` VARCHAR(45) NOT NULL,
+  `Zip` INT NOT NULL,
+  PRIMARY KEY (`AddressID`),
+  UNIQUE INDEX `AddressID_UNIQUE` (`AddressID` ASC))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`PATIENT`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`PATIENT` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`PATIENT` (
+  `PatientID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `Birthdate` DATE NOT NULL,
+  `SSN` INT UNSIGNED NOT NULL,
+  `Sex` VARCHAR(6) NOT NULL,
+  `AddressID` INT NOT NULL,
+  `Sectioned?` TINYINT(1) NOT NULL DEFAULT 0,
+  `SectionID` INT NULL,
+  PRIMARY KEY (`PatientID`),
+  UNIQUE INDEX `SSN_UNIQUE` (`SSN` ASC),
+  UNIQUE INDEX `PatientID_UNIQUE` (`PatientID` ASC),
+  INDEX `fk_PATIENT_ADDRESS_idx` (`AddressID` ASC),
+  CONSTRAINT `fk_PATIENT_ADDRESS`
+    FOREIGN KEY (`AddressID`)
+    REFERENCES `pcs_db`.`ADDRESS` (`AddressID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`APPOINTMENT`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`APPOINTMENT` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`APPOINTMENT` (
+  `AppointmentID` INT NOT NULL AUTO_INCREMENT,
+  `Time` DATETIME NOT NULL,
+  `ShowedUp` TINYINT(1) NULL DEFAULT 0,
+  `CLINIC_ClinicID` MEDIUMINT NOT NULL,
+  PRIMARY KEY (`AppointmentID`),
+  UNIQUE INDEX `AppointmentID_UNIQUE` (`AppointmentID` ASC))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`CLINIC`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`CLINIC` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`CLINIC` (
+  `ClinicName` VARCHAR(45) NOT NULL,
+  `AddressID` INT NOT NULL,
+  `ClinicID` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  INDEX `fk_CLINIC_ADDRESS1_idx` (`AddressID` ASC),
+  PRIMARY KEY (`ClinicID`),
+  UNIQUE INDEX `ClinicID_UNIQUE` (`ClinicID` ASC),
+  CONSTRAINT `fk_CLINIC_ADDRESS1`
+    FOREIGN KEY (`AddressID`)
+    REFERENCES `pcs_db`.`ADDRESS` (`AddressID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`TREATMENT`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`TREATMENT` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`TREATMENT` (
+  `TreatmentID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Description` LONGTEXT NOT NULL COMMENT 'Description of the treatment',
+  `Duration` VARCHAR(45) NOT NULL COMMENT 'Duration of the treatment',
+  `Ongoing?` TINYINT(1) NOT NULL COMMENT 'Is it an ongoing treatment?',
+  `RecordID` INT NOT NULL,
+  PRIMARY KEY (`TreatmentID`),
+  INDEX `fk_TREATMENT_MED_RECORD1_idx` (`RecordID` ASC),
+  UNIQUE INDEX `TreatmentID_UNIQUE` (`TreatmentID` ASC),
+  CONSTRAINT `fk_TREATMENT_MED_RECORD1`
+    FOREIGN KEY (`RecordID`)
+    REFERENCES `pcs_db`.`MED_RECORD` (`RecordID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`MEDICATIONS`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`MEDICATIONS` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`MEDICATIONS` (
+  `MedicationID` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Side Effects` LONGTEXT NOT NULL,
+  `RecordID` INT NOT NULL,
+  `Dosage` MEDIUMINT UNSIGNED NOT NULL,
+  `TimesPerDay` TINYINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`MedicationID`, `Name`),
+  INDEX `fk_MEDICATIONS_MEDICAL_RECORD1_idx` (`RecordID` ASC),
+  UNIQUE INDEX `MedicationID_UNIQUE` (`MedicationID` ASC),
+  CONSTRAINT `fk_MEDICATIONS_MEDICAL_RECORD1`
+    FOREIGN KEY (`RecordID`)
+    REFERENCES `pcs_db`.`MED_RECORD` (`RecordID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`TREATMENT_has_MEDICATIONS`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`TREATMENT_has_MEDICATIONS` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`TREATMENT_has_MEDICATIONS` (
+  `TREATMENT_TreatmentID` INT UNSIGNED NOT NULL,
+  `MEDICATIONS_MedicationID` INT NOT NULL,
+  `MEDICATIONS_Name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`TREATMENT_TreatmentID`, `MEDICATIONS_MedicationID`, `MEDICATIONS_Name`),
+  INDEX `fk_TREATMENT_has_MEDICATIONS_MEDICATIONS1_idx` (`MEDICATIONS_MedicationID` ASC, `MEDICATIONS_Name` ASC),
+  INDEX `fk_TREATMENT_has_MEDICATIONS_TREATMENT1_idx` (`TREATMENT_TreatmentID` ASC),
+  CONSTRAINT `fk_TREATMENT_has_MEDICATIONS_TREATMENT1`
+    FOREIGN KEY (`TREATMENT_TreatmentID`)
+    REFERENCES `pcs_db`.`TREATMENT` (`TreatmentID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_TREATMENT_has_MEDICATIONS_MEDICATIONS1`
+    FOREIGN KEY (`MEDICATIONS_MedicationID` , `MEDICATIONS_Name`)
+    REFERENCES `pcs_db`.`MEDICATIONS` (`MedicationID` , `Name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`MED_RECORD`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`MED_RECORD` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`MED_RECORD` (
+  `RecordID` INT NOT NULL AUTO_INCREMENT,
+  `PatientID` INT UNSIGNED NOT NULL,
+  `Allergies` VARCHAR(45) NULL,
+  `DateDiagnosed` DATE NULL,
+  `TreatmentID` INT UNSIGNED NOT NULL,
+  `MedicationID` INT NOT NULL,
+  `MedicationName` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`RecordID`),
+  INDEX `fk_RECORD_PATIENT1_idx` (`PatientID` ASC),
+  INDEX `fk_MED_RECORD_TREATMENT_has_MEDICATIONS1_idx` (`TreatmentID` ASC, `MedicationID` ASC, `MedicationName` ASC),
+  UNIQUE INDEX `RecordID_UNIQUE` (`RecordID` ASC),
+  CONSTRAINT `fk_RECORD_PATIENT1`
+    FOREIGN KEY (`PatientID`)
+    REFERENCES `pcs_db`.`PATIENT` (`PatientID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_MED_RECORD_TREATMENT_has_MEDICATIONS1`
+    FOREIGN KEY (`TreatmentID` , `MedicationID` , `MedicationName`)
+    REFERENCES `pcs_db`.`TREATMENT_has_MEDICATIONS` (`TREATMENT_TreatmentID` , `MEDICATIONS_MedicationID` , `MEDICATIONS_Name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`ALLERGY`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`ALLERGY` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`ALLERGY` (
+  `AllergyID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(45) NOT NULL,
+  `Severity` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`AllergyID`),
+  UNIQUE INDEX `AllergyID_UNIQUE` (`AllergyID` ASC))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`EMPLOYEE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`EMPLOYEE` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`EMPLOYEE` (
+  `EmployeeID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `AddressID` INT NOT NULL,
+  `UserType` SET('AR', 'EM', 'Doctor', 'Nurse', 'MRS') NOT NULL,
+  `CLINIC_ClinicID` MEDIUMINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`EmployeeID`),
+  INDEX `fk_EMPLOYEE_ADDRESS1_idx` (`AddressID` ASC),
+  INDEX `fk_EMPLOYEE_CLINIC1_idx` (`CLINIC_ClinicID` ASC),
+  UNIQUE INDEX `EmployeeID_UNIQUE` (`EmployeeID` ASC),
+  CONSTRAINT `fk_EMPLOYEE_ADDRESS1`
+    FOREIGN KEY (`AddressID`)
+    REFERENCES `pcs_db`.`ADDRESS` (`AddressID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_EMPLOYEE_CLINIC1`
+    FOREIGN KEY (`CLINIC_ClinicID`)
+    REFERENCES `pcs_db`.`CLINIC` (`ClinicID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`LOGIN`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`LOGIN` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`LOGIN` (
+  `Username` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
+  `EMPLOYEE_EmployeeID` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`Username`),
+  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC),
+  UNIQUE INDEX `Password_UNIQUE` (`Password` ASC),
+  INDEX `fk_LOGIN_EMPLOYEE1_idx` (`EMPLOYEE_EmployeeID` ASC),
+  CONSTRAINT `fk_LOGIN_EMPLOYEE1`
+    FOREIGN KEY (`EMPLOYEE_EmployeeID`)
+    REFERENCES `pcs_db`.`EMPLOYEE` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`EMPLOYEE_HAS_APPOINTMENTS`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`EMPLOYEE_HAS_APPOINTMENTS` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`EMPLOYEE_HAS_APPOINTMENTS` (
+  `EmployeeID` INT UNSIGNED NOT NULL,
+  `AppointmentID` INT NOT NULL,
+  PRIMARY KEY (`EmployeeID`, `AppointmentID`),
+  INDEX `fk_EMPLOYEE_has_APPOINTMENT_APPOINTMENT1_idx` (`AppointmentID` ASC),
+  INDEX `fk_EMPLOYEE_has_APPOINTMENT_EMPLOYEE1_idx` (`EmployeeID` ASC),
+  CONSTRAINT `fk_EMPLOYEE_has_APPOINTMENT_EMPLOYEE1`
+    FOREIGN KEY (`EmployeeID`)
+    REFERENCES `pcs_db`.`EMPLOYEE` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_EMPLOYEE_has_APPOINTMENT_APPOINTMENT1`
+    FOREIGN KEY (`AppointmentID`)
+    REFERENCES `pcs_db`.`APPOINTMENT` (`AppointmentID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`MED_RECORD_has_ALLERGY`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`MED_RECORD_has_ALLERGY` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`MED_RECORD_has_ALLERGY` (
+  `RecordID` INT NOT NULL,
+  `AllergyID` INT NOT NULL,
+  PRIMARY KEY (`RecordID`, `AllergyID`),
+  INDEX `fk_MED_RECORD_has_ALLERGY_ALLERGY1_idx` (`AllergyID` ASC),
+  INDEX `fk_MED_RECORD_has_ALLERGY_MED_RECORD1_idx` (`RecordID` ASC),
+  CONSTRAINT `fk_MED_RECORD_has_ALLERGY_MED_RECORD1`
+    FOREIGN KEY (`RecordID`)
+    REFERENCES `pcs_db`.`MED_RECORD` (`RecordID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_MED_RECORD_has_ALLERGY_ALLERGY1`
+    FOREIGN KEY (`AllergyID`)
+    REFERENCES `pcs_db`.`ALLERGY` (`AllergyID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`LOGIN`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`LOGIN` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`LOGIN` (
+  `Username` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
+  `EMPLOYEE_EmployeeID` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`Username`),
+  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC),
+  UNIQUE INDEX `Password_UNIQUE` (`Password` ASC),
+  INDEX `fk_LOGIN_EMPLOYEE1_idx` (`EMPLOYEE_EmployeeID` ASC),
+  CONSTRAINT `fk_LOGIN_EMPLOYEE1`
+    FOREIGN KEY (`EMPLOYEE_EmployeeID`)
+    REFERENCES `pcs_db`.`EMPLOYEE` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`SECTIONED`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`SECTIONED` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`SECTIONED` (
+  `SectionID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `PatientID` INT UNSIGNED NOT NULL,
+  `ClinicID` MEDIUMINT UNSIGNED NOT NULL,
+  `EmployeeID` INT UNSIGNED NOT NULL COMMENT '				',
+  `DateSectioned` DATETIME NOT NULL,
+  `DateReleased` DATETIME NULL,
+  `RoomNumber` INT NOT NULL,
+  PRIMARY KEY (`SectionID`),
+  INDEX `fk_SECTIONED_EMPLOYEE1_idx` (`EmployeeID` ASC),
+  INDEX `fk_SECTIONED_PATIENT1_idx` (`PatientID` ASC),
+  UNIQUE INDEX `SectionID_UNIQUE` (`SectionID` ASC),
+  INDEX `fk_SECTIONED_CLINIC1_idx` (`ClinicID` ASC),
+  CONSTRAINT `fk_SECTIONED_CLINIC1`
+    FOREIGN KEY (`ClinicID`)
+    REFERENCES `pcs_db`.`CLINIC` (`ClinicID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SECTIONED_EMPLOYEE1`
+    FOREIGN KEY (`EmployeeID`)
+    REFERENCES `pcs_db`.`EMPLOYEE` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SECTIONED_PATIENT1`
+    FOREIGN KEY (`PatientID`)
+    REFERENCES `pcs_db`.`PATIENT` (`PatientID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`USER_TYPE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`USER_TYPE` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`USER_TYPE` (
+  `UserType` VARCHAR(6) NOT NULL,
+  PRIMARY KEY (`UserType`))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`PERSON`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`PERSON` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`PERSON` (
+  `Name` VARCHAR(12) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Hobbies` VARCHAR(45) NULL,
+  PRIMARY KEY (`Name`))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `pcs_db`.`ACTIVITY_LOG`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pcs_db`.`ACTIVITY_LOG` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `pcs_db`.`ACTIVITY_LOG` (
+  `LogID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ActivityType` SET('AllergyEdit', 'UserLogin','UserAdded','Treatment') NOT NULL,
+  `EmployeeID` INT NOT NULL,
+  `AllergyID` INT NULL,
+  `TimeStamp` DATETIME NOT NULL,
+  `TreatmentID` INT NULL,
+  PRIMARY KEY (`LogID`),
+  UNIQUE INDEX `LogID_UNIQUE` (`LogID` ASC))
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+SET SQL_MODE = '';
+GRANT USAGE ON *.* TO Master;
+ DROP USER Master;
+SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SHOW WARNINGS;
+CREATE USER 'Master' IDENTIFIED BY 'masterpass';
+
+GRANT ALL ON `pcs_db`.* TO 'Master';
+SHOW WARNINGS;
+SET SQL_MODE = '';
+GRANT USAGE ON *.* TO Login;
+ DROP USER Login;
+SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SHOW WARNINGS;
+CREATE USER 'Login' IDENTIFIED BY 'loginpass';
+
+GRANT SELECT ON TABLE `pcs_db`.* TO 'Login';
+SHOW WARNINGS;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `pcs_db`.`USER_TYPE`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `pcs_db`;
+INSERT INTO `pcs_db`.`USER_TYPE` (`UserType`) VALUES ('AR');
+INSERT INTO `pcs_db`.`USER_TYPE` (`UserType`) VALUES ('EM');
+INSERT INTO `pcs_db`.`USER_TYPE` (`UserType`) VALUES ('Doctor');
+INSERT INTO `pcs_db`.`USER_TYPE` (`UserType`) VALUES ('Nurse');
+INSERT INTO `pcs_db`.`USER_TYPE` (`UserType`) VALUES ('MRS');
+
+COMMIT;
+
