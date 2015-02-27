@@ -19,8 +19,22 @@ if ($is_dev) {
     $mock_usrname =  $_POST['userName'];
     // $_POST['userName'];
   }
+} 
 
-} /*-----  End of Test Suite  ------*/
+/**
+*
+*              username| usertype | password
+*             ---------------------|---------
+*              mark    | AR       | arpass
+*              jenny   | EM       | empass
+*              joe     | Doctor   | docpass
+*              alice   | Nurse    | nursepass
+*              bob     | MRS      | mrspass
+*                
+* 
+*
+**/
+/*-----  End of Test Suite  ------*/
 
 
 

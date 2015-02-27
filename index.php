@@ -34,7 +34,7 @@
 
   <div class="row" id="spacer"></div>  <!-- Row Spacer -->
   <div class="row"> <!-- main row -->
-    <div class="col-sm-3">.col-sm-2</div>
+    <div class="col-sm-3"></div>
 
     <div class="col-sm-6">  <!-- Center Column -->
       <!-- Login Form -->
@@ -69,7 +69,7 @@
         $errMess = "style=\"visibility: hidden;\"";
       }
     ?>
-      <div class="alert alert-danger" role="alert" <? echo $errMess; ?> >
+      <div class="alert alert-danger" role="alert"  <? print $errMess; ?> >
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
         Username and Password are not recognized
@@ -84,12 +84,3 @@
 </body>
 
 </html>
-
-
-<!--       <div id="login_form">
-        <form  class="form-inline" action="control/handle_login.php" method="post">
-          Username: <input autocomplete = "on" type="text" name="userName" autofocus/><br/>
-          Password: <input type="password" name="passWord"/><br/>
-          <input class="btn btn-success btn-sm" type="submit" value="Login"/>
-        </form>
-      </div>  end of Login Form -->

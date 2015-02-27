@@ -1,0 +1,876 @@
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 2 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 5 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> select * from EMPLOYEE;
++------------+-------+-----------+----------+-----------------+
+| EmployeeID | Fname | Lname     | UserType | CLINIC_ClinicID |
++------------+-------+-----------+----------+-----------------+
+|          1 | Joe   | the Doc   | Doctor   |               2 |
+|          2 | Alice | the Nurse | Nurse    |               2 |
+|          3 | Bob   | the MRS   | MRS      |               2 |
+|          4 | Jenny | the EM    | EM       |               2 |
+|          5 | Mark  | the AR    | AR       |               2 |
++------------+-------+-----------+----------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from EMPLOYEE;
++------------+-------+-----------+----------+-----------------+
+| EmployeeID | Fname | Lname     | UserType | CLINIC_ClinicID |
++------------+-------+-----------+----------+-----------------+
+|          1 | Joe   | the Doc   | Doctor   |               2 |
+|          2 | Alice | the Nurse | Nurse    |               2 |
+|          3 | Bob   | the MRS   | MRS      |               2 |
+|          4 | Jenny | the EM    | EM       |               2 |
+|          5 | Mark  | the AR    | AR       |               2 |
++------------+-------+-----------+----------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO LOGIN(UserName, Password, EMPLOYEE_EmployeeID)
+    -> SELECT "mark", "5664ba6897fb5a0495df4004bc8ad8ef6eb4192c2c2297aa492e20fffc80173e",
+    -> EmployeeID FROM EMPLOYEE WHERE Lname="the AR";
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+mysql> \. /var/www/pcs/db/db_install_scripts/dump_data.sql
+Database changed
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 5 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 2 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 5 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.03 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+mysql> select * from login;
+ERROR 1146 (42S02): Table 'pcs_db.login' doesn't exist
+mysql> select * from LOGIN;
++----------+-----------------------------------------------+---------------------+
+| Username | Password                                      | EMPLOYEE_EmployeeID |
++----------+-----------------------------------------------+---------------------+
+| alice    | b4d9c32e4df79218bcf63be6c3951238babc63f8e00fe |                   2 |
+| bob      | 579d3753a25053abd5b444415baf3682397a137ad2487 |                   3 |
+| jenny    | a6b00e5c8784cd9d3d6e353a28bce2fcdfcac3582ee21 |                   4 |
+| joe      | 135887ffe67113a5bacb1c9f5fc7e989b8a860bdfb06c |                   1 |
+| mark     | 5664ba6897fb5a0495df4004bc8ad8ef6eb4192c2c229 |                   5 |
++----------+-----------------------------------------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| pcs                |
+| pcs_db             |
+| performance_schema |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from LOGIN;
++----------+-----------------------------------------------+---------------------+
+| Username | Password                                      | EMPLOYEE_EmployeeID |
++----------+-----------------------------------------------+---------------------+
+| alice    | b4d9c32e4df79218bcf63be6c3951238babc63f8e00fe |                   2 |
+| bob      | 579d3753a25053abd5b444415baf3682397a137ad2487 |                   3 |
+| jenny    | a6b00e5c8784cd9d3d6e353a28bce2fcdfcac3582ee21 |                   4 |
+| joe      | 135887ffe67113a5bacb1c9f5fc7e989b8a860bdfb06c |                   1 |
+| mark     | 5664ba6897fb5a0495df4004bc8ad8ef6eb4192c2c229 |                   5 |
++----------+-----------------------------------------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select Password from LOGIN WHERE Username='alice';
++-----------------------------------------------+
+| Password                                      |
++-----------------------------------------------+
+| b4d9c32e4df79218bcf63be6c3951238babc63f8e00fe |
++-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> Ctrl-C -- exit!
+Aborted
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+mysql> \. /var/www/pcs/db/db_install_scripts/install_pcs_schema_v1.0.0
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
++-------+------+-------------------------------------------------+
+| Level | Code | Message                                         |
++-------+------+-------------------------------------------------+
+| Note  | 1007 | Can't create database 'pcs_db'; database exists |
++-------+------+-------------------------------------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Database changed
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> \. /var/www/pcs/db/db_install_scripts/dump_data.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+mysql> show columns from LOGIN FROM pcs_db
+    -> ;
++---------------------+------------------+------+-----+---------+-------+
+| Field               | Type             | Null | Key | Default | Extra |
++---------------------+------------------+------+-----+---------+-------+
+| Username            | varchar(45)      | NO   | PRI | NULL    |       |
+| Password            | varchar(45)      | NO   | UNI | NULL    |       |
+| EMPLOYEE_EmployeeID | int(10) unsigned | NO   | MUL | NULL    |       |
++---------------------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DROP TABLE pcs_db.LOGIN
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW tables from pcs_db;
++---------------------------+
+| Tables_in_pcs_db          |
++---------------------------+
+| ACTIVITY_LOG              |
+| ADDRESS                   |
+| ALLERGY                   |
+| APPOINTMENT               |
+| CLINIC                    |
+| EMPLOYEE                  |
+| EMPLOYEE_HAS_APPOINTMENTS |
+| MEDICATIONS               |
+| MED_RECORD                |
+| MED_RECORD_has_ALLERGY    |
+| PATIENT                   |
+| PERSON                    |
+| SECTIONED                 |
+| TREATMENT                 |
+| TREATMENT_has_MEDICATIONS |
+| USER_TYPE                 |
++---------------------------+
+16 rows in set (0.00 sec)
+
+mysql> \. /var/www/pcs/db/db_install_scripts/install_pcs_schema_v1.0.0
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
++-------+------+-------------------------------------------------+
+| Level | Code | Message                                         |
++-------+------+-------------------------------------------------+
+| Note  | 1007 | Can't create database 'pcs_db'; database exists |
++-------+------+-------------------------------------------------+
+1 row in set (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
++-------+------+-----------------------+
+| Level | Code | Message               |
++-------+------+-----------------------+
+| Note  | 1051 | Unknown table 'LOGIN' |
++-------+------+-----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Database changed
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show columns from LOGIN FROM pcs_db
+    -> ;
++---------------------+------------------+------+-----+---------+-------+
+| Field               | Type             | Null | Key | Default | Extra |
++---------------------+------------------+------+-----+---------+-------+
+| Username            | varchar(45)      | NO   | PRI | NULL    |       |
+| Password            | varchar(45)      | NO   | UNI | NULL    |       |
+| EMPLOYEE_EmployeeID | int(10) unsigned | NO   | MUL | NULL    |       |
++---------------------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show columns from LOGIN FROM pcs_db
+    -> ;
++---------------------+------------------+------+-----+---------+-------+
+| Field               | Type             | Null | Key | Default | Extra |
++---------------------+------------------+------+-----+---------+-------+
+| Username            | varchar(45)      | NO   | PRI | NULL    |       |
+| Password            | varchar(65)      | NO   | UNI | NULL    |       |
+| EMPLOYEE_EmployeeID | int(10) unsigned | NO   | MUL | NULL    |       |
++---------------------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> \. /var/www/pcs/db/db_install_scripts/dump_data.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+Query OK, 1 row affected (0.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> quit

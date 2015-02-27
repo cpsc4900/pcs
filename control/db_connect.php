@@ -4,9 +4,9 @@ require "../control/global.php";
 
 // Handles connecting to a database
 
-$dsn = "mysql:host=127.0.0.1; dbname=PCS";
-$username = "pcs_root";
-$passwd = "password";  // CHANGE ME
+$dsn = "mysql:host=127.0.0.1; dbname=pcs_db";
+$username = "Login";
+$passwd = "loginpass";  // CHANGE ME
 
 
 if($is_dev) {  // (GLOBAL) Are we developing?

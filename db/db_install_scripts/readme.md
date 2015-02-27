@@ -24,7 +24,7 @@ Or, we'll manually have to delete our local copy and re-install.
 @Mike, make sure you change the version number of the script....easier to keep track of updates.
 
 
-## Version Control
+#### Version Control
 
 **install_pcs_schema_v1.0.0**:
 
@@ -32,3 +32,13 @@ Or, we'll manually have to delete our local copy and re-install.
 	* Only two user types created:
 		- Master  password: masterpass (can access all tables)
 		- Login   password: loginpass  (can only read all tables) 
+
+## Installing "Dummy Data"
+
+Run the _dump\_data.sql_ script to load up records to the database:
+
+```
+mysql> \. /var/www/pcs/db/db_install_scripts/dump_data.sql
+
+```
+Once again, your file path will be different then mine depending on your OS and filesystem.
