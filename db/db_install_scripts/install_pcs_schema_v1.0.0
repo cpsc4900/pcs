@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `pcs_db`.`PATIENT` (
   `AddressID` INT NOT NULL,
   `Sectioned?` TINYINT(1) NOT NULL DEFAULT 0,
   `SectionID` INT NULL,
+  `PatientNum` VARCHAR(6) NOT NULL,
   PRIMARY KEY (`PatientID`),
   UNIQUE INDEX `SSN_UNIQUE` (`SSN` ASC),
   UNIQUE INDEX `PatientID_UNIQUE` (`PatientID` ASC),

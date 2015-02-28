@@ -86,7 +86,6 @@ function retrieveHashedPwd($usr_name) {
 	global $login_conn;
 	global $is_dev;
 
-	print($usr_name);
 	$query = 'SELECT Password from LOGIN 
 			  WHERE Username = ? ';
 
@@ -96,7 +95,6 @@ function retrieveHashedPwd($usr_name) {
 		$statement->execute();
 		$retrieved_hash_pwd = $statement->fetch();
 		$statement->closeCursor();
-		print_r($retrieved_hash_pwd);
 		return pull_single_element('Password', $retrieved_hash_pwd);
 	} catch (Exception $e) {
 		if($is_dev) {
@@ -113,10 +111,26 @@ function retrieveHashedPwd($usr_name) {
 * @param int $emp_id The id of the employee.
 *
 **/
-
 function retrieveUserType($emp_id) {
+	global $login_conn;
+	global $is_dev;
 
+	$query = 'SELECT UserType from EMPLOYEE
+			  WHERE EmployeeID = ?';
+	try {
+		$statement = $login_conn->prepare($query);
+		$statement->bindValue( 1 , $emp_id);
+		$statement->execute();
+		$retrieved_user_type = $statement->fetch();
+		$statement->closeCursor();
+		return pull_single_element('UserType', $retrieved_user_type);
+	} catch (Exception $e) {
+		if($is_dev) {
+		    echo "<p>Error retrieving User Type: 
+             $e </p>";
+		}	
+		return 0;  // error	
+	}
 }
-
 
 ?>

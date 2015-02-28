@@ -93,6 +93,18 @@ class Authenticate_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($joe_pwd_hased, $hash_returned);
     }
 
+    public function testRetrieveUserType() {
+        // set test parameters
+        init_db_conn();
+        $user_id = 2;           // Alice the Nurse is employee 2
+
+        $user_type = 
+
+    } 
+
+    public function testRetrieveEmployeeID() {
+
+    }
     /**
     *
     * $this->assertFalse();
