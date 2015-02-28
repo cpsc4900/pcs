@@ -18,28 +18,6 @@ This is a literal section.  Use these sections to give code examples,
 terminal command examples, etc
 ```
 
-## Tables
-
-Tables are simple to make in md (markdown) files:
-
-col1 | col2
------|------
-item1 | item2
-
-
-## Markdown spacing
-
-Markdown rendering relies on formatting properly.  Use 4 spaces for tab indentations
-
-## List
-
-Here is a numbered list
-
-1. Item 1
-2. Item 2
-	Note: To put more info inbetween to list items, you must indent !!!!
-3. Item 3
-
 
 ## Folder structure
 
@@ -65,3 +43,34 @@ localhost/pcs
 ```
 
 The first index.php page contains a generic greeting to make sure your php and apache server are working properly.
+
+Note: Configuration is different for MAC and Windows, but there should be a httd.config file where the above can be accomplished.
+
+## PHP Requirements
+
+1. For unit testing, see _tests_ folder.  You will need to install PHPUnit test Framework.
+
+2. Sessions must be enabled in the php.ini file. In Linux, this file is located at:
+
+    ```
+    /etc/php5/apache2/php.ini
+    ```
+    
+    You'll need to open the file with root (admin) priveleges...google !
+    
+    The following need to be set in this folder:
+    
+    ```
+    session.save_handler  = files
+    session.save_path     = "/tmp"
+    session.use_cookies   = 1
+    ```
+    Note: the save_path. You will need to create this folder OR use a pre-  existing one. I just use the /tmp because cookies are only temporary. 
+    
+    For Unix: /tmp is popular
+    For Windows: C:WINDOWSTEMP is popular
+
+    These are the basic settings, I'll make note if/when php.ini changes will be required for security
+
+
+

@@ -17,7 +17,7 @@
 **/
 
 require "global.php";
-require "model/global_query.php";
+require "../model/global_query.php";
 
 // TODO: Store salt off-site
 define('UNIQUE_SALT', '5&nL*dF4');
@@ -67,6 +67,8 @@ function create_hash($string, $hash_method = 'sha256') {
  * @param string $pass The user submitted password
  * @param string $hashed_pass The hashed password pulled from the database
  * @param string $hash_method The hashing method used to generate the hashed password
+ * @return  Returns true if the supplied password hashed equals the stored hashed
+ * password.  Otherwise, returns false.
  */
 function validateLogin($pass, $hashed_pass, $hash_method = 'sha256') {
 	if (function_exists('hash') && in_array($hash_method, hash_algos())) {
@@ -126,11 +128,40 @@ function retrieveUserType($emp_id) {
 		return pull_single_element('UserType', $retrieved_user_type);
 	} catch (Exception $e) {
 		if($is_dev) {
-		    echo "<p>Error retrieving User Type: 
+		    echo "<p>Error retrieving UserType: 
              $e </p>";
 		}	
 		return 0;  // error	
 	}
 }
 
+/**
+ * Retrieves the employee ID belonging to the supplied username.
+ * @param  string $usr_name the login username to find the matching 
+ * employee id for
+ * @return [int] Returns the employee's ID, otherwise returns 0 if a match
+ * is not found
+ */
+function retrieveEmployeeID($usr_name) {
+	global $login_conn;
+	global $is_dev;
+
+	$query = 'SELECT EMPLOYEE_EmployeeID from LOGIN
+			  WHERE Username = ?';
+	try {
+		$statement = $login_conn->prepare($query);
+		$statement->bindValue( 1 , $usr_name);
+		$statement->execute();
+		$retrieved_emp_id = $statement->fetch();
+		$statement->closeCursor();
+		print_r($retrieved_emp_id);
+		return pull_single_element('EMPLOYEE_EmployeeID', $retrieved_emp_id);
+	} catch (Exception $e) {
+		if($is_dev) {
+		    echo "<p>Error retrieving EmployeeID: 
+             $e </p>";
+		}	
+		return 0;  // error	
+	}
+}
 ?>

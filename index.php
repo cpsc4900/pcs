@@ -1,4 +1,4 @@
-<?php include_once "model/global.php"; 
+<?php include_once "control/global.php"; 
 
 ?>
 

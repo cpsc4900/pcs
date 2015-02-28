@@ -96,13 +96,59 @@ class Authenticate_test extends PHPUnit_Framework_TestCase {
     public function testRetrieveUserType() {
         // set test parameters
         init_db_conn();
-        $user_id = 2;           // Alice the Nurse is employee 2
 
-        $user_type = 
+        $emp_id = 1;           // Joe the Doc is employee 1
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals('Doctor', $user_type);
+        
+        $emp_id = 2;           // Alice the Nurse is employee 2
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals('Nurse', $user_type);
 
+        $emp_id = 3;           // Bob the MRS is employee 3
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals('MRS', $user_type);
+        
+        $emp_id = 4;           // Jenny the EM is employee 4
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals('EM', $user_type);
+
+        $emp_id = 5;           // Mark the AR is employee 5
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals('AR', $user_type);
+
+        // Test: an employee number that does not exist
+        $emp_id = 255;
+        $user_type = retrieveUserType($emp_id);
+        $this->assertEquals(0, $user_type);
     } 
 
     public function testRetrieveEmployeeID() {
+        // set teset params
+        init_db_conn();
+
+        $usr_name = 'joe';
+        $emp_id = retrieveEmployeeID($usr_name);
+        $this->assertEquals($emp_id, 1);
+
+        // test: a username that does not exist
+        $usr_name = 'Sebestian';
+        $emp_id = retrieveEmployeeID($usr_name);
+        $this->assertEquals($emp_id, 0);
+
+    }
+
+    public function testDateObjects() {
+        // Cannot do this !!
+        // $date =new DateTime()->getTimeStamp();
+        $date = new DateTime();
+
+        $now_unix_ts = $date->getTimeStamp();
+
+        $formatted_now = $date->format('Y-m-d H:i:s');
+        
+        print $now_unix_ts."\n";
+        print $formatted_now;
 
     }
     /**
