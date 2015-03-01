@@ -154,7 +154,6 @@ function retrieveEmployeeID($usr_name) {
 		$statement->execute();
 		$retrieved_emp_id = $statement->fetch();
 		$statement->closeCursor();
-		print_r($retrieved_emp_id);
 		return pull_single_element('EMPLOYEE_EmployeeID', $retrieved_emp_id);
 	} catch (Exception $e) {
 		if($is_dev) {

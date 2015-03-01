@@ -46,10 +46,7 @@ if ($is_dev) {
 if (isset($_POST['userName']) && !empty($_POST['userName'])  
     && !empty($_POST['passWord'])  && isset($_POST['userName'])) {  // does username have a value ?
 
-  // Kill any prior session info
-  $_SESSION = array();
-  session_destroy();
-
+  session_start();
   init_db_conn();                         // connect to database as Login user
 
   $userName = $_POST['userName'];
@@ -59,7 +56,7 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
 
   if(validateLogin($passWord, $hashed_pwd)) {     // Does the password match?
     //
-    session_start();                              // Yes, so start session,
+//    session_start();                              // Yes, so start session,
     $emp_id = retrieveEmployeeID($userName);      // and set session info
     $_SESSION['EmployeeID'] = $emp_id;               
     $_SESSION['UserType'] = retrieveUserType($emp_id);

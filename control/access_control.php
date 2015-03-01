@@ -7,9 +7,6 @@
 *
 **/
 
-session_start();
-
-
 if (isset($_SESSION['EmployeeID']))  {
 $EmployeeID = $_SESSION['EmployeeID'];
 }
@@ -19,7 +16,6 @@ $UserType = $_SESSION['UserType'];
 if (isset($_SESSION['StartTime']))  {
 $StartTime = $_SESSION['StartTime'];
 }
-
 
 /**
  * Should destroy the session array on close

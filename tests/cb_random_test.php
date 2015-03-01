@@ -15,7 +15,6 @@ class Authenticate_test extends PHPUnit_Framework_TestCase {
         
         print $now_unix_ts."\n";
         print $formatted_now;
-
     }
     /**
     *

@@ -3,6 +3,8 @@
 
 ## Unit Test
 
+----
+
 ### PHPUnit
 
 Install PHPUnit Test Framework.
@@ -59,3 +61,22 @@ The following is a list of command-line ran unit test.  These eventually need to
  phpunit --debug --bootstrap control/authenticate.php tests/authenticate_test.php
 
 ```
+
+----
+
+### js_unit_test
+
+Under this folder you will find JavaScript Unit Test (using QUnitsjs).
+
+To run a test:
+
+1. Create javascript test file. (This file should be named so the actual file in the system
+is easy to reference).
+
+2. Add the test js file to _js\_test.html_
+
+3. Run the test by simple opening the _js\_test.html_ in a browser.
+
+That's it ! 
+
+_See calendar\_test.js for examples of creating a unit test._
