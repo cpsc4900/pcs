@@ -55,12 +55,43 @@ function numDaysLeftInWeek(dayOfWeek) {
     return 6 - dayOfWeek;
 }
 
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
+}
+
+// todo break up this logic
+function drawDay(year = 0, month = 0, day, numOfHours = 5, startHour = 8, numOfApp = 3, isActive = true) {
+    var calendarDay = "<table class = \" table table-hover table-condensed danger\" >";
+
+    if (isActive) {        // if active, display selectable fields
+    calendarDay = "<table class = \" table table-hover table-striped" + 
+                  "table-condensed info\" >";
+    var hourCounter = new Date(year, month, day, numOfHours);
+    }
+    calendarDay += "<tr>";
+    calendarDay += "<td>" + day + "</td>";                 // create date header
+    calendarDay += "</tr>";
+    for (var i = 0; i <= numOfHours; i++) {
+        calendarDay += "<tr>";
+        calendarDay += "<td>" + day + "</td>";              // create date header
+        calendarDay += "</tr>";
+    }
+    calendarDay += "</table>";
+}
+/**
+ * Draws the non-active days of the previous month into the calendar.
+ * @param  {date} date the previous month of the active month to draw.
+ * @param  {int} numOfDays the number of days from the previous month to draw
+ * @return {string} returns an html format of rows that represent non-active
+ * days of the previous month.
+ */
 function drawPreviousUnActiveDays(date, numOfDays) {
     var lastDay = date.getDate();
     calendar = "<tr>";
     var numOfDaysToDraw = numOfDays;
     for (var i = 0; i <= numOfDays; i++) {
-        calendar += "<td class=\"disabled\" id=\"cal_inactive\">";
+        calendar += "<td class=\"cal_inactive\" id=\"cal_inactive\">";
         calendar += lastDay - numOfDaysToDraw;
         calendar += "</td>";
         numOfDaysToDraw -= 1;
@@ -71,6 +102,19 @@ function drawPreviousUnActiveDays(date, numOfDays) {
     return calendar;
 }
 
+/**
+ * Draws the active days in a calendar.  Active days are days that can be accessed
+ * to add appointments to.  Only one month is active in the calendar display.
+ * Preceding and ending days are displayed (non-active) to maintain the calendar
+ * view.
+ * @param  {int} year the year of the active month to display
+ * @param  {int} month the active month to display.
+ * @param  {int} numOfPreviousDays the number of previous non-active days
+ * @param  {int} numOfDays the number of days in the active month
+ * @return {string} an html formatted table of active days to be added to the 
+ * calendar
+ * @precondition drawPreviousUnActiveDays must be called first.
+ */
 function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
     var calendar ="";
     if (numOfPreviousDays === 6) {     // has a whole inactive week been drawn ?
@@ -78,7 +122,7 @@ function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
         calendar += "<tr>";                            // and start a new row
     }
     for (var i = 1; i <= numOfDays ; i++) {
-        calendar += "<td class=\"enabled\" id=\"cal_active\">";
+        calendar += "<td class=\"cal_active\" id=\"cal_active_" + i + "\">";
         calendar += i;
         calendar += "</td>";
         if (new Date(year, month, i).getDay() === 6) {  // Need to close row?
@@ -91,9 +135,53 @@ function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
     return calendar;
 }
 
-/*function drawEndingUnActiveDays() {
+/**
+ * Draws the ending non-active days.  This function adds the non-active days of 
+ * the next month to the calendar.  This is needed to keep the calendar view a 
+ * consistent 6x7 matrix
+ * @param  {int} year              the year of the next month to display
+ * @param  {int} month             the next month to display
+ * @param  {int} numOfPreviousDays the number of previous non-active days already drawn
+ * @param  {int} numOfActiveDays   the number of active days already drawn 
+ * @return {string} an html formatted row(s) of non-active days
+ * @precondition drawPreviousUnActiveDays must be called first, then drawActiveDays,
+ * then this function
+ */
+function drawEndingUnActiveDays(year, month, numOfPreviousDays, numOfActiveDays) {
+    var calendar="";
+    var nextMonth = 0;
+    var nextYear = 0;
 
-}*/
+    if (month === 11) {         // special case: Next month is Jan of new year
+        nextMonth = 0;
+        nextYear = year + 1;
+    } else {
+        nextMonth = month + 1;
+        nextYear = year;
+    }
+
+    // var: how many days left to draw in calendar matrix ?
+    var daysDrawn = numOfPreviousDays + 1 + numOfActiveDays;
+    var daysLeftToDraw = 42 - daysDrawn;
+
+    if (new Date(year, month, numOfActiveDays).getDay == 6) {  // if last day drawn
+        calendar += "<tr>";                                    // was a Saturday, open new row
+    }
+
+    for (var i = 1; i <= daysLeftToDraw; i++) {
+        // draw
+        calendar += "<td class=\"cal_inactive\" id=\"cal_inactive\">";
+        calendar += i;
+        calendar += "</td>";
+        if(new Date(nextYear, nextMonth, i).getDay() == 6) {        // close row on Saturday(s)
+            calendar += "</tr>";
+            if(daysLeftToDraw != i) {                       // are there more days to draw?
+                calendar += "<tr>";                         // Yes, so open a new row
+            }
+        }
+    }
+    return calendar;
+}
 
 /**
  * Creates a Calendar.  Creates a Calendar in the location specified by divID.
@@ -102,22 +190,21 @@ function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
  * 6 X 7, with each row starting on Sunday.
  *  
  * @param  {string} The name of the div id to place the calendar in.
- * TODO: Add the following parameters:
- *       Year Header, should be an a drop down menu of selectable years
- *       Month Header, should have back and forth arrows, also an array of months
+ *
+ * Generated HTML: a div id = "calendarDiv"
+ *                   table id = "calendarMatrix"
+ *                   td class = "cal_inactive_x" where x is the calendar day
+ *                   td class = "cal_active"
  */
 function createCalendar(divID) {
-    var calendar = "<div id=\"Cal_Year_Header\">Year</div>";
-
-    calendar += "<div id=\"Cal_Month_Header\">Month</div>";
+    var calendar="";   // the string object to be returned in HTML/CSS format 
 
     // Temp for testing
-    var month = 6;
+    var month = 0;
     var year = 2015;
     
     //-----------------    Draw calendar matrix     ----------------------------
 
-    
     // ---- Init parameters
     // Get number of Days in the Month
     var numOfDaysInMonth = getNumberOfDaysInMonth(month, year);
@@ -141,12 +228,15 @@ function createCalendar(divID) {
     
     //-----------    Draw the monthly calendar       ---------------
     calendar += "<div id=\"calendarDiv\">";         // open calendar div
-    calendar += "<table id=\"calendarMatrix\">";    // open calendar table
+    calendar += "<table class=\"table table-striped table-bordered\"" + 
+                "id=\"calendarMatrix\">"; // open calendar table
     // Draw dates of previous month
     calendar += drawPreviousUnActiveDays(prevMonthDate, numOfPreviousDays);
 
     // Draw date of current month
     calendar += drawActiveDays(year, month, numOfPreviousDays, numOfDaysInMonth);
+    // Draw inactive dates of next month until calendar matrix is full
+    calendar += drawEndingUnActiveDays(year, month, numOfPreviousDays, numOfDaysInMonth);
     calendar += "</table>";
     calendar += "</div> <!-- End of calendarDiv -->";
     document.getElementById(divID).innerHTML = calendar;
@@ -154,4 +244,5 @@ function createCalendar(divID) {
 
 //*****  draw Calendar *********
 
-createCalendar("calendar");
+createCalendar("calendar_matrix");
+//document.getElementById("calendar").addEventListener("load", createCalendar);

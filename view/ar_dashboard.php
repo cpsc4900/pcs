@@ -21,7 +21,7 @@ if($UserType != 'AR') {
   <title>AR Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/pcs_style.css">
+  <link rel="stylesheet" href="../assets/css/pcs_style.css">
 </head>
 
 <body>
@@ -57,8 +57,9 @@ if($UserType != 'AR') {
       <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane active" id="calendar">
-          <div id="calendar"></div>
-          Add Calendar Here
+          <div id="Cal_Year_Header">Year</div> <!-- to do, add selection -->
+          <div id="Cal_Month_Header">Month</div> <!-- to do, add selection -->
+          <div id="calendar_matrix"></div>
         </div>
         <div class="tab-pane" id="patient_rec">
           Add patient identity records here
@@ -71,9 +72,9 @@ if($UserType != 'AR') {
 </div> <!-- end of container-fluid -->
     
   <!-- Load scripts last, speeds up loading --> 
+  <script src="../model/calendar.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <script src="../model/calendar.js"></script>
 </body>
 
 </html>
