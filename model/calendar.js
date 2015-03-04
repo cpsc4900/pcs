@@ -42,10 +42,6 @@ function isWorkingDay(month, year, day) {
     }
 }
 
-function drawDay(date, appointments, hours = 8) {
-
-}
-
 /**
  * Returns the number of days left in the week as compare to dayOfWeek
  * @param  {int} dayOfWeek 0-6 value for Sun-Saturday
@@ -61,23 +57,31 @@ Date.prototype.addHours= function(h){
 }
 
 // todo break up this logic
-function drawDay(year = 0, month = 0, day, numOfHours = 5, startHour = 8, numOfApp = 3, isActive = true) {
-    var calendarDay = "<table class = \" table table-hover table-condensed danger\" >";
+function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8, numOfApp = 3) {
 
-    if (isActive) {        // if active, display selectable fields
-    calendarDay = "<table class = \" table table-hover table-striped" + 
-                  "table-condensed info\" >";
-    var hourCounter = new Date(year, month, day, numOfHours);
+    var hourCounter = new Date(year, month, day, startHour);
+    var calendarDay = "";
+    if (!active) {
+        calendarDay = "<table class = \" table table-condensed \" >";
+    } else {
+        calendarDay = "<table class = \" table table-hover table-striped table-condensed \" >";
     }
-    calendarDay += "<tr>";
-    calendarDay += "<td>" + day + "</td>";                 // create date header
-    calendarDay += "</tr>";
-    for (var i = 0; i <= numOfHours; i++) {
-        calendarDay += "<tr>";
-        calendarDay += "<td>" + day + "</td>";              // create date header
+    calendarDay += "<h3 class=\"text-right\">" + day + "</h3>" ;                 // create date header
+    for (var i = 1; i <= numOfHours; i++) {
+        if (!active) {
+            calendarDay += "<tr class=\"danger\">";
+        } else {
+            calendarDay += "<tr>";
+        }
+        calendarDay += "<td>" + hourCounter.getHours() + "</td>";              // create hour row
+        for (var inc = 0; inc < numOfApp; inc++) {                                   // add appointments
+            calendarDay += "<td>" + inc + "</td>";    
+        }
         calendarDay += "</tr>";
+        hourCounter.addHours(1);                                    // increment hour
     }
     calendarDay += "</table>";
+    return calendarDay;
 }
 /**
  * Draws the non-active days of the previous month into the calendar.
@@ -88,16 +92,18 @@ function drawDay(year = 0, month = 0, day, numOfHours = 5, startHour = 8, numOfA
  */
 function drawPreviousUnActiveDays(date, numOfDays) {
     var lastDay = date.getDate();
+    var year = date.getFullYear();
+    var month = date.getMonth();
     calendar = "<tr>";
     var numOfDaysToDraw = numOfDays;
     for (var i = 0; i <= numOfDays; i++) {
         calendar += "<td class=\"cal_inactive\" id=\"cal_inactive\">";
-        calendar += lastDay - numOfDaysToDraw;
+        calendar += drawDay(year, month, lastDay - numOfDaysToDraw, false);
         calendar += "</td>";
         numOfDaysToDraw -= 1;
     }
     if (numDaysLeftInWeek(numOfDays - 1) === 0) {
-    calendar += "</tr>";  //TODO CANNOT CLOSE ROW !!!!
+    calendar += "</tr>";
     }
     return calendar;
 }
@@ -123,7 +129,8 @@ function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
     }
     for (var i = 1; i <= numOfDays ; i++) {
         calendar += "<td class=\"cal_active\" id=\"cal_active_" + i + "\">";
-        calendar += i;
+        calendar += drawDay(year, month, i);
+//        calendar += "<table> <tr><td>1</td></tr><tr><td>1</td></tr><tr><td>1</td></tr> </table>";
         calendar += "</td>";
         if (new Date(year, month, i).getDay() === 6) {  // Need to close row?
             calendar += "</tr>";                        // Yes, close row

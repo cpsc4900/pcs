@@ -62,14 +62,14 @@
       </div>  <!-- end of Login Form -->
     </div>    <!-- end of Center Column -->
     <div class="col-sm-3">
-    <?
+    <?php
       if(isset($_GET['error']) && $_GET['error'] === "true") {
         $errMess = "style=\"visibility: visible;\"";
       } else {
         $errMess = "style=\"visibility: hidden;\"";
       }
     ?>
-      <div class="alert alert-danger" role="alert"  <? print $errMess; ?> >
+      <div class="alert alert-danger" role="alert"  <?php print $errMess; ?> >
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
         Username and Password are not recognized

@@ -106,3 +106,11 @@ QUnit.test("isWorkingDay_test", function(assert) {
     }; 
 
 });
+
+QUnit.test("drawWorkingDay", function(assert) {
+    // Test March 2015
+
+    var hourCounter = new Date(year, month, day, startHour);
+    document.write("<h2>getHours =", hourCounter.getHours(), "</h2>");
+
+});
