@@ -107,10 +107,28 @@ QUnit.test("isWorkingDay_test", function(assert) {
 
 });
 
-QUnit.test("drawWorkingDay", function(assert) {
-    // Test March 2015
 
-    var hourCounter = new Date(year, month, day, startHour);
-    document.write("<h2>getHours =", hourCounter.getHours(), "</h2>");
+QUnit.test("formatTime", function(assert) {
+  // Test formatting time into xx:00 am/pm format
+  var time = 0;   // = 1:00 am
+  var timeString = formatTime(time);
+
+  assert.equal(timeString, "1:00am");
+
+  time = 11;   // = 12:00 pm
+  timeString = formatTime(time);
+
+  assert.equal(timeString, "12:00pm");
+
+  time = 23;   // = 12:00 am
+  timeString = formatTime(time);
+
+  assert.equal(timeString, "12:00pm");
+
+  time = 24;   // = Out of bounds
+  timeString = formatTime(time);
+
+  assert.equal(timeString, "Invalid int value: 24");
 
 });
+

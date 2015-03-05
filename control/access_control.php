@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
 *
 * Controls user's ability to access particular pages.  This file should
@@ -17,6 +17,10 @@ if (isset($_SESSION['StartTime']))  {
 $StartTime = $_SESSION['StartTime'];
 }
 
+
+/*print $EmployeeID;
+print $UserType;
+print $StartTime;*/
 /**
  * Should destroy the session array on close
  *

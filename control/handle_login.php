@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
 * Displays a Login Form.
 *
@@ -46,7 +47,6 @@ if ($is_dev) {
 if (isset($_POST['userName']) && !empty($_POST['userName'])  
     && !empty($_POST['passWord'])  && isset($_POST['userName'])) {  // does username have a value ?
 
-  session_start();
   init_db_conn();                         // connect to database as Login user
 
   $userName = $_POST['userName'];
@@ -56,7 +56,6 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
 
   if(validateLogin($passWord, $hashed_pwd)) {     // Does the password match?
     //
-//    session_start();                              // Yes, so start session,
     $emp_id = retrieveEmployeeID($userName);      // and set session info
     $_SESSION['EmployeeID'] = $emp_id;               
     $_SESSION['UserType'] = retrieveUserType($emp_id);
@@ -64,6 +63,7 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
     $date = new DateTime();
     $now_unix_ts = $date->getTimeStamp();
     $_SESSION['StartTime'] = $now_unix_ts;
+    include "access_control.php";
 
     // Take the User to the appropiate Dashboard
     // TODO: Assign passwords to database, depending on usertype!!!!
@@ -73,7 +73,7 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
         exit();
         break;
       case 'AR':
-        include_once "../view/ar_dashboard.php";    // AR Dashboard
+        header("Location: ../view/ar_dashboard.php");    // AR Dashboard
         exit();
         break;
       case 'EM':

@@ -18,6 +18,16 @@
 	font-weight: bold;
 }
 
-#Cal_Year_Header {
+#displayed_year {
 	font-weight: bold;
+    font-size:x-small;
+}
+
+#displayed_month {
+    font-weight: bold;
+    font-size:x-small;
+}
+
+#calendar_matrix {
+    font-size: 8px;
 }

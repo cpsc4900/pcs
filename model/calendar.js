@@ -56,26 +56,53 @@ Date.prototype.addHours= function(h){
     return this;
 }
 
+/**
+ * Formats 0-23 into HH:HH am or pm string format
+ * @param  {int} time the time to be formatted in 0-23 value
+ * @return {string} a string of formatted time    
+ */
+function formatTime(time) {
+    var returnTime = "";
+    time += 1;
+    if (time == 23){return "12:00am";}
+    if (time > 0 && time < 12) {
+        returnTime =  time.toString() + ":00am";
+    } else if (time > 11 && time < 25) {
+        if (time > 12) {
+            time = time - 12;
+        }
+        returnTime = time.toString() + ":00pm";
+    } else {
+        time -= 1;
+        return "Invalid int value: " + time.toString();
+    }
+    return returnTime;
+} 
+
 // todo break up this logic
 function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8, numOfApp = 3) {
 
     var hourCounter = new Date(year, month, day, startHour);
     var calendarDay = "";
+    var tempTime = 0;
     if (!active) {
-        calendarDay = "<table class = \" table table-condensed \" >";
+        calendarDay = "<table class = \" table table-condensed \" style=\"font-size: 8px;\" >";
     } else {
-        calendarDay = "<table class = \" table table-hover table-striped table-condensed \" >";
+        calendarDay = "<table class = \" table table-hover  table-condensed \" style=\"font-size: 8px;\" >";
     }
-    calendarDay += "<h3 class=\"text-right\">" + day + "</h3>" ;                 // create date header
+    calendarDay += "<h4 class=\"text-right\" id=\"date\">" + day + "</h4>" ;                 // create date header
     for (var i = 1; i <= numOfHours; i++) {
         if (!active) {
             calendarDay += "<tr class=\"danger\">";
         } else {
-            calendarDay += "<tr>";
+            calendarDay += "<tr class=\"active\">";
         }
-        calendarDay += "<td>" + hourCounter.getHours() + "</td>";              // create hour row
-        for (var inc = 0; inc < numOfApp; inc++) {                                   // add appointments
-            calendarDay += "<td>" + inc + "</td>";    
+        tempTime = hourCounter.getHours();
+        calendarDay += "<td>" + formatTime(tempTime) + "</td>";              // create hour row
+        for (var inc = 0; inc < numOfApp; inc++) {                             // add appointments
+            //TODO INSERT APPOINTMENT QUERY HERE !!!
+            calendarDay += "<td>" + "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"> </span>";
+            calendarDay += "</td>";    
         }
         calendarDay += "</tr>";
         hourCounter.addHours(1);                                    // increment hour
@@ -178,7 +205,7 @@ function drawEndingUnActiveDays(year, month, numOfPreviousDays, numOfActiveDays)
     for (var i = 1; i <= daysLeftToDraw; i++) {
         // draw
         calendar += "<td class=\"cal_inactive\" id=\"cal_inactive\">";
-        calendar += i;
+        calendar += drawDay(year, month, i, false);
         calendar += "</td>";
         if(new Date(nextYear, nextMonth, i).getDay() == 6) {        // close row on Saturday(s)
             calendar += "</tr>";
@@ -203,14 +230,9 @@ function drawEndingUnActiveDays(year, month, numOfPreviousDays, numOfActiveDays)
  *                   td class = "cal_inactive_x" where x is the calendar day
  *                   td class = "cal_active"
  */
-function createCalendar(divID) {
+function createCalendar(year, month, divID) {
     var calendar="";   // the string object to be returned in HTML/CSS format 
 
-    // Temp for testing
-    var month = 0;
-    var year = 2015;
-    
-    //-----------------    Draw calendar matrix     ----------------------------
 
     // ---- Init parameters
     // Get number of Days in the Month
@@ -234,9 +256,7 @@ function createCalendar(divID) {
     // ---- End Init parameters
     
     //-----------    Draw the monthly calendar       ---------------
-    calendar += "<div id=\"calendarDiv\">";         // open calendar div
-    calendar += "<table class=\"table table-striped table-bordered\"" + 
-                "id=\"calendarMatrix\">"; // open calendar table
+
     // Draw dates of previous month
     calendar += drawPreviousUnActiveDays(prevMonthDate, numOfPreviousDays);
 
@@ -244,12 +264,6 @@ function createCalendar(divID) {
     calendar += drawActiveDays(year, month, numOfPreviousDays, numOfDaysInMonth);
     // Draw inactive dates of next month until calendar matrix is full
     calendar += drawEndingUnActiveDays(year, month, numOfPreviousDays, numOfDaysInMonth);
-    calendar += "</table>";
-    calendar += "</div> <!-- End of calendarDiv -->";
     document.getElementById(divID).innerHTML = calendar;
 }
 
-//*****  draw Calendar *********
-
-createCalendar("calendar_matrix");
-//document.getElementById("calendar").addEventListener("load", createCalendar);
