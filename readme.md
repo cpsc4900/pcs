@@ -70,7 +70,7 @@ Note: Configuration is different for MAC and Windows, but there should be a httd
     For Unix: /tmp is popular
     For Windows: C:WINDOWSTEMP is popular
 
-    These are the basic settings, I'll make note if/when php.ini changes will be required for security
+    These are the basic settings, I'll make note if/when php.ini changes will be required for security.
 
 
 
