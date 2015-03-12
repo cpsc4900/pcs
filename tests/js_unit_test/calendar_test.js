@@ -132,3 +132,42 @@ QUnit.test("formatTime", function(assert) {
 
 });
 
+QUnit.test("getMonth", function(assert) {
+  // Test formatting month from int to string
+  var month = 0;
+  var monthString = getMonth(month);
+
+  assert.equal(monthString, "January");
+
+  month = 11;
+  monthString = getMonth(month);
+
+  assert.equal(monthString, "December");
+
+
+  month = 24;   // = Out of bounds
+  monthString = getMonth(month);
+
+  assert.equal(monthString, "NaM");
+
+});
+
+QUnit.test("arrayDeclerationTest", function(assert) {
+  // Test array decleration
+  var myArray = new Array();
+
+  myArray[0] = 1;
+  myArray[1] = 2;
+
+  assert.equal(myArray[0], 1);
+  assert.equal(myArray[1], 2);
+});
+
+QUnit.test("getAppointmentsPerHour_test", function(assert) {
+  // Test array decleration
+  var hourlyApps = new Array();
+  hourlyApps = getAppointmentsPerHour(2015, 2, 21, 9);
+
+  assert.equal(hourlyApps[0], 1);
+  assert.equal(hourlyApps.length, 2);
+});

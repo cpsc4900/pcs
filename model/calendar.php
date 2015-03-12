@@ -1,79 +1,50 @@
 <?php
+include "../control/handle_apps.php";
+
+/*+-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| AppointmentID   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Time            | datetime     | NO   |     | NULL    |                |
+| ShowedUp        | tinyint(1)   | YES  |     | 0       |                |
+| CLINIC_ClinicID | mediumint(9) | NO   |     | NULL    |                |
+| Patient_ID
++-----------------+--------------+------+-----+---------+----------------+
+MySQL
+datetime format = 'YYYY-MM-DD HH:MM:SS'
+
+PHP
+$date = new DateTime('2000-01-10 12:00:00');
+$formatDate = $date->format('Y-m-d H:i:s');
+*/
+
+// Query notes: be sure to format in ASC from time
+// Probably best to abstract date, year, month, and time from datetime
 
 
+// Test
+$temp_2015 = array(
+array('AppointmentID' => 1 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 9, 'Patient_ID' => 1), 
+array('AppointmentID' => 2 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 9, 'Patient_ID' => 2), 
+array('AppointmentID' => 3 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 10, 'Patient_ID' => 3), 
+array('AppointmentID' => 4 , 'Year' => 2015, 'Month' => 2, 'Day' => 15, 'Time' => 11, 'Patient_ID' => 4));
 
-// Calculating the first day of the month and the number
-// of days in the month
+$temp_2014 = array(
+array('AppointmentID' => 1 , 'Year' => 2014, 'Month' => 2, 'Day' => 19, 'Time' => 9, 'Patient_ID' => 1), 
+array('AppointmentID' => 2 , 'Year' => 2014, 'Month' => 2, 'Day' => 18, 'Time' => 9, 'Patient_ID' => 2), 
+array('AppointmentID' => 3 , 'Year' => 2014, 'Month' => 2, 'Day' => 17, 'Time' => 10, 'Patient_ID' => 3), 
+array('AppointmentID' => 4 , 'Year' => 2014, 'Month' => 2, 'Day' => 16, 'Time' => 11, 'Patient_ID' => 4));
 
-  $month = date("n");
-  $year = date("Y");
-  $firstDay = mktime(0,1,0,$month,1,$year);
-  $daysInMonth = date("t",$firstDay);
-  $firstDay = date("w",$firstDay);
-  echo "<table  border='3'>\n";
-    echo "<tr>\n";
-      echo "<td align='center'>" . date("F Y") . "</td>\n";
-    echo "</tr>\n";
-    echo "<tr>\n";
-      echo "<td>\n";
-        echo "<table border='1' cellspacing='2' cellpadding='2'>\n";
-          echo "<tr align='center'>\n";
-            echo "<td width='60'>Sun</td>\n";
-            echo "<td width='60'>Mon</td>\n";
-            echo "<td width='60'>Tue</td>\n";
-            echo "<td width='60'>Wed</td>\n";
-            echo "<td width='60'>Thu</td>\n";
-            echo "<td width='60'>Fri</td>\n";
-            echo "<td width='60'>Sat</td>\n";
-          echo "</tr>\n";
-          # Calculate number of rows
-          $totalCells = $firstDay + $daysInMonth;
-          if($totalCells < 36){
-            $rowNumber = 5;
-          } else {
-            $rowNumber = 6;
-          }
-          $dayNumber = 1;
-          # Create Rows
-          for($currentRow=1; $currentRow <= $rowNumber; $currentRow++){
-            if($currentRow == 1){
-              # Create First Row
-              echo "<tr align='center'>\n";
-              for($currentCell  = 0; $currentCell<7; $currentCell++){
-                if($currentCell == $firstDay){
-                  # First Day of the Month
-                    echo "<td width='60'>" . $dayNumber . "</td>\n";
-                    $dayNumber++;
-                } else {
-                  if($dayNumber > 1){
-                    # First Day Passed so output Date
-                    echo "<td width='60'>" . $dayNumber . "</td>\n";
-                    $dayNumber++;
-                  } else {
-                    # First Day Not Reached so display blank cell
-                    echo "<td width='60'>&nbsp;</td>\n";
-                  }
-                }
-              }
-              echo "</tr>\n";
-            } else {
-              # Create Remaining Rows
-              echo "<tr align='center'>\n";
-              for($currentCell = 0; $currentCell < 7; $currentCell++){
-                if($dayNumber > $daysInMonth){
-                  # Days in month exceeded so display blank cell
-                    echo "<td width='60'>&nbsp;</td>\n";
-                } else {
-                    echo "<td width='60'>" . $dayNumber . "</td>\n";
-                    $dayNumber++;                            
-                }
-              }
-              echo "</tr>\n";
-            }
-          }
-        echo "</table>\n";
-      echo "</td>\n";
-    echo "</tr>\n";
-  echo "</table>\n";
+if (isset($_POST["month"]) && isset($_POST["year"])) {
+  if ($_POST["year"] == 2015) {
+    echo json_encode($temp_2015);
+  }
+  if ($_POST["year"] == 2014) {
+    echo json_encode($temp_2014);
+  }
+  
+} else {
+  echo "MonthNotPassed";
+}
 
 ?>

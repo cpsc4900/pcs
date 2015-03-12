@@ -30,7 +30,7 @@ $login_conn;
 
 
 // Handles connecting to a database ONLY for user authentication
-function init_db_conn() {
+function init_login_db_conn() {
 	global $login_conn;
 	$dsn = "mysql:host=127.0.0.1; dbname=pcs_db";
 	$username = "Login";

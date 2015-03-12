@@ -77,31 +77,141 @@ function formatTime(time) {
         return "Invalid int value: " + time.toString();
     }
     return returnTime;
+}
+
+/**
+ * Returns a String of the month represented by an int 0 - 11
+ * @param  {int} numMonth the month to returns
+ * @return a String of the month if numMonth is between 0 -11, otherwise
+ *         returns NaM (Not a Month)
+ */
+function getMonth(numMonth) {
+    var string_month;
+    switch(numMonth) {
+        case 0:
+            string_month = "January";
+            break;
+        case 1:
+            string_month = "February";
+            break;
+        case 2:
+            string_month = "March";
+            break;
+        case 3:
+            string_month = "April";
+            break;
+        case 4:
+            string_month = "May";
+            break;
+        case 5:
+            string_month = "June";
+            break;
+        case 6:
+            string_month = "July";
+            break;
+        case 7:
+            string_month = "August";
+            break;
+        case 8:
+            string_month = "September";
+            break;
+        case 9:
+            string_month = "October";
+            break;
+        case 10:
+            string_month = "November";
+            break;
+        case 11:
+            string_month = "December";
+            break;
+        default:
+            string_month = "NaM";
+            break;
+    }
+    return string_month;   
+}
+
+// GLOBAL: holds appointments of the present month being displayed
+var jsonMonthApps = "";
+
+/**
+ * Returns a JSON format of the appointments schedule within a given month
+ * @param  {int} the int value of the month to query for appointments (0-11)
+ * @return {JSON} a JSON representation of the appointments in a month.
+ * TODO IMPLEMENT
+ */
+function getAppointmentsByMonth(year, month) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "http://pcs/model/calendar.php", false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("month="+month+"&year="+year);
+    jsonMonthApps = JSON.parse(xmlhttp.responseText); 
+    // console.dir(jsonReturn);
+}
+
+/**
+ * Returns an array of AppointmentIDs per the given hour.
+ */
+function getAppointmentsPerHour(day, hour) {
+    var hourlyAppArray = new Array();
+    var inc = 0;
+    if (jsonMonthApps == "") {                  // no appointments, bail out
+        return hourlyAppArray;
+    }
+    for (var i in jsonMonthApps) {
+        // did we find a matching date and hour ??
+        if (day == jsonMonthApps[i].Day && hour == jsonMonthApps[i].Time) {
+            hourlyAppArray[inc] = jsonMonthApps[i].AppointmentID;
+            inc += 1;
+        }
+    }
+    return hourlyAppArray;
 } 
 
-// todo break up this logic
+/**
+ * Draws the day within the calendar.  Each day includes, the date, an hours table.
+ * @param  {int}  year       the year of the day to draw      
+ * @param  {int}  month      the month of the day to draw
+ * @param  {int}  day        the date of the day to draw
+ * @param  {Boolean} active  if true, the day is drawn as active (i.e. it is clickable)
+ * @param  {int}  numOfHours the number of total hours to display per day
+ * @param  {int}  startHour  the hour to start with
+ * @param  {int}  numOfApp   number of maximum appointments per hour
+ * @return {drawn table}     Draws a table representing a single day.
+ */
 function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8, numOfApp = 3) {
-
+    var apps = new Array();
+    var numOfapps = 0;
     var hourCounter = new Date(year, month, day, startHour);
     var calendarDay = "";
     var tempTime = 0;
     if (!active) {
-        calendarDay = "<table class = \" table table-condensed \" style=\"font-size: 8px;\" >";
+        calendarDay = "<table class = \" table table-condensed \"" + 
+                        "style=\"font-size: 8px;\" >";
     } else {
-        calendarDay = "<table class = \" table table-hover  table-condensed \" style=\"font-size: 8px;\" >";
+        calendarDay = "<table class = \" table table-hover  table-condensed \"" + 
+                        "style=\"font-size: 8px;\" >";
     }
-    calendarDay += "<h4 class=\"text-right\" id=\"date\">" + day + "</h4>" ;                 // create date header
+    calendarDay += "<h4 class=\"text-right\" id=\"date\">" + day + "</h4>" ;       // create date header
     for (var i = 1; i <= numOfHours; i++) {
         if (!active) {
             calendarDay += "<tr class=\"danger\">";
         } else {
-            calendarDay += "<tr class=\"active\">";
+            calendarDay += "<tr class=\"active\" id=\"active_hour\">";
         }
         tempTime = hourCounter.getHours();
-        calendarDay += "<td>" + formatTime(tempTime) + "</td>";              // create hour row
-        for (var inc = 0; inc < numOfApp; inc++) {                             // add appointments
-            //TODO INSERT APPOINTMENT QUERY HERE !!!
-            calendarDay += "<td>" + "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"> </span>";
+        apps = getAppointmentsPerHour(day, tempTime);
+        numOfapps = apps.length;                       // get number of appointments per hour
+        
+        calendarDay += "<td>" + formatTime(tempTime) + "</td>";     // create hour row
+        for (var inc = 0; inc < numOfApp; inc++) {                  // add appointments
+            calendarDay += "<td>";
+            if (numOfapps != 0) {
+                numOfapps -= 1;
+                calendarDay += "<span class=\"glyphicon glyphicon-user\"";
+                calendarDay += "aria-hidden=\"true\"> </span>";
+            }
+            
             calendarDay += "</td>";    
         }
         calendarDay += "</tr>";
@@ -157,7 +267,6 @@ function drawActiveDays(year, month, numOfPreviousDays, numOfDays) {
     for (var i = 1; i <= numOfDays ; i++) {
         calendar += "<td class=\"cal_active\" id=\"cal_active_" + i + "\">";
         calendar += drawDay(year, month, i);
-//        calendar += "<table> <tr><td>1</td></tr><tr><td>1</td></tr><tr><td>1</td></tr> </table>";
         calendar += "</td>";
         if (new Date(year, month, i).getDay() === 6) {  // Need to close row?
             calendar += "</tr>";                        // Yes, close row
@@ -253,6 +362,7 @@ function createCalendar(year, month, divID) {
     // Get last date of previous month
     var prevDate = new Date(year, month, 0);
     var prevMonthDate = new Date(year, month, 0);
+    getAppointmentsByMonth(year, month);
     // ---- End Init parameters
     
     //-----------    Draw the monthly calendar       ---------------

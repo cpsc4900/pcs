@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PCS Login</title>
+	<title>CB_Play</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
@@ -26,9 +26,29 @@
   <div class="row">  <!--  Main Content -->
     <div class="col-sm-2" style="background-color:lavender;">.col-sm-4</div>
     <div class="col-sm-6" style="background-color:lavenderblush;">
+    <!-- **************      Play Here           ****************** -->
+    <table class="table table-striped">
+      <?php for ($i=0; $i < 10; $i++) { 
+        echo "<tr><td>".$i."</td></tr>";
+      }
+      ?>
+      <tr><td>
+        <div class="dropdown">
+          <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+          Dropdown trigger
+          <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+             <p>Appointment</p>
+             <p>Patient</p>
+             <p>Doctor</p>
+          </ul>
+        </div>
+      </td></tr>
+    </table>
+
     </div>
     <div class="col-sm-4" style="background-color:lavender;">
-    <?php include "model/calendar.php"; ?>
     </div>
   </div>  <!-- end of row -->
 </div> <!-- end of container-fluid -->

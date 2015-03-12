@@ -33,7 +33,11 @@ if ($is_dev) {
 *              bob     | MRS      | mrspass
 *                
 * 
-*
+*              Database Access
+*              username |  password
+*              ---------|----------
+*              Login      logpass
+*              Master   | Master
 **/
 /*-----  End of Test Suite  ------*/
 
@@ -47,7 +51,7 @@ if ($is_dev) {
 if (isset($_POST['userName']) && !empty($_POST['userName'])  
     && !empty($_POST['passWord'])  && isset($_POST['userName'])) {  // does username have a value ?
 
-  init_db_conn();                         // connect to database as Login user
+  init_login_db_conn();                  // connect to database as Login user
 
   $userName = $_POST['userName'];
   $passWord = $_POST['passWord'];
