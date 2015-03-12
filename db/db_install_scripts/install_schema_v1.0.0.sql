@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `pcs_db`.`PATIENT` (
   `Lname` VARCHAR(45) NOT NULL,
   `SSN` BIGINT NOT NULL,
   `Birthdate` DATE NOT NULL,
-  `Sex` VARCHAR(6) NOT NULL,
+  `Sex` SET('male','female') NOT NULL,
   `isSectioned` TINYINT(1) NOT NULL DEFAULT 0,
   `AddressID` INT NOT NULL,
   `PatientNum` VARCHAR(6) NOT NULL,
