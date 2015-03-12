@@ -20,6 +20,8 @@ $formatDate = $date->format('Y-m-d H:i:s');
 
 // Query notes: be sure to format in ASC from time
 // Probably best to abstract date, year, month, and time from datetime
+// Will also need DoctorID
+// Query should be limited to Clinic via SessionID
 
 
 // Test

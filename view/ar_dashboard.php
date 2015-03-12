@@ -53,10 +53,10 @@ if($UserType != 'AR') {
         </li>
       </ul>                                                <!-- End Nav tabs -->
        
-      <!-- **************          Tab panes              ****************** -->
+      <!-- **************          Tab Content              ****************** -->
       <div class="tab-content">
         <!-- *************          Calendar              ****************** -->
-        <div class="tab-pane active" id="calendar">
+        <div class="tab-pane active fade in" id="calendar">
           <div class="row" id="spacer"></div>                <!-- Row Spacer -->
 
           <div class="btn-toolbar"> <!-- Calendar buttons -->
@@ -98,18 +98,41 @@ if($UserType != 'AR') {
         
         <!-- *************          End Calendar          ****************** -->
 
-        <div class="tab-pane" id="patient_rec">
+        <!-- *************      Patient Records View      ****************** -->
+
+        <div class="tab-pane fade" id="patient_rec">
           Add patient identity records here
           <div class="btn-group" role="mygroup">
             <button type = "button" id="mybutton">Get External Content</button>
           </div>
           <p id="change">This is a paragraph with little content.</p>
         </div>
+        <!-- *************    End Patient Records View      ****************** -->
       </div>
+      <!-- **************      End Tab Content              ****************** -->
     </div>    <!-- end of Main Column -->
     <div class="col-sm-3"></div> <!-- end of third column -->
   </div>  <!-- end of Main Content -->
 </div> <!-- end of container-fluid -->
+
+<!--   TODO ADD MODALS HERE -->
+  <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">New Appointment</h4>
+        </div>
+        <div class="modal-body">
+          <div id="insertHere"> </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
     
   <!-- Load scripts last, speeds up loading --> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

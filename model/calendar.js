@@ -63,8 +63,7 @@ Date.prototype.addHours= function(h){
  */
 function formatTime(time) {
     var returnTime = "";
-    time += 1;
-    if (time == 23){return "12:00am";}
+    if (time == 0){return "12:00am";}
     if (time > 0 && time < 12) {
         returnTime =  time.toString() + ":00am";
     } else if (time > 11 && time < 25) {
@@ -73,7 +72,6 @@ function formatTime(time) {
         }
         returnTime = time.toString() + ":00pm";
     } else {
-        time -= 1;
         return "Invalid int value: " + time.toString();
     }
     return returnTime;
@@ -145,8 +143,9 @@ function getAppointmentsByMonth(year, month) {
     xmlhttp.open("POST", "http://pcs/model/calendar.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("month="+month+"&year="+year);
+    // var temp = xmlhttp.responseText;
     jsonMonthApps = JSON.parse(xmlhttp.responseText); 
-    // console.dir(jsonReturn);
+    // console.dir(temp);
 }
 
 /**
@@ -176,10 +175,10 @@ function getAppointmentsPerHour(day, hour) {
  * @param  {Boolean} active  if true, the day is drawn as active (i.e. it is clickable)
  * @param  {int}  numOfHours the number of total hours to display per day
  * @param  {int}  startHour  the hour to start with
- * @param  {int}  numOfApp   number of maximum appointments per hour
+ * @param  {int}  maxNumOfApp   number of maximum appointments per hour
  * @return {drawn table}     Draws a table representing a single day.
  */
-function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8, numOfApp = 3) {
+function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8, maxNumOfApp = 3) {
     var apps = new Array();
     var numOfapps = 0;
     var hourCounter = new Date(year, month, day, startHour);
@@ -194,17 +193,29 @@ function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8,
     }
     calendarDay += "<h4 class=\"text-right\" id=\"date\">" + day + "</h4>" ;       // create date header
     for (var i = 1; i <= numOfHours; i++) {
+        // if displayed day is part of the present month, then make active
         if (!active) {
             calendarDay += "<tr class=\"danger\">";
         } else {
             calendarDay += "<tr class=\"active\" id=\"active_hour\">";
         }
         tempTime = hourCounter.getHours();
+        console.log(tempTime);
         apps = getAppointmentsPerHour(day, tempTime);
         numOfapps = apps.length;                       // get number of appointments per hour
         
-        calendarDay += "<td>" + formatTime(tempTime) + "</td>";     // create hour row
-        for (var inc = 0; inc < numOfApp; inc++) {                  // add appointments
+        // is the hour full of appointments?
+        if (numOfapps == maxNumOfApp || !active) {
+            calendarDay += "<td>" + formatTime(tempTime);     // YES, so create unactive hour row
+        } else {
+            // NO, so create active hour row
+            calendarDay += "<td><a href=\"#addApp\" data-toggle=\"modal\"" + 
+                           "data-target=\"#addApp\" onclick=\"passAppTime(" + tempTime + ")\">" + 
+                           formatTime(tempTime) + "</a>";
+        }
+        calendarDay += "</td>";                                        // close hour tag
+
+        for (var inc = 0; inc < maxNumOfApp; inc++) {                  // add appointments
             calendarDay += "<td>";
             if (numOfapps != 0) {
                 numOfapps -= 1;

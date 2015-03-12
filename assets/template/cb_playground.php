@@ -33,18 +33,10 @@
       }
       ?>
       <tr><td>
-        <div class="dropdown">
-          <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-          Dropdown trigger
-          <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-             <p>Appointment</p>
-             <p>Patient</p>
-             <p>Doctor</p>
-          </ul>
-        </div>
+      <a href="#myModal" data-toggle="modal" data-target="#myModal" onclick="passData(11)">
+        11:00am</a>
       </td></tr>
+      
     </table>
 
     </div>
@@ -52,10 +44,37 @@
     </div>
   </div>  <!-- end of row -->
 </div> <!-- end of container-fluid -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div id="insertHere"> </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="myFunction()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 	
   <!-- Load scripts last, speeds up loading -->	
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script>
+  function myFunction() {
+    alert("You Clicked on Submit");
+  }
+  function passData(hour) {
+    document.getElementById("insertHere").innerHTML = hour;
+  }
+  </script>
+
 </body>
 
 </html>

@@ -78,7 +78,12 @@ function displayDetailedApps() {
 */}
 
 
+// ----------------------  Adding and Deleting Appointments -------------------
 
+// Recieves an hour int 0-23
+function passAppTime(hour) {
+  //TODO
+}
 
 
 
