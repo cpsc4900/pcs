@@ -1,24 +1,17 @@
 <?php
 
-require "../control/global.php";
+require "global.php";
 
 // Handles connecting to a database
 
 $dsn = "mysql:host=127.0.0.1; dbname=pcs_db";
-$username = "Login";
-$passwd = "loginpass";  // CHANGE ME
-
-
-if($is_dev) {  // (GLOBAL) Are we developing?
-	$options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);  // show errors
-} else {
-	$options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT);  // hide errors
-}
+$username = "Master";
+$passwd = "masterpass";  // CHANGE ME
 
 
 // Try to connect to database.  THIS SHOULD NEVER FAIL
 try {
-    global $db_conn = new PDO($dsn, $username, $passwd, $options);
+    $db_conn = new PDO($dsn, $username, $passwd);
 } catch (PDOException $e) {
     $error_message = $e->getMessage();
     echo "<p>Error connecting to database: 
