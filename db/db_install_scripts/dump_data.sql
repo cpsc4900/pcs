@@ -9,7 +9,7 @@ USE pcs_db;
 
 
 -- Log output
-\T /var/www/pcs/db/db_install_scripts/log_sql.log
+-- \T /var/www/pcs/db/db_install_scripts/log_sql.log
 
 
 /**********************
@@ -29,6 +29,8 @@ USE pcs_db;
 * ADDRESS YOU MUST create ADDRESS FIRST !!!!!
 *
 */
+DELETE FROM PATIENT;
+ALTER TABLE PATIENT AUTO_INCREMENT = 1;
 DELETE FROM LOGIN;
 DELETE FROM EMPLOYEE;
 ALTER TABLE EMPLOYEE AUTO_INCREMENT = 1;    -- Reset auto increment to 1
@@ -38,18 +40,26 @@ DELETE FROM ADDRESS;
 ALTER TABLE ADDRESS AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 
 
+
 /************************* Adresses ****************************/
 
 INSERT INTO ADDRESS (Street, City, State, Zip)  
-	   VALUES('4019 Lost Oak Drive','Ooltewah', 'TN', 37363);
+	VALUES('4019 Lost Oak Drive','Ooltewah', 'TN', 37363);
 INSERT INTO ADDRESS (Street, City, State, Zip)  
-	   VALUES('753 Easy Way','Chattanooga', 'TN', 37421);
+	VALUES('753 Easy Way','Chattanooga', 'TN', 37421);
 INSERT INTO ADDRESS (Street, City, State, Zip)  
-	   VALUES('1010 Industrial Drive','Washington', 'WA', 123456);
+	VALUES('1010 Industrial Drive','Washington', 'WA', 123456);
 INSERT INTO ADDRESS (Street, City, State, Zip)  
-	   VALUES('123 Green Way Rd','Pheonix', 'AZ', 85004);
+	VALUES('123 Green Way Rd','Pheonix', 'AZ', 85004);
 INSERT INTO ADDRESS (Street, City, State, Zip)  
-	   VALUES('13450 Here We Go','Roanoke', 'VA', 452354);
+	VALUES('13450 Here We Go','Roanoke', 'VA', 452354);
+INSERT INTO ADDRESS (Street, City, State, Zip)
+	VALUES('1 Infinite Loop', 'Cupertino', 'California', 53647);
+INSERT INTO ADDRESS (Street, City, State, Zip)
+	VALUES('SW1A Westminster', 'London', 'United Kingdom', 000000);
+INSERT INTO ADDRESS (Street, City, State, Zip)
+	VALUES('0 Wilderness', 'Plymouth Rock', 'Massachusetts', 90909);
+
 
 /************************* CLINIC ****************************/
 INSERT INTO CLINIC(ClinicName, AddressID) 
@@ -62,27 +72,83 @@ SELECT "Mental Health Care Clinic", AddressID
 FROM ADDRESS WHERE Street = '753 Easy Way'
 LIMIT 1;
 
+
 /************************* EMPLOYEE ****************************/
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, CLINIC_ClinicID)
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Joe", "the Doc", "Doctor", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, CLINIC_ClinicID)
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Alice", "the Nurse", "Nurse", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, CLINIC_ClinicID)
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Bob", "the MRS", "MRS", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, CLINIC_ClinicID)
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Jenny", "the EM", "EM", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, CLINIC_ClinicID)
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Mark", "the AR", "AR", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
+
+/***************************PATIENT*************************/
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+	SELECT 'Adam', 'Apple', 1970-1-1, 728649680, 'male', ADDRESS.AddressID, 0, '123'
+		FROM ADDRESS WHERE Street = '1 Infinite Loop';
+    
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+	SELECT 'Big', 'Ben', 1994-2-4, 637485918, 'male', ADDRESS.AddressID, 0, 'def456'
+		FROM ADDRESS WHERE Street = 'SW1A Westminster';
+    
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+	SELECT 'Christopher', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
+		FROM ADDRESS WHERE Street = '0 Wilderness';
+    
+    
+/************************ TREATMENT *************************/
+INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
+	VALUES(DEFAULT, 'Generic Syndrome', 'A generic condition treatment in which 
+    generalities generate recovery.', '1-2 days/weeks', DEFAULT);
+    
+INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
+	VALUES(DEFAULT, 'Common Elderly Disorder', 'Medication prescribed to help 
+    combat symptoms to be taken until symptoms are reduced, combined with weekly checkup.', 
+	'2-5 months', DEFAULT);
+    
+
+/*********************** MEDICATION *************************/
+INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+	VALUES(DEFAULT, 'Cure-It-All', 'bloating; nausea; fatigue', 100+'mg', 'twice daily');
+
+INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+	VALUES(DEFAULT, 'The Sanity Pill', 'dementia; depression; anxiety; insanity', 100+'mg', 'once daily');
+    
+
+/************************ ALLERGY ***************************/
+INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
+	VALUES(DEFAULT, 'Penicillin', 'mild');
+    
+INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
+	VALUES(DEFAULT, 'Sulfa', 'severe');
+    
+
+/*********************** APPOINTMENT ************************/
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT '2015-03-17' '13:30:00', CLINIC.ClinicID, PATIENT.PatientID, EMPLOYEE.EmployeeID
+		FROM CLINIC, PATIENT, EMPLOYEE
+			WHERE PATIENT.Fname = 'Adam' AND PATIENT.Lname ='Apple';
+            
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT '2015-3-17', CLINIC.ClinicID, PATIENT.PatientID, EMPLOYEE.EmployeeID
+		FROM CLINIC, PATIENT, EMPLOYEE
+			WHERE PATIENT.Fname = 'Big' AND PATIENT.Lname = 'Ben' 
+				AND CLINIC.ClinicName = 'Mental Health Care Clinic';
+
+    
 /************************* LOGIN ****************************/
 /**
 *
@@ -112,3 +178,6 @@ EmployeeID FROM EMPLOYEE WHERE Lname="the Nurse";
 INSERT INTO LOGIN(UserName, Password, EMPLOYEE_EmployeeID)
 SELECT "joe", "135887ffe67113a5bacb1c9f5fc7e989b8a860bdfb06c72c8408bb99fdd78cb5",
 EmployeeID FROM EMPLOYEE WHERE Lname="the Doc";
+
+
+
