@@ -29,6 +29,14 @@ USE pcs_db;
 * ADDRESS YOU MUST create ADDRESS FIRST !!!!!
 *
 */
+DELETE FROM SECTIONED;
+ALTER TABLE SECTIONED AUTO_INCREMENT = 1;    -- Reset auto increment to 1
+DELETE FROM APPOINTMENT;
+ALTER TABLE APPOINTMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
+ALTER TABLE MEDICATION AUTO_INCREMENT = 1;    -- Reset auto increment to 1
+DELETE FROM MEDICATION;
+DELETE FROM TREATMENT;
+ALTER TABLE TREATMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM PATIENT;
 ALTER TABLE PATIENT AUTO_INCREMENT = 1;
 DELETE FROM LOGIN;
@@ -204,7 +212,7 @@ INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
 
 
 /*************************SECTION***************************/
-INSERT INTO SECTION(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID)
+INSERT INTO SECTIONED(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID)
 	SELECT 13, "2015-03-17", PatientID, (
 		SELECT ClinicID
 			FROM CLINIC
