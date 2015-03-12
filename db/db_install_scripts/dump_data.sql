@@ -72,8 +72,14 @@ SELECT "Mental Health Care Clinic", AddressID
 FROM ADDRESS WHERE Street = '753 Easy Way'
 LIMIT 1;
 
+INSERT INTO CLINIC(ClinicName, AddressID)
+SELECT "Remain Insane", AddressID
+FROM ADDRESS WHERE Street = '1414 Dead End Drive'
+LIMIT 1;
+
 
 /************************* EMPLOYEE ****************************/
+/***Mental Health Care Clinic***/
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Joe", "the Doc", "Doctor", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
@@ -94,6 +100,26 @@ INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Mark", "the AR", "AR", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
+/***Remain Insane***/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Gunther", "el Doctore", "Doctor", ClinicID 
+FROM CLINIC WHERE ClinicName = "Remain Insane";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Betsy", "la Secretaria", "Nurse", ClinicID 
+FROM CLINIC WHERE ClinicName = "Remain Insane";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Clint", "Medwreck", "MRS", ClinicID 
+FROM CLINIC WHERE ClinicName = "Remain Insane";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Senior", "Boss", "EM", ClinicID 
+FROM CLINIC WHERE ClinicName = "Remain Insane";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Leroy", "Clint's Brother", "AR", ClinicID 
+FROM CLINIC WHERE ClinicName = "Remain Insane";
 
 /***************************PATIENT*************************/
 INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
@@ -116,7 +142,7 @@ INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
     
 INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
 	VALUES(DEFAULT, 'Common Elderly Disorder', 'Medication prescribed to help 
-    combat symptoms to be taken until symptoms are reduced, combined with weekly checkup.', 
+    combat ailments to be taken until symptoms are reduced, combined with weekly checkup.', 
 	'2-5 months', DEFAULT);
     
 
@@ -127,6 +153,9 @@ INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPe
 INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
 	VALUES(DEFAULT, 'The Sanity Pill', 'dementia; depression; anxiety; insanity', 100+'mg', 'once daily');
     
+INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+	VALUES(DEFAULT, 'Depression Repression', 'smiles; loss of appetite; cerebral amputation', 100+'mg', 'thrice daily'); 
+    
 
 /************************ ALLERGY ***************************/
 INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
@@ -135,19 +164,57 @@ INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
 INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
 	VALUES(DEFAULT, 'Sulfa', 'severe');
     
+INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
+	VALUES(DEFAULT, 'Latex', 'medium');
+    
 
 /*********************** APPOINTMENT ************************/
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT '2015-03-17' '13:30:00', CLINIC.ClinicID, PATIENT.PatientID, EMPLOYEE.EmployeeID
-		FROM CLINIC, PATIENT, EMPLOYEE
-			WHERE PATIENT.Fname = 'Adam' AND PATIENT.Lname ='Apple';
+	SELECT "2015-03-17 13:30:00", ClinicID, (
+		SELECT PatientID 
+			FROM PATIENT 
+				WHERE Fname = 'Adam'), (
+		SELECT EmployeeID
+			FROM EMPLOYEE
+				WHERE UserType = 'Doctor')
+		FROM CLINIC
+			WHERE ClinicName = 'Mental Health Care Clinic';
             
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT '2015-3-17', CLINIC.ClinicID, PATIENT.PatientID, EMPLOYEE.EmployeeID
-		FROM CLINIC, PATIENT, EMPLOYEE
-			WHERE PATIENT.Fname = 'Big' AND PATIENT.Lname = 'Ben' 
-				AND CLINIC.ClinicName = 'Mental Health Care Clinic';
+	SELECT "2015-03-17 11:15:00", ClinicID, (
+		SELECT PatientID
+			FROM PATIENT
+				WHERE Fname = 'Big'), (
+		SELECT EmployeeID
+			FROM EMPLOYEE
+				WHERE UserType = 'Doctor')
+		FROM CLINIC 
+			WHERE ClinicName = 'Mental Health Care Clinic';
+        
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 14:00:00", ClinicID, (
+		SELECT PatientID
+			FROM PATIENT
+				WHERE Fname = 'Chris'), (
+		SELECT EmployeeID
+			FROM EMPLOYEE
+				WHERE UserType = 'Doctor')
+		FROM CLINIC
+			WHERE ClinicName = 'Remain Insane';
 
+
+/*************************SECTION***************************/
+INSERT INTO SECTION(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID)
+	SELECT 13, "2015-03-17", PatientID, (
+		SELECT ClinicID
+			FROM CLINIC
+				WHERE ClinicName = 'Remain Insane'), (
+		SELECT EmployeeID
+			FROM EMPLOYEE
+				WHERE UserType = 'Doctor')
+		FROM PATIENT
+			WHERE IsSectioned = 1;
+			
     
 /************************* LOGIN ****************************/
 /**
