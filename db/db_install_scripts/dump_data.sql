@@ -96,15 +96,15 @@ FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
 
 /***************************PATIENT*************************/
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
 	SELECT 'Adam', 'Apple', 1970-1-1, 728649680, 'male', ADDRESS.AddressID, 0, '123'
 		FROM ADDRESS WHERE Street = '1 Infinite Loop';
     
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
 	SELECT 'Big', 'Ben', 1994-2-4, 637485918, 'male', ADDRESS.AddressID, 0, 'def456'
 		FROM ADDRESS WHERE Street = 'SW1A Westminster';
     
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, `Sectioned?`, PatientNum) 
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
 	SELECT 'Christopher', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
 		FROM ADDRESS WHERE Street = '0 Wilderness';
     
