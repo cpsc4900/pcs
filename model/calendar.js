@@ -190,7 +190,6 @@ function formatDateTime(year, month, day, hour) {
 function getAppointmentsPerHour(year, month, day, hour) {
     var hourlyAppArray = new Array();
     var datetime = formatDateTime(year, month, day, hour);
-    console.log(datetime);
     var inc = 0;
     if (jsonMonthApps == "") {                  // no appointments, bail out
         return hourlyAppArray;
@@ -254,7 +253,7 @@ function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8,
 
         for (var inc = 0; inc < maxNumOfApp; inc++) {                  // add appointments
             calendarDay += "<td>";
-            if (numOfapps != 0) {
+            if (numOfapps != 0 && active) {
                 numOfapps -= 1;
                 calendarDay += "<span class=\"glyphicon glyphicon-user\"";
                 calendarDay += "aria-hidden=\"true\"> </span>";

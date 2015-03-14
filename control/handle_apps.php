@@ -96,11 +96,11 @@ function get_apps_per_month($year, $month) {
 		$statement->execute();
 		$result = $statement->fetchAll();
 		$statement->closeCursor();
-		$retrieved_month_apps = helper_filter_result($result);
+		$retrieved_month_apps = helper_filter_result($result);					// filter
 		return $retrieved_month_apps;
 	} catch (Exception $e) {
 		if($is_dev) {
-		    echo "<p>Error retrieving UserType: 
+		    echo "<p>Error retrieving APPOINTMENT: 
              $e </p>";
 		}	
 		return 0;  // error	
@@ -122,7 +122,6 @@ function reformat_month_apps($app_array) {
 			if ($key == 'ShowedUp' || $key == 'ClinicID') {
 				continue;
 			}
-			echo $value. "<br/>";
 			$temp[$key] = $value;
 		}
 		$reformatted[$i] = $temp;
@@ -192,12 +191,7 @@ function helper_filter_result($result) {
  * TEMP TEST AREA::::::
  */
 /*$result = get_apps_per_month(2015, 2);
-var_dump($result);
-$result = reformat_month_apps($result);
-var_dump($result);
-
-$jsonResult = json_encode($result);
-var_dump($jsonResult);*/
+var_dump($result);*/
 
 ?>
 

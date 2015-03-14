@@ -38,15 +38,12 @@ array('AppointmentID' => "3", "AppTime" => "2014-03-17 13:00:00", "PatientID" =>
 array('AppointmentID' => "4", "AppTime" => "2014-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"));
 
 if (isset($_POST["month"]) && isset($_POST["year"])) {
-  if ($_POST["year"] == 2015) {
-    echo json_encode($temp_2015);
-  }
-  if ($_POST["year"] == 2014) {
-    echo json_encode($temp_2014);
-  }
-  
+	$apps_per_month = get_apps_per_month($_POST["year"], $_POST["month"]);
+	$apps_per_month = reformat_month_apps($apps_per_month);		// format
+	$apps_per_month = jsonfy_apps_per_month($apps_per_month);	// json encode
+    echo $apps_per_month;
 } else {
-  echo "MonthNotPassed";
+  echo get_apps_per_month(2015, 3);
 }
 
 ?>

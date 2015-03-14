@@ -31,3 +31,14 @@
 #calendar_matrix {
     font-size: 8px;
 }
+
+
+/* Increase the size of the modals */
+body .incmodalwidth {
+    /* new custom width */
+    width: 80%; /* respsonsive width */
+  	margin-left:auto;
+  	margin-right:auto; 
+    /* must be half of the width, minus scrollbar on the left (30px) */
+/*    margin-left: -225px;*/
+}

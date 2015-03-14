@@ -142,7 +142,7 @@ INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, P
 	SELECT 'Chris', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
 		FROM ADDRESS WHERE Street = '0 Wilderness';
     
-    
+   
 /************************ TREATMENT *************************/
 INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
 	VALUES(DEFAULT, 'Generic Syndrome', 'A generic condition treatment in which 
