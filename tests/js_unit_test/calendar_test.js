@@ -110,20 +110,20 @@ QUnit.test("isWorkingDay_test", function(assert) {
 
 QUnit.test("formatTime", function(assert) {
   // Test formatting time into xx:00 am/pm format
-  var time = 0;   // = 1:00 am
+  var time = 1;   // = 1:00 am
   var timeString = formatTime(time);
 
   assert.equal(timeString, "1:00am");
 
-  time = 11;   // = 12:00 pm
+  time = 12;   // = 12:00 pm
   timeString = formatTime(time);
 
   assert.equal(timeString, "12:00pm");
 
-  time = 23;   // = 12:00 am
+  time = 23;   // = 11:00 pm
   timeString = formatTime(time);
 
-  assert.equal(timeString, "12:00pm");
+  assert.equal("11:00pm", timeString);
 
   time = 24;   // = Out of bounds
   timeString = formatTime(time);
@@ -170,4 +170,18 @@ QUnit.test("getAppointmentsPerHour_test", function(assert) {
 
   assert.equal(hourlyApps[0], 1);
   assert.equal(hourlyApps.length, 2);
+});
+
+QUnit.test("sqlFormatHour_test", function(assert) {
+  // Test array decleration
+  var hour = sqlFormatHour(9); 
+
+  assert.equal("09:00:00", hour);
+});
+
+QUnit.test("sqlFormatMonth_test", function(assert) {
+  // Test array decleration
+  var month = sqlFormatMonth(9); 
+
+  assert.equal("10", month);
 });

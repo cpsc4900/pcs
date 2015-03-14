@@ -67,8 +67,8 @@ INSERT INTO ADDRESS (Street, City, State, Zip)
 	VALUES('SW1A Westminster', 'London', 'United Kingdom', 000000);
 INSERT INTO ADDRESS (Street, City, State, Zip)
 	VALUES('0 Wilderness', 'Plymouth Rock', 'Massachusetts', 90909);
-
-
+INSERT INTO ADDRESS (Street, City, State, Zip)
+	VALUES('1414 Dead End Drive', 'Plymouth Rock', 'Massachusetts', 90909);
 /************************* CLINIC ****************************/
 INSERT INTO CLINIC(ClinicName, AddressID) 
 SELECT "Crazy Co.", AddressID 
@@ -139,7 +139,7 @@ INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, P
 		FROM ADDRESS WHERE Street = 'SW1A Westminster';
     
 INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
-	SELECT 'Christopher', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
+	SELECT 'Chris', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
 		FROM ADDRESS WHERE Street = '0 Wilderness';
     
     
@@ -178,24 +178,24 @@ INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
 
 /*********************** APPOINTMENT ************************/
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT "2015-03-17 13:30:00", ClinicID, (
+	SELECT "2015-03-17 13:00:00", ClinicID, (
 		SELECT PatientID 
 			FROM PATIENT 
 				WHERE Fname = 'Adam'), (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE UserType = 'Doctor')
+				WHERE EmployeeID = 1)
 		FROM CLINIC
 			WHERE ClinicName = 'Mental Health Care Clinic';
             
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT "2015-03-17 11:15:00", ClinicID, (
+	SELECT "2015-03-17 11:00:00", ClinicID, (
 		SELECT PatientID
 			FROM PATIENT
 				WHERE Fname = 'Big'), (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE UserType = 'Doctor')
+				WHERE EmployeeID = 1)
 		FROM CLINIC 
 			WHERE ClinicName = 'Mental Health Care Clinic';
         
@@ -206,9 +206,573 @@ INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
 				WHERE Fname = 'Chris'), (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE UserType = 'Doctor')
+				WHERE EmployeeID = 1)
 		FROM CLINIC
 			WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-14 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-29 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-14 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-22 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-30 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-07 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-17 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-19 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-09 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-03 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-18 16:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-11 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-04 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-19 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-18 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-01 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-27 16:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-21 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-28 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-30 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-06 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-25 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-13 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-22 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-08 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-02 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-31 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-09 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-29 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-28 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-30 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-05 06:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-31 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-10 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-18 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-07 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-15 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-23 06:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 06:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-16 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-14 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-14 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-10 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-18 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-07 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-18 12:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-18 16:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-21 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-08 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-02 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-16 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-27 16:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-29 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-16 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-30 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-07 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-21 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-22 00:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-13 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-10 06:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-17 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-24 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-06 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-28 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-20 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-26 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-11 13:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-18 07:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-22 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-29 09:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-21 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-14 11:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-27 10:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-29 08:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-09 14:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
+
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-26 15:00:00", ClinicID, 
+		(SELECT PatientID FROM PATIENT WHERE Fname = 'Chris'), 
+		(SELECT EmployeeID FROM EMPLOYEE WHERE EmployeeID = 1) 
+		FROM CLINIC WHERE ClinicName = 'Remain Insane';
 
 
 /*************************SECTION***************************/
@@ -219,7 +783,7 @@ INSERT INTO SECTIONED(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID
 				WHERE ClinicName = 'Remain Insane'), (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE UserType = 'Doctor')
+				WHERE EmployeeID = 1)
 		FROM PATIENT
 			WHERE IsSectioned = 1;
 			

@@ -66,7 +66,7 @@ function formatTime(time) {
     if (time == 0){return "12:00am";}
     if (time > 0 && time < 12) {
         returnTime =  time.toString() + ":00am";
-    } else if (time > 11 && time < 25) {
+    } else if (time > 11 && time < 24) {
         if (time > 12) {
             time = time - 12;
         }
@@ -77,6 +77,37 @@ function formatTime(time) {
     return returnTime;
 }
 
+function sqlFormatHour(hour) {
+    var returnHr = "";
+    if (hour < 10) {
+        returnHr = "0"+hour.toString();
+    } else {
+        returnHr = hour.toString();
+    }
+    returnHr = returnHr+":00:00";
+    return returnHr;
+}
+
+function sqlFormatMonth(month) {
+    month = month + 1;
+    var rtMonth = "";
+    if (month < 10) { 
+        rtMonth = "0"+month.toString();
+    } else {
+        rtMonth = month.toString();
+    }
+    return rtMonth;
+}
+
+function sqlFormatDay(day) {
+    var rtday = "";
+    if (day < 10) { 
+        rtday = "0"+day.toString();
+    } else {
+        rtday = day.toString();
+    }
+    return rtday;
+}
 /**
  * Returns a String of the month represented by an int 0 - 11
  * @param  {int} numMonth the month to returns
@@ -143,23 +174,30 @@ function getAppointmentsByMonth(year, month) {
     xmlhttp.open("POST", "http://pcs/model/calendar.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("month="+month+"&year="+year);
-    // var temp = xmlhttp.responseText;
     jsonMonthApps = JSON.parse(xmlhttp.responseText); 
-    // console.dir(temp);
+    console.dir(jsonMonthApps);
 }
 
+function formatDateTime(year, month, day, hour) {
+    var datetime = year.toString();
+    datetime = datetime+"-"+sqlFormatMonth(month)+"-"+sqlFormatDay(day); 
+    datetime = datetime+" "+sqlFormatHour(hour);
+    return datetime;
+}
 /**
  * Returns an array of AppointmentIDs per the given hour.
  */
-function getAppointmentsPerHour(day, hour) {
+function getAppointmentsPerHour(year, month, day, hour) {
     var hourlyAppArray = new Array();
+    var datetime = formatDateTime(year, month, day, hour);
+    console.log(datetime);
     var inc = 0;
     if (jsonMonthApps == "") {                  // no appointments, bail out
         return hourlyAppArray;
     }
     for (var i in jsonMonthApps) {
         // did we find a matching date and hour ??
-        if (day == jsonMonthApps[i].Day && hour == jsonMonthApps[i].Time) {
+        if (jsonMonthApps[i].AppTime == datetime) {
             hourlyAppArray[inc] = jsonMonthApps[i].AppointmentID;
             inc += 1;
         }
@@ -200,8 +238,7 @@ function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8,
             calendarDay += "<tr class=\"active\" id=\"active_hour\">";
         }
         tempTime = hourCounter.getHours();
-        console.log(tempTime);
-        apps = getAppointmentsPerHour(day, tempTime);
+        apps = getAppointmentsPerHour(year, month, day, tempTime);
         numOfapps = apps.length;                       // get number of appointments per hour
         
         // is the hour full of appointments?

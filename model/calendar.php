@@ -22,20 +22,20 @@ $formatDate = $date->format('Y-m-d H:i:s');
 // Probably best to abstract date, year, month, and time from datetime
 // Will also need DoctorID
 // Query should be limited to Clinic via SessionID
+// {"AppointmentID":"1","AppTime":"2015-03-17 13:30:00","ShowedUp":"0","ClinicID":"2","PatientID":"1","EmployeeID":"1"}
 
 
 // Test
 $temp_2015 = array(
-array('AppointmentID' => 1 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 9, 'Patient_ID' => 1), 
-array('AppointmentID' => 2 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 9, 'Patient_ID' => 2), 
-array('AppointmentID' => 3 , 'Year' => 2015, 'Month' => 2, 'Day' => 21, 'Time' => 10, 'Patient_ID' => 3), 
-array('AppointmentID' => 4 , 'Year' => 2015, 'Month' => 2, 'Day' => 15, 'Time' => 11, 'Patient_ID' => 4));
+array('AppointmentID' => "2" , "AppTime" => "2015-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"), 
+array('AppointmentID' => "3" , "AppTime" => "2015-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"), 
+array('AppointmentID' => "4" , "AppTime" => "2015-03-18 13:00:00", "PatientID" => "1", "EmployeeID" => "1"));
 
 $temp_2014 = array(
-array('AppointmentID' => 1 , 'Year' => 2014, 'Month' => 2, 'Day' => 19, 'Time' => 9, 'Patient_ID' => 1), 
-array('AppointmentID' => 2 , 'Year' => 2014, 'Month' => 2, 'Day' => 18, 'Time' => 9, 'Patient_ID' => 2), 
-array('AppointmentID' => 3 , 'Year' => 2014, 'Month' => 2, 'Day' => 17, 'Time' => 10, 'Patient_ID' => 3), 
-array('AppointmentID' => 4 , 'Year' => 2014, 'Month' => 2, 'Day' => 16, 'Time' => 11, 'Patient_ID' => 4));
+array('AppointmentID' => "1", "AppTime" => "2014-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"), 
+array('AppointmentID' => "2", "AppTime" => "2014-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"), 
+array('AppointmentID' => "3", "AppTime" => "2014-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"), 
+array('AppointmentID' => "4", "AppTime" => "2014-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "1"));
 
 if (isset($_POST["month"]) && isset($_POST["year"])) {
   if ($_POST["year"] == 2015) {

@@ -34,6 +34,12 @@ function formatTime($hour) {
 	}
 	return $hour.":00:00";	
 }
+
+function formatDateTime($year, $month, $hour) {
+	$datetime = strval($year)."-".formatMonth($month)."-".formatDay($day)." ";
+	$datetime = $datetime.formatHour($hour).":00:00";
+	return $datetime;
+}
 // ----------   End Javascript to PHP/MySQL DateTime Formatting ---------//
 /**
  * Creates either the upper or lower bounds for querying a table that contains
@@ -66,9 +72,12 @@ function createDateBounds($year, $month, $upperBound = false) {
  * @param  [int] $month the month to retrieve appointments for (0-11)
  * @return [tuple array] returns an associative array with a hiearchy of:
  *
- *	[ {AppointmentID, Year, Month, Day, Time, Patient_ID, Doctor_ID}
- *	]
- * Note: Returning an array like this makes for easy JSON parsing 
+ *	'AppointmentID' => string '2' (length=1)
+ *  'AppTime' => string '2015-03-17 11:15:00' (length=19)
+ *  'ShowedUp' => string '0' (length=1)
+ *  'ClinicID' => string '2' (length=1)
+ *  'PatientID' => string '2' (length=1)
+ *  'EmployeeID' => string '1' (length=1) 
  */
 function get_apps_per_month($year, $month) {
 	global $db_conn;
@@ -78,15 +87,16 @@ function get_apps_per_month($year, $month) {
 	$upperBound = createDateBounds($year, $month, true);
 
 	$query = 'SELECT * FROM APPOINTMENT WHERE 
-	          Time BETWEEN ? AND ?';
+	          AppTime BETWEEN ? AND ?';
 
 	try {
 		$statement = $db_conn->prepare($query);
 		$statement->bindValue( 1 , $lowerBound);
 		$statement->bindValue( 2 , $upperBound);
 		$statement->execute();
-		$retrieved_month_apps = $statement->fetchAll();
+		$result = $statement->fetchAll();
 		$statement->closeCursor();
+		$retrieved_month_apps = helper_filter_result($result);
 		return $retrieved_month_apps;
 	} catch (Exception $e) {
 		if($is_dev) {
@@ -95,6 +105,36 @@ function get_apps_per_month($year, $month) {
 		}	
 		return 0;  // error	
 	}
+}
+
+/**
+ * Formats the monthly report of appointments into an array of arrays, structured as:
+ * array('AppointmentID' => '2' , "AppTime" => "2015-03-17 13:00:00", "PatientID" => "1", "EmployeeID" => "2")
+ * @param  [type] $app_array the array returned by get_apps_per_month
+ * @return [type]            [description]
+ */
+function reformat_month_apps($app_array) {
+	$reformatted = array();
+	$temp = array();
+	$i = 0;
+	foreach ($app_array as $child) {
+		foreach ($child as $key => $value) {
+			if ($key == 'ShowedUp' || $key == 'ClinicID') {
+				continue;
+			}
+			echo $value. "<br/>";
+			$temp[$key] = $value;
+		}
+		$reformatted[$i] = $temp;
+		unset($temp);
+		$i += 1;
+	}
+	return $reformatted;
+}
+
+// returns JSON format
+function jsonfy_apps_per_month($app_array) {
+	return json_encode($app_array);
 }
 
 /**
@@ -131,13 +171,33 @@ function set_app($year, $month, $date, $hour) {
 
 }
 
+// removes the double entries given by all PHP Queries
+function helper_filter_result($result) {
+	$filtered = array();
+	$temp = array();
+	$i = 0;
+	foreach($result as $child) {
+		foreach ($child as $key => $value) {
+			if (is_int($key)) {continue;}
+			$temp[$key] = $value;
+		}
+		$filtered[$i] = $temp;
+		unset($temp);
+		$i += 1;
+	}
+	return $filtered;
+}
+
 /**
  * TEMP TEST AREA::::::
  */
-$result = get_apps_per_month(2015, 1);
+/*$result = get_apps_per_month(2015, 2);
+var_dump($result);
+$result = reformat_month_apps($result);
+var_dump($result);
 
-print_r($result);
-
+$jsonResult = json_encode($result);
+var_dump($jsonResult);*/
 
 ?>
 
