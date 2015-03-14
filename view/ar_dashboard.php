@@ -137,6 +137,7 @@ if($UserType != 'AR') {
   <!-- Load scripts last, speeds up loading --> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="../model/global.js"></script>
   <script src="../model/calendar.js"></script>
   <script src="../control/handle_calendar.js"></script>
   <script src="../control/handle_ar_apps.js"></script>
