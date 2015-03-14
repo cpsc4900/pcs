@@ -1,4 +1,10 @@
 
+
+
+/*==============================================================================
+=                          Date and Time Formatting                            =
+==============================================================================*/
+
 /**
 * Returns the number of days in a month.
 * @param {number} month - The month 0-11.
@@ -51,6 +57,7 @@ function numDaysLeftInWeek(dayOfWeek) {
     return 6 - dayOfWeek;
 }
 
+// Helper Function: adds hours (h) to Date objects.  
 Date.prototype.addHours= function(h){
     this.setHours(this.getHours()+h);
     return this;
@@ -108,6 +115,21 @@ function sqlFormatDay(day) {
     }
     return rtday;
 }
+
+/**
+ * Formats a JavaScript Dates into MySQL datetime format 'YYYY-MM-DD HH:MM:SS'
+ * @param  {int} year  
+ * @param  {int} month 0-11 transforms to 01-12
+ * @param  {int} day   1-31 transforms to 01-31
+ * @param  {int} hour  0-23 transforms to 00-23
+ * @return {string}    datetime string formatted as  'YYYY-MM-DD HH:MM:SS'
+ */
+function formatDateTime(year, month, day, hour) {
+    var datetime = year.toString();
+    datetime = datetime+"-"+sqlFormatMonth(month)+"-"+sqlFormatDay(day); 
+    datetime = datetime+" "+sqlFormatHour(hour);
+    return datetime;
+}
 /**
  * Returns a String of the month represented by an int 0 - 11
  * @param  {int} numMonth the month to returns
@@ -159,9 +181,4 @@ function getMonth(numMonth) {
     }
     return string_month;   
 }
-function formatDateTime(year, month, day, hour) {
-    var datetime = year.toString();
-    datetime = datetime+"-"+sqlFormatMonth(month)+"-"+sqlFormatDay(day); 
-    datetime = datetime+" "+sqlFormatHour(hour);
-    return datetime;
-}
+/*---------------  End of Date and Time Formatting  --------------------------*/
