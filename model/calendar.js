@@ -175,7 +175,6 @@ function getAppointmentsByMonth(year, month) {
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("month="+month+"&year="+year);
     jsonMonthApps = JSON.parse(xmlhttp.responseText); 
-    console.dir(jsonMonthApps);
 }
 
 function formatDateTime(year, month, day, hour) {
@@ -240,13 +239,15 @@ function drawDay(year, month, day, active = true, numOfHours = 8, startHour = 8,
         apps = getAppointmentsPerHour(year, month, day, tempTime);
         numOfapps = apps.length;                       // get number of appointments per hour
         
-        // is the hour full of appointments?
-        if (numOfapps == maxNumOfApp || !active) {
+        // does the hour belong to a prev or next month?
+        if (!active) {
             calendarDay += "<td>" + formatTime(tempTime);     // YES, so create unactive hour row
         } else {
-            // NO, so create active hour row
-            calendarDay += "<td><a href=\"#addApp\" data-toggle=\"modal\"" + 
-                           "data-target=\"#addApp\" onclick=\"passAppTime(" + tempTime + ")\">" + 
+            // NO, so create active hour row, pass date and time when clicked
+            calendarDay += "<td><a href=\"#addApp\" data-toggle=\"modal\"" + "class=\"appHours\"" +    // link to addApp modal
+                           "data-target=\"#addApp\" onclick=\"passAppTime(" + 
+                            year +","+ month +","+ day +","+ tempTime +","+     // pass current date
+                            numOfapps + ")\">" +                                // pass numOf appointments/hour
                            formatTime(tempTime) + "</a>";
         }
         calendarDay += "</td>";                                        // close hour tag

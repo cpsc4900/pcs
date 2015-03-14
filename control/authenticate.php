@@ -163,4 +163,30 @@ function retrieveEmployeeID($usr_name) {
 		return 0;  // error	
 	}
 }
+/**
+ * Retrieves the Clinic ID the User belongs to.
+ * @param  [type] $emp_id [description]
+ * @return [type]         [description]
+ */
+function retrieveUserClinicID($emp_id) {
+	global $login_conn;
+	global $is_dev;
+
+	$query = 'SELECT ClinicID from EMPLOYEE
+			  WHERE EmployeeID = ?';
+	try {
+		$statement = $login_conn->prepare($query);
+		$statement->bindValue( 1 , $emp_id);
+		$statement->execute();
+		$retrieved_user_type = $statement->fetch();
+		$statement->closeCursor();
+		return pull_single_element('ClinicID', $retrieved_user_type);
+	} catch (Exception $e) {
+		if($is_dev) {
+		    echo "<p>Error retrieving ClinicID: 
+             $e </p>";
+		}	
+		return 0;  // error	
+	}
+}
 ?>

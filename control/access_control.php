@@ -13,20 +13,17 @@ $EmployeeID = $_SESSION['EmployeeID'];
 if (isset($_SESSION['UserType'])) {
 $UserType = $_SESSION['UserType'];
 }
+if (isset($_SESSION['ClinicID']))  {
+$ClinicID = $_SESSION['ClinicID'];
+}
 if (isset($_SESSION['StartTime']))  {
 $StartTime = $_SESSION['StartTime'];
 }
 
 
-/*print $EmployeeID;
-print $UserType;
-print $StartTime;*/
-/**
- * Should destroy the session array on close
- *
- * $_SESSION = array();
- * session_destroy();
- */
-
+/*print $EmployeeID. "<br/>";
+print $UserType  . "<br/>";
+print $StartTime . "<br/>";
+print $ClinicID  . "<br/>";*/
 
 ?>

@@ -2,45 +2,10 @@
 
 include "global.php";
 include "db_connect.php";
+include "../model/date_formatter.php";
 
 
 
-// ----------   Javascript to PHP/MySQL DateTime Formatting ---------//
-// format YYYY-MM-DD HH:MM:SS
-function formatMonth($month) {
-	$month = $month + 1;		// Javascript uses 0-11
-	if ($month < 10) {
-		$month = "0".strval($month);
-	} else {
-		$month = strval($month);
-	}
-	return $month;
-}
-// format YYYY-MM-DD HH:MM:SS
-function formatDay($day) {
-	if ($day < 10) {
-		$day = "0".strval($day);
-	} else {
-		$day = strval($day);
-	}
-	return $day;
-}
-// format YYYY-MM-DD HH:MM:SS
-function formatTime($hour) {
-	if ($hour < 10) {
-		$hour = "0".strval($hour);
-	} else {
-		$hour = strval($hour);
-	}
-	return $hour.":00:00";	
-}
-
-function formatDateTime($year, $month, $hour) {
-	$datetime = strval($year)."-".formatMonth($month)."-".formatDay($day)." ";
-	$datetime = $datetime.formatHour($hour).":00:00";
-	return $datetime;
-}
-// ----------   End Javascript to PHP/MySQL DateTime Formatting ---------//
 /**
  * Creates either the upper or lower bounds for querying a table that contains
  * a datetime field.  Use the $uppperBound param to determine if the return

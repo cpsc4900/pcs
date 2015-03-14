@@ -63,6 +63,7 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
     $emp_id = retrieveEmployeeID($userName);      // and set session info
     $_SESSION['EmployeeID'] = $emp_id;               
     $_SESSION['UserType'] = retrieveUserType($emp_id);
+    $_SESSION['ClinicID'] = retrieveUserClinicID($emp_id);
 
     $date = new DateTime();
     $now_unix_ts = $date->getTimeStamp();

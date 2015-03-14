@@ -66,32 +66,9 @@ function showNextMonth() {
     createCalendar(year, month, "calendar_matrix");
     updateDisplayedSettings(year, str_month);
 }
-// -------------  End Handle calendar display navigation       ---------------------
-
-// This isn't working !!!!!!!
-document.getElementById("active_hour").addEventListener("click", displayDetailedApps);
-
-function displayDetailedApps() {
-  console.log("time= ");
-/*  var time = document.getElementById("active_hour").firstChild.innerHTML;
-  document.getElementById("change").innerHTML = time;
-*/}
+// -------------  End Handle calendar display navigation       -----------------
 
 
-// ----------------------  Adding and Deleting Appointments -------------------
-
-// Recieves an hour int 0-23
-function passAppTime(hour) {
-  //TODO
-}
-
-
-
-document.getElementById("mybutton").addEventListener("click", showJson);
-
-function showJson() {
-  document.getElementById("change").innerHTML = "Hello";
-}
 
 
 

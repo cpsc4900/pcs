@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../control/access_control.php";
+include "../control/handle_apps.php";
 
 
 // Make sure user has the right to view this page
@@ -116,19 +117,18 @@ if($UserType != 'AR') {
 </div> <!-- end of container-fluid -->
 
 <!--   TODO ADD MODALS HERE -->
-  <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="AddApp" aria-hidden="true">
     <div class="modal-dialog incmodalwidth">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h3 class="modal-title" id="myModalLabel">Appointment Details</h3>
+          <center><h3 class="modal-title" id="AddApp">Appointment Details</h3></center>
         </div>
         <div class="modal-body">
           <?php include "../model/app_form.php" ?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@ if($UserType != 'AR') {
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="../model/calendar.js"></script>
   <script src="../control/handle_calendar.js"></script>
-
+  <script src="../control/handle_ar_apps.js"></script>
 </body>
 
 </html>

@@ -11,11 +11,17 @@
 $is_dev = true;
 
 if($is_dev) {
-	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 } else {
 	error_reporting(0);
 }
 
+define('MAX_APPS_PER_HOUR', 3);
+
+// Supress Notices of unused variable REMOVE me !!!
+if (MAX_APPS_PER_HOUR == 3) {
+    $x = 0;
+}
 
 ?>
 
