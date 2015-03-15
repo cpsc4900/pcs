@@ -2,7 +2,8 @@
 include "../control/global.php";
 ?>
 
-<form class="form-horizontal" id="addAppForm">
+<form class="form-horizontal" id="addAppForm" action="../control/handle_apps.php"
+      method="post">
 <fieldset>  <!-- New Appointment field -->
 
 <!-- Form Name -->
@@ -12,7 +13,7 @@ include "../control/global.php";
 <div class="control-group">
   <div class="controls form-inline">
   <label class="control-label" for="pat_id">Patient ID:</label>
-    <input id="pat_id" name="pat_id" placeholder="abc###" class="input-medium" type="text">
+    <input id="pat_id" name="pat_id" placeholder="abc###" class="input-medium" type="text" required="">
     <button id="autofill" name="autofill" class="btn btn-primary btn-xs">auto fill</button>
   </div>
 </div>
@@ -41,13 +42,18 @@ include "../control/global.php";
       <input id="doc_id" name="doc_id" class="input-medium" placeholder="id" type="text">
       <div class="btn-group">
         <button class="btn dropdown-toggle" data-toggle="dropdown">
-          List Doctor IDs
+          List of Doctor
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">  <!-- To do, add doctor to id display -->
-          <li><a href="#">Option one</a></li>
-          <li><a href="#">Option two</a></li>
-          <li><a href="#">Option three</a></li>
+          <?php 
+            $list_of_docs = get_list_of_doctor_names_and_ids();  // gets a list of Docs f,l name and id
+            foreach ($list_of_docs as $doc_field) {
+                echo "<li>".'<a href="#"'; 
+                echo 'onclick="docIdSelect('.$doc_field["EmployeeID"].')">'.
+                      $doc_field["Fname"].' '. $doc_field["Lname"].'</a></li>';
+            }
+          ?>
         </ul>
       </div>
     </div>
@@ -55,7 +61,7 @@ include "../control/global.php";
 </div>
 
 <!-- Hidden Time Field -->
-<input type="hidden" id="appDate" value="" />
+<input type="hidden" id="appDate" name="appDate"value="" />
 
 <!-- Buttons Submit and Cancel -->
 <div class="control-group">

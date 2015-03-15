@@ -39,6 +39,10 @@ if (isset($_POST["month"]) && isset($_POST["year"])) {
 	$apps_per_month = reformat_month_apps($apps_per_month);		// format
 	$apps_per_month = jsonfy_apps_per_month($apps_per_month);	// json encode
     echo $apps_per_month;
+} else {
+    // Just circle back to dashboard
+    header("Location: ../view/ar_dashboard.php");    // AR Dashboard
+    exit();
 }
 
 ?>

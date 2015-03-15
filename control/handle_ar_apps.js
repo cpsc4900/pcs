@@ -6,6 +6,11 @@ $(document).ready(function(){
         $('input').val('');
     });
 
+    $("#autofill").click(function(){
+        var pat_id = $('#pat_id').val();
+        autoFillAppForm(pat_id);
+    });
+
 });  //-- end of document ready
 
 
@@ -39,4 +44,27 @@ function passAppTime(yr, mnth, day, time, numOfApps) {
   }
 }
 
+function docIdSelect(docID) {
+    document.getElementById("doc_id").value = docID;
+}
 
+function autoFillAppForm(pat_id) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("getPatName="+pat_id);
+    var jsonFullName = JSON.parse(xmlhttp.responseText);
+    console.dir(jsonFullName);
+    $('#fname').val(jsonFullName['Fname']);
+    $('#lname').val(jsonFullName['Lname']);
+
+}
+
+
+function getPatients() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("patreq="+"patreq");
+    jsonMonthApps = JSON.parse(xmlhttp.responseText);
+}

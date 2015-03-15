@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 include "global.php";
 include "db_connect.php";
-include "../model/date_formatter.php";
+include "global_query.php";
 
 
 
@@ -50,14 +50,17 @@ function get_apps_per_month($year, $month) {
 	$month;
 	$lowerBound = createDateBounds($year, $month);
 	$upperBound = createDateBounds($year, $month, true);
+	$clinicID = $_SESSION['ClinicID'];
 
 	$query = 'SELECT * FROM APPOINTMENT WHERE 
-	          AppTime BETWEEN ? AND ?';
+	          (AppTime BETWEEN ? AND ?) AND
+	          (ClinicID = ?)';
 
 	try {
 		$statement = $db_conn->prepare($query);
 		$statement->bindValue( 1 , $lowerBound);
 		$statement->bindValue( 2 , $upperBound);
+		$statement->bindValue( 3 , $clinicID);
 		$statement->execute();
 		$result = $statement->fetchAll();
 		$statement->closeCursor();
@@ -101,61 +104,53 @@ function jsonfy_apps_per_month($app_array) {
 	return json_encode($app_array);
 }
 
-/**
- * Gets all the appointments between the begin and end date.
- * @param  [int] $year the year
- * @param  [int] $month the month (0-11)
- * @param  [int] $begin_date the first date to begin retrieving apps (inclusive)
- * @param  [int] $end_date   the last date to end retrieving apps (inclusive)
- * @return [tuple array] returns an associative array (see get_apps_per_month)
- */
-function get_apps_per_time_span($year, $month, $begin_date, $end_date) {
-
-}
-
 
 /**
- * PRIVATE
- * Sets the Required fields needed to create a new appointment.
- * @param [int] $pat_id    patient's id
- * @param [int] $clinic_id clinic's id
- * @param [int] $doc_id    doctor's id
+ * Adds a new appointment to the database. Returns true if the appointment was
+ * added. Otherwise, returns false;
+ * @param [string] $date_time  mySQL formatted datetime string
+ * @param [int] $pat_id  the patients id
+ * @param [int] $doc_id  the doctors_id
+ * @precondition, user must be logged in for clinic_id retrieval.
  */
-function set_app_fields($pat_id, $clinic_id, $doc_id) {
+function set_new_app($date_time, $pat_id, $doc_id) {
+	global $db_conn;
 
-}
-/**
- * Adds a new appointment to the database
- * @param [type] $year  [description]
- * @param [type] $month [description]
- * @param [type] $date  [description]
- * @param [type] $hour  [description]
- */
-function set_app($year, $month, $date, $hour) {
+	$clinicID = $_SESSION['ClinicID'];
 
-}
-
-// removes the double entries given by all PHP Queries
-function helper_filter_result($result) {
-	$filtered = array();
-	$temp = array();
-	$i = 0;
-	foreach($result as $child) {
-		foreach ($child as $key => $value) {
-			if (is_int($key)) {continue;}
-			$temp[$key] = $value;
-		}
-		$filtered[$i] = $temp;
-		unset($temp);
-		$i += 1;
+	$query = 'INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID) 
+			  VALUES (?, ?, ?, ?)';
+	try {
+		$statement = $db_conn->prepare($query);
+		$statement->bindValue( 1 , $date_time);
+		$statement->bindValue( 2 , $clinicID);
+		$statement->bindValue( 3 , $pat_id);
+		$statement->bindValue( 4 , $doc_id);
+		$result = $statement->execute();
+		$statement->closeCursor();
+		return $result;
+	} catch (Exception $e) {
+		if($is_dev) {
+		    echo "<p>Error setting APPOINTMENT: 
+             $e </p>";
+		}	
+		return 0;  // error	
 	}
-	return $filtered;
 }
 
+if (isset($_POST['pat_id']) && isset($_POST['doc_id']) && isset($_POST['appDate'])) {
+	set_new_app($_POST['appDate'],$_POST['pat_id'], $_POST['doc_id']);
+	header("Location: ../view/ar_dashboard.php");    // Back to AR Dashboard
+    exit();
+}
 /**
  * TEMP TEST AREA::::::
  */
 /*$result = get_apps_per_month(2015, 2);
+var_dump($result);*/
+
+// test passed 3/14/2015
+/*$result = set_new_app("2015-04-17 10:00:00", 1, 1);
 var_dump($result);*/
 
 ?>

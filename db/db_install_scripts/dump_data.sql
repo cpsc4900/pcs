@@ -93,6 +93,14 @@ SELECT "Joe", "the Doc", "Doctor", ClinicID
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Moe", "the Doc", "Doctor", ClinicID 
+FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+SELECT "Doc", "the Doc", "Doctor", ClinicID 
+FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
 SELECT "Alice", "the Nurse", "Nurse", ClinicID 
 FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
 
@@ -816,7 +824,7 @@ EmployeeID FROM EMPLOYEE WHERE Lname="the Nurse";
 
 INSERT INTO LOGIN(UserName, Password, EMPLOYEE_EmployeeID)
 SELECT "joe", "135887ffe67113a5bacb1c9f5fc7e989b8a860bdfb06c72c8408bb99fdd78cb5",
-EmployeeID FROM EMPLOYEE WHERE Lname="the Doc";
+EmployeeID FROM EMPLOYEE WHERE Fname="Joe" AND Lname="the Doc";
 
 
 

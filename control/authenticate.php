@@ -17,7 +17,7 @@
 **/
 
 require "global.php";
-require "../model/global_query.php";
+require "global_query.php";
 
 // TODO: Store salt off-site
 define('UNIQUE_SALT', '5&nL*dF4');
