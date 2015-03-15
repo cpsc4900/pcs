@@ -1,4 +1,6 @@
-var numberOfApps = 0;
+var availablePatSSN = new Array();
+var jsonPatInfo;
+var searchByCriteria = "";
 
 $(document).ready(function(){
     // Clears fields in the New Appointment form (app_form.php)
@@ -6,10 +8,23 @@ $(document).ready(function(){
         $('input').val('');
     });
 
+
     $("#autofill").click(function(){
-        var pat_id = $('#pat_id').val();
-        autoFillAppForm(pat_id);
+        var pat_ssn = $('#searchBar').val();
+        if (pat_ssn != "") {
+          autoFillAppForm(pat_ssn);
+        } else {
+          alert("Search Bar is Empty, Please Enter a Social Security Number to" +
+                 " search for the Patient's corresponding information");
+        }
     });
+
+    // searching capabailities: REUSE THIS !!!!
+    $("#searchBar").autocomplete({
+        source: availablePatSSN
+    });
+    $( "#searchBar" ).autocomplete( "option", "appendTo", ".eventInsForm" );
+    
 
 });  //-- end of document ready
 
@@ -28,7 +43,6 @@ function passAppTime(yr, mnth, day, time, numOfApps) {
   console.log("passed time = " + time);
   console.log("passed apps = " + numOfApps);
 
-  numberOfApps = numOfApps;
 
   // Display date and time in app_form
   var appDate = new Date(yr, mnth, day, time);
@@ -39,32 +53,48 @@ function passAppTime(yr, mnth, day, time, numOfApps) {
   var appDates = formatDateTime(yr, mnth, day, time);
   document.getElementById("appDate").value = appDates;
 
-  if (numberOfApps == 3) {
+  if (numOfApps == 3) {
     $('#addAppForm').hide();
+  } else {
+    $('#addAppForm').show();
   }
+
+  getPatients();  // populate patient arrays for searching (see arrays at top)
 }
 
 function docIdSelect(docID) {
     document.getElementById("doc_id").value = docID;
 }
 
-function autoFillAppForm(pat_id) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("getPatName="+pat_id);
-    var jsonFullName = JSON.parse(xmlhttp.responseText);
-    console.dir(jsonFullName);
-    $('#fname').val(jsonFullName['Fname']);
-    $('#lname').val(jsonFullName['Lname']);
-
+// auto fills the new app form IF a SSN match is found in the search bar
+function autoFillAppForm(pat_ssn) {
+    for (var field in jsonPatInfo) {
+      if (jsonPatInfo[field].SSN == pat_ssn) {
+        document.getElementById("fname").value = jsonPatInfo[field].Fname;
+        document.getElementById("lname").value = jsonPatInfo[field].Lname;
+        document.getElementById("pat_id").value = jsonPatInfo[field].PatientID;
+      }
+    }
 }
 
 
+// gets a JSON of all patient ID, Lname, and SSN. For searching
 function getPatients() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("patreq="+"patreq");
-    jsonMonthApps = JSON.parse(xmlhttp.responseText);
+    localjsonPatInfo = JSON.parse(xmlhttp.responseText);
+    jsonPatInfo = localjsonPatInfo;
+    console.dir(jsonPatInfo);
+    fillSearchArrays(localjsonPatInfo);
+}
+
+// gets the JSON data and places each field in an array for searching
+function fillSearchArrays(jsonPatInfo) {
+  var inc = 0;
+  for (var i in jsonPatInfo) {
+    availablePatSSN[inc] = jsonPatInfo[i].SSN;
+    inc += 1;
+  }
 }

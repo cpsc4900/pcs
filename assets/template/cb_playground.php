@@ -120,3 +120,29 @@ suggestive fill
     });
   });
   </script>
+
+
+// search bar
+  <div class="row">
+  <div class="col-sm-8 col-sm-offset-4">
+    <!-- Button Drop Down -->
+    <div class="control-group pull-right">
+      <div class="controls">
+        <div class="input-append">
+          <div class="btn-group">
+            <button class="btn dropdown-toggle btn-sm" data-toggle="dropdown" type="button">
+              <span id="searchByButton">Search by...</span>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="searchBy('Last Name')">Last Name</a></li>
+              <li><a href="#" onclick="searchBy('SSN')">SSN</a></li>
+            </ul>
+          </div>
+          <input id="searchBar" name="searchBar" class="input-medium" placeholder="Patient ID Search..." type="text">
+        <div class="btn-group"><button id="autofill"class="btn btn-xs btn-primary" type="button">auto fill</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

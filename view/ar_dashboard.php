@@ -116,7 +116,7 @@ if($UserType != 'AR') {
   </div>  <!-- end of Main Content -->
 </div> <!-- end of container-fluid -->
 
-<!--   TODO ADD MODALS HERE -->
+<!--  ********             Add/Edit Appointment Modal              ********* -->
   <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="AddApp" aria-hidden="true">
     <div class="modal-dialog incmodalwidth">
       <div class="modal-content">
@@ -136,6 +136,7 @@ if($UserType != 'AR') {
     
   <!-- Load scripts last, speeds up loading --> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="../model/global.js"></script>
   <script src="../model/calendar.js"></script>

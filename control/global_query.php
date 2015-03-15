@@ -117,9 +117,31 @@ function get_list_of_doctor_names_and_ids($clinic_id = null) {
     }
 }
 
-function get_patient_list() {
+/**
+ * Gets patient id, last name, first name, and SSN of all the patients. Mostly used for 
+ * javascript search bars.
+ * @return [array] array of last name to patient id mapping (tuples)
+ */
+function get_patient_id_name_ssn_map() {
+    global $db_conn;
 
+    $query = 'SELECT PatientID, Fname, Lname, SSN  FROM PATIENT';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Lname, PatientID from PATIENT: 
+             $e </p>";
+        }   
+        return "PATIENT Empty";  // error 
+    }    
 }
+
 
 // returns the last name of the patient specified by $pat_id
 function get_last_name_of_patient($pat_id) {
@@ -139,7 +161,7 @@ function get_last_name_of_patient($pat_id) {
         return pull_single_element('Lname', $result);
     } catch (Exception $e) {
         if($is_dev) {
-            echo "<p>Error retrieving APPOINTMENT: 
+            echo "<p>Error retrieving  Lname FROM PATIENT: 
              $e </p>";
         }   
         return "Patient DnE";  // error 
@@ -164,7 +186,7 @@ function get_first_name_of_patient($pat_id) {
         return pull_single_element('Fname', $result);
     } catch (Exception $e) {
         if($is_dev) {
-            echo "<p>Error retrieving APPOINTMENT: 
+            echo "<p>Error retrieving Fname FROM PATIENT: 
              $e </p>";
         }   
         return "Patient DnE";  // error 
@@ -195,8 +217,13 @@ function get_full_name_of_patient($pat_id) {
         return "Patient DnE";  // error 
     }    
 }
+/*------------------     End of Doc and Nurse Queries  -----------------------*/
 
-// Test
+
+
+
+
+//**************************    Temp Test Queries ******************************
 /*$result = get_list_of_doctor_names_and_ids();
 foreach ($result as $child) {
     print "child = <br/>";
@@ -212,6 +239,15 @@ foreach ($result as $child) {
 var_dump($result);
 */
 
+/*$result = get_patient_id_lname_ssn_map();
+foreach ($result as $child) {
+    print "child = <br/>";
+    foreach ($child as $key => $value) {
+    print $key. "=>". $value. "<br/>";
+        # code...
+    }
+    print "endOfchild <br/>";
+}*/
 
-/*------------------     End of Doc and Nurse Queries  -----------------------*/
+
 ?>
