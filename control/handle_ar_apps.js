@@ -1,4 +1,6 @@
 var availablePatSSN = new Array();
+var currAppsPerHour = new Array();
+var jsonAppsPerHour;
 var jsonPatInfo;
 var searchByCriteria = "";
 
@@ -8,7 +10,9 @@ $(document).ready(function(){
         $('input').val('');
     });
 
-
+    $(".clearFields").click(function(){
+        $('input').val('');
+    });
     $("#autofill").click(function(){
         var pat_ssn = $('#searchBar').val();
         if (pat_ssn != "") {
@@ -28,21 +32,76 @@ $(document).ready(function(){
 
 });  //-- end of document ready
 
+/*========================================
+=            Make this Global            =
+========================================*/
+
+// removes an element by id or class and all of its children
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+/*-----  End of Make this Global  ------*/
 
 
 
-// ----------------------  Adding and Deleting Appointments -------------------
+/*==============================================================================
+=                   Current Appointment Edit and Delete                        =
+==============================================================================*/
+// gets a JSON of appointments for the current hour being displayed
+function getApps(datetime) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("datetime="+ datetime);
+    jsonAppsPerHour = JSON.parse(xmlhttp.responseText);
+}
 
+function drawAppTable() {
+  var idTable = new Array('first_app', 'second_app', 'third_app');
+  var inc = 0, i = 1;
+  var tdEl;
+  // add appointments
+  for (var field in jsonAppsPerHour) {
+    document.getElementById(idTable[inc]).style.display = "";
+    console.log("in first loop idTable[" + inc + "] = " + idTable[inc]);
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].PatientID;
+    i += 2;
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].Fname;
+    i += 2;
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].Lname;
+    i += 2;
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].DocFullName;
+    i += 2;
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].EmployeeID;
+    inc += 1;
+    i = 1;
+  }
+  if (inc < 3) {                             // have all table rows been filled?
+      for (var i = 2;i >= inc; i--) {
+        document.getElementById(idTable[i]).style.display = "none";
+      }
+  }
+}
 
+/*------------   End of Current Appointment Edit and Delete    ---------------*/
+/*==============================================================================
+=                         Adding  Appointments                                 =
+==============================================================================*/
 // Recieves a Date object
 // binded to each active hour in the calendar
 function passAppTime(yr, mnth, day, time, numOfApps) {
-  console.log("passed year =" + yr);
-  console.log("passed month =" + mnth);
-  console.log("passed day =" + day);
-  console.log("passed time = " + time);
-  console.log("passed apps = " + numOfApps);
-
 
   // Display date and time in app_form
   var appDate = new Date(yr, mnth, day, time);
@@ -60,6 +119,9 @@ function passAppTime(yr, mnth, day, time, numOfApps) {
   }
 
   getPatients();  // populate patient arrays for searching (see arrays at top)
+  console.log(appDates);
+  getApps(appDates);  // get the appointments belonging to this hour
+  drawAppTable();     // draw current appointments table into app modal
 }
 
 function docIdSelect(docID) {
@@ -76,8 +138,6 @@ function autoFillAppForm(pat_ssn) {
       }
     }
 }
-
-
 // gets a JSON of all patient ID, Lname, and SSN. For searching
 function getPatients() {
     var xmlhttp = new XMLHttpRequest();
@@ -86,7 +146,6 @@ function getPatients() {
     xmlhttp.send("patreq="+"patreq");
     localjsonPatInfo = JSON.parse(xmlhttp.responseText);
     jsonPatInfo = localjsonPatInfo;
-    console.dir(jsonPatInfo);
     fillSearchArrays(localjsonPatInfo);
 }
 
@@ -97,4 +156,9 @@ function fillSearchArrays(jsonPatInfo) {
     availablePatSSN[inc] = jsonPatInfo[i].SSN;
     inc += 1;
   }
+
+/*--------------------  End of Adding  Appointments  -------------------------*/
+
+
+
 }

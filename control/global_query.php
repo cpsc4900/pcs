@@ -217,6 +217,52 @@ function get_full_name_of_patient($pat_id) {
         return "Patient DnE";  // error 
     }    
 }
+
+/**
+ * Returns an array of appointments per hour in the following format:
+ *
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ * | PatientID | Lname    | Fname | DocFullName  | EmployeeID | AppTime             | AppointmentID |
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ * |         3 | Columbus | Chris | the Doc, Doc |          3 | 2015-03-02 10:00:00 |           103 |
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ *                                     ^
+ *                                     |
+ *                                     Doctors full name as one field
+ *                                        
+ * @param  [string] $datetime formatted datetime 
+ * 
+ */
+function get_apps_per_datetime($datetime) {
+    global $db_conn;
+    if ($datetime == null) {
+        return "No DateTime supplied";
+    }
+    $query = 'SELECT pat.PatientID, pat.Lname, pat.Fname, 
+              CONCAT_WS(\', \', doc.Lname, doc.Fname) AS DocFullName, doc.EmployeeID,
+              app.AppTime, app.AppointmentID 
+              FROM PATIENT pat 
+              INNER JOIN APPOINTMENT app 
+              ON app.AppTime = ? AND app.PatientID = pat.PatientID 
+              INNER JOIN EMPLOYEE doc ON app.AppTime = ? 
+              AND app.EmployeeID = doc.EmployeeID';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $datetime);
+        $statement->bindValue( 2 , $datetime);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving APPOINTMENT: 
+             $e </p>";
+        } 
+        return "Patient DnE";  // error 
+    }    
+}
 /*------------------     End of Doc and Nurse Queries  -----------------------*/
 
 
@@ -249,5 +295,13 @@ foreach ($result as $child) {
     print "endOfchild <br/>";
 }*/
 
+/*$result = get_apps_per_datetime("2015-03-04 10:00:00");
+foreach ($result as $child) {
+    print "child = <br/>";
+    foreach ($child as $key => $value) {
+        print $key. "=>". $value. "<br/>";
+    }
+    print "endOfchild <br/>";
+}*/
 
 ?>

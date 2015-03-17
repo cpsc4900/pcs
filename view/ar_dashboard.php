@@ -100,13 +100,9 @@ if($UserType != 'AR') {
         <!-- *************          End Calendar          ****************** -->
 
         <!-- *************      Patient Records View      ****************** -->
-
         <div class="tab-pane fade" id="patient_rec">
-          Add patient identity records here
-          <div class="btn-group" role="mygroup">
-            <button type = "button" id="mybutton">Get External Content</button>
-          </div>
-          <p id="change">This is a paragraph with little content.</p>
+           
+        <?php include "../model/ar_new_pat_id_record.php"; ?>
         </div>
         <!-- *************    End Patient Records View      ****************** -->
       </div>
@@ -116,19 +112,22 @@ if($UserType != 'AR') {
   </div>  <!-- end of Main Content -->
 </div> <!-- end of container-fluid -->
 
+
+
 <!--  ********             Add/Edit Appointment Modal              ********* -->
   <div class="modal fade" id="addApp" tabindex="-1" role="dialog" aria-labelledby="AddApp" aria-hidden="true">
     <div class="modal-dialog incmodalwidth">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close clearFields" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <center><h3 class="modal-title" id="AddApp">Appointment Details</h3></center>
         </div>
         <div class="modal-body">
-          <?php include "../model/app_form.php" ?>
+          <?php include "../model/app_form.php"; ?>
+          <?php include "../model/ar_app_table.php"; ?>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default clearFields" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

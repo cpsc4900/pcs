@@ -10,7 +10,13 @@ if (isset($_POST['patreq']) && ($_POST['patreq'] == 'patreq'))  {
 } else if (isset($_POST['getPatName'])) {  // called from handle_ar_apps.js
     $pat_id = $_POST['getPatName'];
     echo json_encode(get_full_name_of_patient($pat_id));
+} else if (isset($_POST['datetime'])) {     // request all appointments for current hour
+    $datetime = $_POST['datetime'];
+    $apps_per_hour = get_apps_per_datetime($datetime);
+    echo json_encode($apps_per_hour);
 } else {
-    // do nothing
+
 }
+
+?>
 
