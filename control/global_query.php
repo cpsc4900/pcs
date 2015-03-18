@@ -2,6 +2,7 @@
 session_start();
 include "db_connect.php";
 include "../model/date_formatter.php";
+include "../model/num_gen.php";
 
 /*=============================================================================
 =                         Global Formatting                                   =
@@ -77,12 +78,181 @@ function get_weekly_appointments($year, $month, $week) {
  */
 function get_apps_per_time_span($year, $month, $begin_date, $end_date) {
     global $db_conn;
+    
 }
 
+/**
+ * Gets the address id specified by the supplied fields
+ * @param  [string] $street the street address
+ * @param  [string] $city   the city
+ * @param  [string] $state  the state
+ * @param  [int] $zip       the zip code
+ * @return [string]         the address id of the found address, if no address
+ *                          is found, returns 0. 
+ */
+function get_address_id($street, $city, $state, $zip) {
+    global $db_conn;
+    $query = 'SELECT AddressID FROM ADDRESS WHERE 
+              Street = ? AND City = ? AND State = ? AND Zip = ?';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $street);
+        $statement->bindValue( 2 , $city);
+        $statement->bindValue( 3 , $state);
+        $statement->bindValue( 4 , $zip);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        $result = pull_single_element('AddressID', $result);
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving APPOINTMENT: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }    
+}
+
+/**
+ * Sets a new address record into the ADDRESS table.  Returns the AddressID of
+ * the newly created address. If failure, returns zero.
+ * @param [type] $stAdd [description]
+ * @param [type] $city  [description]
+ * @param [type] $state [description]
+ * @param [type] $zip   [description]
+ */
+function set_new_address($stAdd, $city, $state, $zip) {
+    global $db_conn;
+
+    $query = 'INSERT INTO ADDRESS (Street, City, State, Zip)
+              VALUES(?, ?, ?, ?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $stAdd);
+        $statement->bindValue( 2 , $city);
+        $statement->bindValue( 3 , $state);
+        $statement->bindValue( 4 , $zip);
+        $statement->execute();
+        $statement->closeCursor();
+        return $list_of_docs;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error inseting Address: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    } 
+}
+
+/**
+ * Creates a new Patient along with a new address belonging to the patient
+ * @param [string] $fname     
+ * @param [string] $lastName  
+ * @param [string] $patSSN    
+ * @param [string] $phoneNum  todo add a phone number field to the PATIENT table 
+ * @param [string] $genderChk 
+ * @param [string] $patBday   
+ * @param [string] $patStAdd  
+ * @param [string] $patCity   
+ * @param [string] $patZip    
+ * @param [string] $patState  
+ */
+function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk, 
+                            $patBday, $patStAdd, $patCity, $patState, $patZip) {
+    global $db_conn;
+
+    // add new address, and get the addressID
+    set_new_address($patStAdd, $patCity, $patState, $patZip);
+    $addId = get_address_id($patStAdd, $patCity, $patState, $patZip);
+
+    // generate a random alphanumeric value for the patient num
+    $patNum = gen_ran_patient_num();
+    print '$patNum = '. $fname. "<br/>";
+    print '$patNum = '. $lastName. "<br/>";
+    print '$patNum = '. $patSSN. "<br/>";
+    print '$patNum = '. $patBday. "<br/>";
+    print '$patNum = '. $genderChk. "<br/>";
+    print '$patNum = '. $addId. "<br/>";
+    print '$patNum = '. $patNum. "<br/>";
+
+    $query = 'INSERT INTO PATIENT (Fname, Lname, SSN, Birthdate, Sex, AddressID,
+              PatientNum)
+              VALUES(?, ?, ?, ?, ?, ?, ?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $fname);
+        $statement->bindValue( 2 , $lastName);
+        $statement->bindValue( 3 , $patSSN);
+        $statement->bindValue( 4 , $patBday);
+        $statement->bindValue( 5 , $genderChk);
+        $statement->bindValue( 6 , $addId);
+        $statement->bindValue( 7 , $patNum);
+        $statement->execute();
+        $statement->closeCursor();
+        return 1;   // TODO Return new patient ID for adding new appointment
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error inseting Address: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    } 
+}
+
+/**
+ * Returns an array of appointments per hour in the following format:
+ *
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ * | PatientID | Lname    | Fname | DocFullName  | EmployeeID | AppTime             | AppointmentID |
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ * |         3 | Columbus | Chris | the Doc, Doc |          3 | 2015-03-02 10:00:00 |           103 |
+ * +-----------+----------+-------+--------------+------------+---------------------+---------------+
+ *                                     ^
+ *                                     |
+ *                                     Doctors full name as one field
+ *                                        
+ * @param  [string] $datetime formatted datetime 
+ * 
+ */
+function get_apps_per_datetime($datetime) {
+    global $db_conn;
+    if ($datetime == null) {
+        return "No DateTime supplied";
+    }
+    $query = 'SELECT pat.PatientID, pat.Lname, pat.Fname, 
+              CONCAT_WS(\', \', doc.Lname, doc.Fname) AS DocFullName, doc.EmployeeID,
+              app.AppTime, app.AppointmentID 
+              FROM PATIENT pat 
+              INNER JOIN APPOINTMENT app 
+              ON app.AppTime = ? AND app.PatientID = pat.PatientID 
+              INNER JOIN EMPLOYEE doc ON app.AppTime = ? 
+              AND app.EmployeeID = doc.EmployeeID';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $datetime);
+        $statement->bindValue( 2 , $datetime);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving APPOINTMENT: 
+             $e </p>";
+        } 
+        return "Patient DnE";  // error 
+    }    
+}
 /*------------------     End of Appointment Queries  -------------------------*/
 
+
 /*==============================================================================
-=                      Doctor and Nurse Related Queries                        =
+=                      Doctor and Nurse Related  Get Queries                   =
 ==============================================================================*/
 
 /**
@@ -218,51 +388,6 @@ function get_full_name_of_patient($pat_id) {
     }    
 }
 
-/**
- * Returns an array of appointments per hour in the following format:
- *
- * +-----------+----------+-------+--------------+------------+---------------------+---------------+
- * | PatientID | Lname    | Fname | DocFullName  | EmployeeID | AppTime             | AppointmentID |
- * +-----------+----------+-------+--------------+------------+---------------------+---------------+
- * |         3 | Columbus | Chris | the Doc, Doc |          3 | 2015-03-02 10:00:00 |           103 |
- * +-----------+----------+-------+--------------+------------+---------------------+---------------+
- *                                     ^
- *                                     |
- *                                     Doctors full name as one field
- *                                        
- * @param  [string] $datetime formatted datetime 
- * 
- */
-function get_apps_per_datetime($datetime) {
-    global $db_conn;
-    if ($datetime == null) {
-        return "No DateTime supplied";
-    }
-    $query = 'SELECT pat.PatientID, pat.Lname, pat.Fname, 
-              CONCAT_WS(\', \', doc.Lname, doc.Fname) AS DocFullName, doc.EmployeeID,
-              app.AppTime, app.AppointmentID 
-              FROM PATIENT pat 
-              INNER JOIN APPOINTMENT app 
-              ON app.AppTime = ? AND app.PatientID = pat.PatientID 
-              INNER JOIN EMPLOYEE doc ON app.AppTime = ? 
-              AND app.EmployeeID = doc.EmployeeID';
-
-    try {
-        $statement = $db_conn->prepare($query);
-        $statement->bindValue( 1 , $datetime);
-        $statement->bindValue( 2 , $datetime);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $statement->closeCursor();
-        return helper_filter_result($result);
-    } catch (Exception $e) {
-        if($is_dev) {
-            echo "<p>Error retrieving APPOINTMENT: 
-             $e </p>";
-        } 
-        return "Patient DnE";  // error 
-    }    
-}
 /*------------------     End of Doc and Nurse Queries  -----------------------*/
 
 
@@ -304,4 +429,17 @@ foreach ($result as $child) {
     print "endOfchild <br/>";
 }*/
 
+/*
+$result = get_address_id('4019 Lost Oak Drive', 'Ooltewah', 'TN', '37363');
+print $result;
+
+$result = get_address_id("753 Easy Way", "Chattanooga", "TN",  "37421");
+print $result;
+*/
+
+
+/*$result = set_new_pat_record("Bob", "Hope", "8887774646", "1236545555", "male",
+                            "1982-12-23", "4545 Cummings Hwy", "Roanoke", "VA", "45685");
+
+print $result;*/
 ?>

@@ -2,13 +2,15 @@
 
 ?>
 <div class="row" id="spacer"></div>                <!-- Row Spacer -->
-<div class="row">
+
+<!-- Search bar for Patient Records -->
+<div class="row">                        
   <div class="col-sm-8 col-sm-offset-4">
     <div class="control-group pull-right">
       <div class="controls">
         <div class="input-append">
           <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" 
+            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" 
                data-toggle="dropdown">
                Primary <span class="caret"></span>
             </button>
@@ -20,94 +22,130 @@
                <li><a href="#">Separated link</a></li>
             </ul>
           </div>
-          <label class="control-label" for="searchForPatient">Search for Patient Records:</label>
+          <label class="control-label" for="searchForPatient">
+            Search for Patient Records:
+          </label>
           <input id="searchForPatient" name="searchForPatient" class="input-medium" placeholder="Enter Patient Criteria" type="text">
           
         </div>
       </div>
     </div>
   </div>
+</div>                               <!-- End Search bar for Patient Records -->
+
+<div class="row" id="spacer"></div>                <!-- Row Spacer -->
+
+<div class="panel panel-info"> <!-- Add New Patient Record Form/Panel -->
+<div class="panel-heading">Add New Patient Record</div>
+<div class="panel-body">
+    
+  <form class="form-horizontal" role="form" action="../control/handle_new_pat_rec.php"
+          method="post">
+    
+      <!-- Patien First/Last Name input-->
+      <div class="row">
+          <div class="form-group">
+            <div class="col-sm-2">
+              <label class="control-label label-sm" for="firstName">First Name:</label>
+            </div>
+            <div class="col-sm-4">
+              <input id="firstName" name="firstName" placeholder="name" class="form-control input-sm" type="text" required="">
+            </div>
+            <div class="col-sm-2">
+              <!-- Patien Last Name input-->
+              <label class="control-label label-sm" for="lastName">Last Name:</label>
+            </div>
+            <div class="col-sm-4">
+              <input id="lastName" name="lastName" placeholder="name" class="form-control input-sm" type="text" required="">
+            </div>
+          </div>
+      </div>
+
+      <!-- Patient SSN/BDay input-->
+      <div class="row">
+        <div class="form-group">
+          <div class="col-sm-2">
+            <label class="control-label label-sm" for="patSSN">SSN:</label>
+          </div>
+          <div class="col-sm-4">
+              <input id="patSSN" name="patSSN" placeholder="##########" class="form-control input-sm" type="text" required="">
+          </div>
+          <div class="col-sm-2"><!-- Patient Birthday -->
+            <label class="control-label label-sm" for="patBday">Birthday:</label>
+          </div>
+          <div class="col-sm-4">
+              <input id="patBday" name="patBday" placeholder="YYYY-MM-DD" class="form-control input-sm" type="text" required="">
+          </div>
+        </div>
+      </div>
+
+      <!-- Patient Gender/Phone Number -->
+      <div class="row">
+        <div class="form-group">
+          <div class="col-sm-4">
+            <label class="control-label label-sm" for="genderChk">Gender:</label>
+            <div class="btn-group">
+              <label class ="label-sm" >
+                <input type="radio" id="maleChk" name="genderChk" checked="checked" value="male" />Male
+              </label> 
+              <label class ="label-sm">
+                <input type="radio" id="femaleChk" name="genderChk"  value="female" />Female
+              </label> 
+            </div>      
+          </div>
+          <div class="col-sm-2 col-sm-offset-2"> <!-- Phone Number -->
+            <label class="control-label label-sm" for="phoneNum">Phone #:</label>
+          </div>
+          <div class="col-sm-4"> <!-- Phone Number -->
+            <input id="phoneNum" name="phoneNum" placeholder="##########" class="form-control input-sm" type="text" required="">
+          </div>
+        </div>
+    </div>
+
+    <!-- Street Address| City -->
+    <div class="row">
+      <div class="form-group">
+        <div class="col-sm-2"> <!-- Street Address -->
+          <label class="control-label label-sm" for="patStAdd">Street Address:</label>
+        </div>
+        <div class="col-sm-4">
+          <input id="patStAdd" name="patStAdd" placeholder="Address" class="form-control input-sm" type="text" required="">
+        </div>
+        <div class="col-sm-2"><!-- City -->
+          <label class="control-label label-sm" for="patCity">City:</label>
+        </div>
+        <div class="col-sm-4">
+          <input id="patCity" name="patCity" placeholder="city" class="form-control input-sm" type="text" required="">
+        </div>
+      </div>
+    </div>
+
+    <!-- State|Zip -->
+    <div class="row">
+      <div class="form-group">
+        <div class="col-sm-2"><!-- State -->
+          <label class="control-label label-sm" for="patState">State:</label>
+        </div>
+        <div class="col-sm-4">  
+          <input id="patState" name="patState" placeholder="state" class="form-control input-sm" type="text" required="">
+        </div>
+        <div class="col-sm-2"><!-- Zip -->
+          <label class="control-label label-sm" for="patZip">ZIP:</label>
+        </div>
+        <div class="col-sm-4">  
+          <input id="patZip" name="patZip" placeholder="#####" class="form-control input-sm" type="text" required="">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Buttons Submit and Cancel -->
+    <div class="form-group pull-right">
+      <div class="controls form-inline">
+        <button id="submit" name="submit" class="btn btn-success btn-sm">Submit</button>
+        <button id="formCancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
+      </div>
+    </div>
+    
+  </form>
+  </div>
 </div>
-
-<form class="form-horizontal" role="form" action="../control/handle_apps.php"
-        method="post">
-  
-  <!-- Form Name -->
-  <legend>Add New Appointment</legend>
-  
-  <!-- Patien First Name input-->
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="firstName">First Name:</label>
-    <div class="col-sm-4">
-      <input id="firstName" name="firstName" placeholder="name" class="form-control input-medium" type="text" required="">
-    </div>
-  </div>
-  <!-- Patien Last Name input-->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="lastName">Patient's Last Name:</label>
-      <input id="lastName" name="lastName" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- Patient SSN input-->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patSSN">Patient's SSN:</label>
-      <input id="patSSN" name="patSSN" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- Patient Birthday -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patBday">Patient's Birthday:</label>
-      <input id="patBday" name="patBday" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- Patient Gender -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patGender">Patient's Birthday:</label>
-      <input id="patGender" name="patGender" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-
-  <!-- Street Address -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patStAdd">Street Address:</label>
-      <input id="patStAdd" name="patStAdd" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- City -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patCity">City:</label>
-      <input id="patCity" name="patCity" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- State -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patState">State:</label>
-      <input id="patState" name="patState" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  <!-- ZIP -->
-  <div class="form-group">
-    <div class="controls">
-    <label class="control-label" for="patZip">ZIP:</label>
-      <input id="patZip" name="patZip" placeholder="name" class="input-medium" type="text">
-    </div>
-  </div>
-  
-
-  
-  <!-- Buttons Submit and Cancel -->
-  <div class="form-group pull-right">
-    <div class="controls form-inline">
-      <button id="submit" name="submit" class="btn btn-success btn-sm">Submit</button>
-      <button id="formCancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
-    </div>
-  </div>
-  
-</form>

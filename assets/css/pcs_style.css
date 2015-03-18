@@ -84,3 +84,8 @@ table.app-table {
 button.delApp {
   font-size: 9px;
 }
+
+.label-sm {
+  font-size: 14px;
+  color:#4E7BB1;
+}

@@ -101,8 +101,7 @@ if($UserType != 'AR') {
 
         <!-- *************      Patient Records View      ****************** -->
         <div class="tab-pane fade" id="patient_rec">
-           
-        <?php include "../model/ar_new_pat_id_record.php"; ?>
+          <?php include "../model/ar_new_pat_id_record.php"; ?>
         </div>
         <!-- *************    End Patient Records View      ****************** -->
       </div>

@@ -138,11 +138,17 @@ function set_new_app($date_time, $pat_id, $doc_id) {
 	}
 }
 
+/*==========================================================
+=            Handle New Appointment                       =
+==========================================================*/
 if (isset($_POST['pat_id']) && isset($_POST['doc_id']) && isset($_POST['appDate'])) {
 	set_new_app($_POST['appDate'],$_POST['pat_id'], $_POST['doc_id']);
 	header("Location: ../view/ar_dashboard.php");    // Back to AR Dashboard
     exit();
 }
+/*-----  End of Handle New Appointment  ------*/
+
+
 /**
  * TEMP TEST AREA::::::
  */

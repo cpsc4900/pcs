@@ -34,6 +34,11 @@ include_once "control/global.php";
 <body>
 <div class="container-fluid">
 
+  <div class="page-header">
+     <h1>Patient Care System 
+     </h1>
+  </div>
+
   <div class="row" id="spacer"></div>  <!-- Row Spacer -->
   <div class="row"> <!-- main row -->
     <div class="col-sm-3"></div>
