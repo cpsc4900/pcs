@@ -3,6 +3,7 @@ var currAppsPerHour = new Array();
 var jsonAppsPerHour;
 var jsonPatInfo;
 var searchByCriteria = "";
+var thisDateTime ="";
 
 $(document).ready(function(){
     // Clears fields in the New Appointment form (app_form.php)
@@ -28,6 +29,13 @@ $(document).ready(function(){
         source: availablePatSSN
     });
     $( "#searchBar" ).autocomplete( "option", "appendTo", ".eventInsForm" );
+
+    // bind: deleting appointment from current appointment table
+    $('.delApp').click(function() {
+      var this_app_entry = $(this).parent().parent();
+      var appointment_id = this_app_entry.find('#app_id');
+      removeAndUpdateAppTable(appointment_id.html());
+    });
     
 
 });  //-- end of document ready
@@ -56,6 +64,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 ==============================================================================*/
 // gets a JSON of appointments for the current hour being displayed
 function getApps(datetime) {
+    thisDateTime = datetime;            // update datetime for refreshing
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -63,6 +72,7 @@ function getApps(datetime) {
     jsonAppsPerHour = JSON.parse(xmlhttp.responseText);
 }
 
+// draws the appointment table.  Must be redrawn on app removal
 function drawAppTable() {
   var idTable = new Array('first_app', 'second_app', 'third_app');
   var inc = 0, i = 1;
@@ -85,6 +95,10 @@ function drawAppTable() {
     i += 2;
     document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
               jsonAppsPerHour[field].EmployeeID;
+    i += 2;
+    document.getElementById(idTable[inc]).childNodes[i].innerHTML = 
+              jsonAppsPerHour[field].AppointmentID;
+    
     inc += 1;
     i = 1;
   }
@@ -93,6 +107,31 @@ function drawAppTable() {
         document.getElementById(idTable[i]).style.display = "none";
       }
   }
+}
+
+// removes an appointment from both the database and the website
+function removeAndUpdateAppTable(app_id) {
+
+  var result = removeAppFromDatabase(app_id);
+  console.log("result = " + result);
+  alert("Appointment has been removed");
+  if (result == "success") {
+  }
+  if (result == "failed") {
+    alert("Unable to remove the appointment");
+  }
+  getApps(thisDateTime);            // redraw table
+  drawAppTable();
+}
+
+// removes app from database, returns "success" or  "failed"
+function removeAppFromDatabase(app_id) {
+  console.log("removeAppFrom(app_id) =" + app_id);
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xmlhttp.send("removeApp="+ app_id);
+  return xmlhttp.responseText;
 }
 
 /*------------   End of Current Appointment Edit and Delete    ---------------*/
@@ -119,7 +158,6 @@ function passAppTime(yr, mnth, day, time, numOfApps) {
   }
 
   getPatients();  // populate patient arrays for searching (see arrays at top)
-  console.log(appDates);
   getApps(appDates);  // get the appointments belonging to this hour
   drawAppTable();     // draw current appointments table into app modal
 }
@@ -156,9 +194,11 @@ function fillSearchArrays(jsonPatInfo) {
     availablePatSSN[inc] = jsonPatInfo[i].SSN;
     inc += 1;
   }
+}
+
+
 
 /*--------------------  End of Adding  Appointments  -------------------------*/
 
 
 
-}

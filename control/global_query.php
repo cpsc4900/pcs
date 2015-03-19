@@ -240,6 +240,34 @@ function get_apps_per_datetime($datetime) {
         return "Patient DnE";  // error 
     }    
 }
+
+/**
+ * Removes an appointment. Returns 1 for success, otherwise returns 0
+ * @param  [type] $app_id [description]
+ * @return [type]         [description]
+ */
+function remove_app($app_id) {
+    global $db_conn;
+    if ($app_id == null) {
+        return 0;
+    }
+    $query = 'delete from APPOINTMENT where AppointmentID = ?';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $app_id);
+        $statement->execute();
+        $statement->closeCursor();
+        return 1;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error deleting APPOINTMENT: 
+             $e </p>";
+        } 
+        return 0;  // error 
+    }    
+
+}
 /*------------------     End of Appointment Queries  -------------------------*/
 
 

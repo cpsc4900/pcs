@@ -14,8 +14,17 @@ if (isset($_POST['patreq']) && ($_POST['patreq'] == 'patreq'))  {
     $datetime = $_POST['datetime'];
     $apps_per_hour = get_apps_per_datetime($datetime);
     echo json_encode($apps_per_hour);
-} else {
+} else if (isset($_POST['removeApp'])) {
+	$remove_app = $_POST['removeApp'];
+	$result = remove_app($remove_app);
+	if ($result == 1) {  // success
+		echo "success";
+	} else {
+		echo "failed";
+	}
 
+} else {
+	// Do nothing, empty POST call: TODO redirect to PermissionDenied, kill session
 }
 
 ?>

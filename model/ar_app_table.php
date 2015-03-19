@@ -20,6 +20,7 @@
         <td id="pat_last_name">Placeholder</td>
         <td id="att_doc">Placeholder</td>
         <td id="att_doc_id">Placeholder</td>
+        <td id="app_id" hidden></td>
         <td><button id="delFirstApp" type="button" class="btn btn-danger btn-xs delApp">
             Delete</button>
         </td>
@@ -30,6 +31,7 @@
         <td id="pat_last_name">Placeholder</td>
         <td id="att_doc">Placeholder</td>
         <td id="att_doc_id">Placeholder</td>
+        <td id="app_id" hidden></td>
         <td><button id="delSecondApp" type="button" class="btn btn-danger btn-xs delApp">
             Delete</button>
         </td>
@@ -40,7 +42,9 @@
         <td id="pat_last_name">Placeholder</td>
         <td id="att_doc">Placeholder</td>
         <td id="att_doc_id">Placeholder</td>
-        <td><button id="delThirdApp" type="button" class="btn btn-danger btn-xs delApp">
+        <td id="app_id" hidden></td>
+        <td>
+            <button id="delThirdApp" type="button" class="btn btn-danger btn-xs delApp">
             Delete</button>
         </td>
       </tr>
