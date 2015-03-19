@@ -14,7 +14,7 @@ if (isset($_POST['firstName']) && isset($_POST['lastName'])  && isset($_POST['pa
     $lastName = $_POST['lastName']; 
     $patSSN = $_POST['patSSN']; 
     $phoneNum = $_POST['phoneNum']; 
-    $genderChk = $_POST['genderChk']; 
+    $gender = $_POST['genderChk'];
     $patBday = $_POST['patBday']; 
     $patStAdd = $_POST['patStAdd']; 
     $patCity = $_POST['patCity']; 
@@ -22,13 +22,17 @@ if (isset($_POST['firstName']) && isset($_POST['lastName'])  && isset($_POST['pa
     $patZip = $_POST['patZip']; 
 
     // Add the new patient record and address to the pcs_db
-    set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk, 
-                       $patBday, $patStAdd, $patCity, $patState, $patZip);
+    $result = set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $gender, 
+                                 $patBday, $patStAdd, $patCity, $patState, $patZip);
+
+    if ($result == 1) {                // a returned one means the new
+        echo "success";                // patient record and address where added
+    }
 } else {
+    echo "error_empty";
     
 }
 
-
-
-
+exit();
 ?>
+

@@ -140,6 +140,8 @@ if($UserType != 'AR') {
   <script src="../model/calendar.js"></script>
   <script src="../control/handle_calendar.js"></script>
   <script src="../control/handle_ar_apps.js"></script>
+  <script src="../control/handle_new_pat_rec.js"></script>
+
 </body>
 
 </html>

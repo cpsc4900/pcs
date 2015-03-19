@@ -170,18 +170,10 @@ function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk,
 
     // generate a random alphanumeric value for the patient num
     $patNum = gen_ran_patient_num();
-    print '$patNum = '. $fname. "<br/>";
-    print '$patNum = '. $lastName. "<br/>";
-    print '$patNum = '. $patSSN. "<br/>";
-    print '$patNum = '. $patBday. "<br/>";
-    print '$patNum = '. $genderChk. "<br/>";
-    print '$patNum = '. $addId. "<br/>";
-    print '$patNum = '. $patNum. "<br/>";
 
     $query = 'INSERT INTO PATIENT (Fname, Lname, SSN, Birthdate, Sex, AddressID,
               PatientNum)
               VALUES(?, ?, ?, ?, ?, ?, ?)';
-
     try {
         $statement = $db_conn->prepare($query);
         $statement->bindValue( 1 , $fname);

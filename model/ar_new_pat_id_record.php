@@ -33,14 +33,13 @@
   </div>
 </div>                               <!-- End Search bar for Patient Records -->
 
-<div class="row" id="spacer"></div>                <!-- Row Spacer -->
+<div class="row" id="spacer"></div>                          <!-- Row Spacer -->
 
-<div class="panel panel-info"> <!-- Add New Patient Record Form/Panel -->
+<div class="panel panel-info" id="new_pat_rec">   <!-- Add New Patient Record Form/Panel -->
 <div class="panel-heading">Add New Patient Record</div>
 <div class="panel-body">
     
-  <form class="form-horizontal" role="form" action="../control/handle_new_pat_rec.php"
-          method="post">
+  <div class="form-horizontal">
     
       <!-- Patien First/Last Name input-->
       <div class="row">
@@ -74,7 +73,7 @@
             <label class="control-label label-sm" for="patBday">Birthday:</label>
           </div>
           <div class="col-sm-4">
-              <input id="patBday" name="patBday" placeholder="YYYY-MM-DD" class="form-control input-sm" type="text" required="">
+              <input id="patBday" name="patBday" placeholder="YYYY-MM-DD" class="form-control input-sm" type="date" required="">
           </div>
         </div>
       </div>
@@ -141,11 +140,10 @@
     <!-- Buttons Submit and Cancel -->
     <div class="form-group pull-right">
       <div class="controls form-inline">
-        <button id="submit" name="submit" class="btn btn-success btn-sm">Submit</button>
+        <button id="submit" onclick="handle_new_pat_record()"class="btn btn-success btn-sm">Submit</button>
         <button id="formCancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
       </div>
     </div>
-    
-  </form>
+    </div>
   </div>
 </div>
