@@ -347,6 +347,21 @@ function make_query_pat_primary_by_patid($value) {
     return $statement;
 }
 
+/**
+ * Updates a Patient's Primary Record.
+ * @param  [string] $patid    [description]
+ * @param  [string] $fname    [description]
+ * @param  [string] $lname    [description]
+ * @param  [string] $ssn      [description]
+ * @param  [string] $bday     [description]
+ * @param  [string] $phoneNum [description]
+ * @param  [string] $gender   [description]
+ * @param  [string] $street   [description]
+ * @param  [string] $city     [description]
+ * @param  [string] $state    [description]
+ * @param  [string] $zip      [description]
+ * @return Returns non-zero value upon success, otherwise returns zero
+ */
 function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum, 
                                            $gender, $street, $city, $state, $zip) {
     global $db_conn;
@@ -525,6 +540,20 @@ function get_full_name_of_patient($pat_id) {
 
 /*------------------     End of Doc and Nurse Queries  -----------------------*/
 
+/*==============================================================================
+=                      Medical Record Related Queries                          =
+==============================================================================*/
+
+function get_allergy_records_by_id($pat_id) {
+
+}
+
+function get_treatments_records_by_id($pat_id) {
+
+}
+
+
+/*------------------     End of Medical Record Queries  -----------------------*/
 
 
 

@@ -2,9 +2,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- -----------------------------------------------------
--- Schema pcs_db
--- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `pcs_db` ;
 CREATE SCHEMA IF NOT EXISTS `pcs_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 SHOW WARNINGS;
@@ -40,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `pcs_db`.`PATIENT` (
   `Lname` VARCHAR(45) NOT NULL,
   `SSN` BIGINT NOT NULL,
   `Birthdate` DATE NOT NULL,
-  `Sex` SET('male','female') NOT NULL,
+  `Sex` VARCHAR(6) NOT NULL,
   `isSectioned` TINYINT(1) NOT NULL DEFAULT 0,
   `AddressID` INT NOT NULL,
   `PatientNum` VARCHAR(6) NOT NULL,
@@ -226,12 +223,19 @@ DROP TABLE IF EXISTS `pcs_db`.`TREATMENT` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `pcs_db`.`TREATMENT` (
   `TreatmentID` INT NOT NULL AUTO_INCREMENT,
-  `Diagnosis` TINYTEXT NOT NULL,
+  `Treats` TINYTEXT NOT NULL,
   `Description` TEXT NOT NULL COMMENT 'Description of the treatment',
   `Duration` VARCHAR(45) NOT NULL COMMENT 'Duration of the treatment',
   `Ongoing?` TINYINT(1) NOT NULL COMMENT 'Is it an ongoing treatment?',
   `DateDiagnosed` DATE NULL,
-  PRIMARY KEY (`TreatmentID`))
+  `EmployeeID` INT NOT NULL,
+  PRIMARY KEY (`TreatmentID`),
+  INDEX `fk_EmployeeId_idx` (`EmployeeID` ASC),
+  CONSTRAINT `fk_EmployeeId`
+    FOREIGN KEY (`EmployeeID`)
+    REFERENCES `pcs_db`.`EMPLOYEE` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
