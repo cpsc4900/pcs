@@ -1,3 +1,14 @@
+/**
+ * Handles the creation of a new primary patient record.  New primary patient
+ * records include F & L nmae, SSN, phone number, gender, Bday, and Address info.
+ * The creation of a new primary record is handled by handle_new_pat_rec.php
+ * via ajax.
+ */
+
+/*=================================
+=            Variables            =
+=================================*/
+
 var firstName = "";
 var lastName = "";
 var patSSN = "";
@@ -19,7 +30,13 @@ var doc_patStAdd;
 var doc_patCity;
 var doc_patState;
 var doc_patZip;
+/*-----  End of Variables  ------*/
 
+/*=================================================
+=            Handle New Patient Record            =
+=================================================*/
+
+// Add listener
 document.getElementById("new_pat_rec")
       .addEventListener("load", patient_record_bind_values());
 
@@ -73,7 +90,8 @@ function set_new_pat_record() {
                    patCity +'&patState=' + patState +'&patZip=' + patZip);
 
     var response = xmlhttp.responseText;
-
+    response = response.trim();
+    console.log(response);
     if (response == "success") {
         alert("New Patient Record Added");
     } else if (response == "error_empty") { 
@@ -81,7 +99,7 @@ function set_new_pat_record() {
     }
 }
 
-// main call. Called from the form itself
+// main call. Called from the form itself (the submit button)
 function handle_new_pat_record() {
     doc_firstName.setAttribute("class", "form-control input-sm success");
     get_values();
@@ -103,3 +121,13 @@ function print_vars() {
     console.log(patZip);
 }
 
+
+
+
+
+
+// Getting inner html
+/*    $('#searchBy').children().click(function() {
+        var searchValue = $(this).children().html();
+        console.log($(this).children().html());
+        console.log(searchValue);*/
