@@ -31,8 +31,6 @@ $(document).ready(function(){  // bind on page load
     $('#pat_table_search_close').click(function() {
         $('#pat_table_search_results').slideUp();
     });
-
-
 });
 
 /*===========================================================
@@ -53,12 +51,12 @@ function patientRecordSearch(value) {
     if (searchType =="") {
         alert("Please select the appropiate \"Search By\" criteria");
     }
-    getSearchResults(searchType, value);
+    queryForPrimaryRecords(searchType, value);
     drawSearchResultsTable();
 }
 
 // gets a JSON of matched search
-function getSearchResults(criteria, value) {
+function queryForPrimaryRecords(criteria, value) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "http://pcs/control/handle_edit_pat_rec.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");

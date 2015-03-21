@@ -18,7 +18,7 @@ if($UserType != 'MRS') {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AR Dashboard</title>
+  <title>MRS Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/pcs_style.css">
@@ -66,7 +66,11 @@ if($UserType != 'MRS') {
         <!-- *************     Patient Medical Records       *************** -->
         <div class="tab-pane active fade in" id="patient_med_rec_view">
           <div class="row" id="spacer"></div>                <!-- Row Spacer -->
-          <div class="col-sm-12"><h3>add medical records here</h3></div>
+          <div class="col-sm-12">
+            <h3>add medical records here</h3>
+            <?php include "../model/medical_rec_search_bar.php" ?>
+            <?php include "../model/medical_record_model.php" ?>
+          </div>
         </div>    
         
         <!-- *************   End Patient Medical Records   ***************** -->
@@ -121,9 +125,10 @@ if($UserType != 'MRS') {
   <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="../model/global.js"></script>
-  <script src="../model/calendar.js"></script>
   <script src="../control/handle_new_pat_prim_rec.js"></script>
   <script src="../control/handle_edit_pat_prim_rec.js"></script>
+  <script src="../control/handle_medical_rec_search.js"></script>
+
 
 
 </body>

@@ -70,12 +70,6 @@
     </div>
 </div>
 
-<!-- 
-
-[{"PatientID":"14","Fname":"John","Lname":"Hicks","SSN":"8888888888","Birthdate":"1959-03-25","Sex":"male","isSectioned":"0","AddressID":"31","PatientNum":"MPPG9O","Street":"123 way street","City":"memphis","State":"TN","Zip":"45689"},{"PatientID":"16","Fname":"John","Lname":"Hicks","SSN":"7777777777","Birthdate":"1959-03-25","Sex":"female","isSectioned":"0","AddressID":"31","PatientNum":"22TB4C","Street":"123 way street","City":"memphis","State":"TN","Zip":"45689"}]
- -->
-
-
 
 <!--********         End Patient Primary Record Table              ********* -->
 

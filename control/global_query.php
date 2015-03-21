@@ -544,12 +544,123 @@ function get_full_name_of_patient($pat_id) {
 =                      Medical Record Related Queries                          =
 ==============================================================================*/
 
+/**
+ * Gets the allergies belonging to a patient by patient id
+ * @param  [string/int] $pat_id the patient's ID
+ * @return [array]  An array of allergies AllergyID, AllergyName, Severity
+ */
 function get_allergy_records_by_id($pat_id) {
+    global $db_conn;
 
+    $query = 'SELECT AllergyID, AllergyName, Severity FROM ALLERGY WHERE AllergyID =
+             (SELECT AllergyID from MED_RECORD_has_ALLERGY WHERE RecordID= 
+             (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Allergy Record: 
+             $e </p>";
+        }   
+        return "Allergies Error";  // error 
+    } 
 }
 
+/**.
+ * Gets the treatments given to a Patient
+ * @param  [type] $pat_id [description]
+ * @return [type]         [description]
+ */
 function get_treatments_records_by_id($pat_id) {
+    global $db_conn;
 
+    $query = 'SELECT TreatmentID, Treats, Description, Duration, DateDiagnosed, 
+              EmployeeID FROM TREATMENT WHERE TreatmentID = 
+              (SELECT TREATMENT_TreatmentID from MED_RECORD_has_TREATMENT WHERE 
+              MED_RECORD_RecordID = (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Allergy Record: 
+             $e </p>";
+        }   
+        return "Allergies Error";  // error 
+    } 
+}
+
+function search_for_patient_id($criteria, $value) {
+    global $db_conn;   
+
+    $statement = "";
+    switch ($criteria) {                              // prepare query statement
+        case 'ssn':
+            $statement = get_pat_info_by_ssn($value);
+            break;
+        case 'lname':
+            $statement = get_pat_info_by_lname($value);
+            break;
+        case 'patid':
+            $statement = get_pat_info_by_patid($value);
+            break;
+        default:
+            return 0;
+            break;
+    }
+    try {
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);                 // filter
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Patient Info: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }
+}
+
+// private: used with search_for_patient_id
+function get_pat_info_by_ssn($value) {
+    global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              SSN = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+}
+// private: used with search_for_patient_id
+function get_pat_info_by_lname($value) {
+   global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              Lname = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+    
+}
+// private: used with search_for_patient_id
+function get_pat_info_by_patid($value) {
+    global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              PatientID = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
 }
 
 
