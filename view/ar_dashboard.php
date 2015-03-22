@@ -101,7 +101,8 @@ if($UserType != 'AR') {
 
         <!-- *************      Patient Records View      ****************** -->
         <div class="tab-pane fade" id="patient_rec">
-          <?php include "../model/ar_new_pat_id_record.php"; ?>
+          <?php include "../model/edit_pat_record_model.php"; ?>
+          <?php include "../model/new_pat_id_record_model.php"; ?>
         </div>
         <!-- *************    End Patient Records View      ****************** -->
       </div>
@@ -138,9 +139,11 @@ if($UserType != 'AR') {
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="../model/global.js"></script>
   <script src="../model/calendar.js"></script>
-  <script src="../control/handle_calendar.js"></script>
+  <script src="../control/handle_ar_calendar.js"></script>
   <script src="../control/handle_ar_apps.js"></script>
-  <script src="../control/handle_new_pat_rec.js"></script>
+  <script src="../control/handle_new_pat_prim_rec.js"></script>
+  <script src="../control/handle_edit_pat_prim_rec.js"></script>
+
 
 </body>
 

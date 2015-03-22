@@ -23,8 +23,10 @@ if (isset($_POST['patreq']) && ($_POST['patreq'] == 'patreq'))  {
 		echo "failed";
 	}
 
+// Permission Denied
 } else {
-	// Do nothing, empty POST call: TODO redirect to PermissionDenied, kill session
+    header("Location: ../PermissionDenied.php");
+    exit();
 }
 
 ?>

@@ -183,9 +183,13 @@ function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk,
         $statement->bindValue( 5 , $genderChk);
         $statement->bindValue( 6 , $addId);
         $statement->bindValue( 7 , $patNum);
-        $statement->execute();
+        $isInserted = $statement->execute();
         $statement->closeCursor();
-        return 1;   // TODO Return new patient ID for adding new appointment
+        if ($isInserted) {
+            return 1;   // TODO Return new patient ID for adding new appointment
+        } else {
+            return 0;                                     // Insert did not work
+        }
     } catch (Exception $e) {
         if($is_dev) {
             echo "<p>Error inseting Address: 
@@ -269,6 +273,132 @@ function remove_app($app_id) {
 
 }
 /*------------------     End of Appointment Queries  -------------------------*/
+
+/*==============================================================================
+=                       Primary Patient Record Queries                         =
+==============================================================================*/
+
+/**
+ * Searches for patient record(s). Returns both PATIENT and ADDRESS results
+ * @param  [string] $criteria the criteria to search by.  Valid values are 
+ *                  ssn | lname | patid 
+ * @param  [string] $value  the value to search for.
+ * @return [array]  an array of the results
+ */
+function search_for_patient_primary($criteria, $value) {
+    global $db_conn;   
+
+    $statement = "";
+    switch ($criteria) {                              // prepare query statement
+        case 'ssn':
+            $statement = make_query_pat_primary_by_ssn($value);
+            break;
+        case 'lname':
+            $statement = make_query_pat_primary_by_lname($value);
+            break;
+        case 'patid':
+            $statement = make_query_pat_primary_by_patid($value);
+            break;
+        default:
+            return 0;
+            break;
+    }
+    try {
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);                 // filter
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Patient Primary Record: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }
+}
+
+// private: used with search_for_patient_primary
+function make_query_pat_primary_by_ssn($value) {
+    global $db_conn;
+    $query = 'SELECT PATIENT.*, ADDRESS.* FROM PATIENT, ADDRESS WHERE 
+              PATIENT.AddressID = ADDRESS.AddressID AND PATIENT.SSN = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+}
+// private: used with search_for_patient_primary
+function make_query_pat_primary_by_lname($value) {
+   global $db_conn;
+    $query = 'SELECT PATIENT.*, ADDRESS.* FROM PATIENT, ADDRESS WHERE 
+              PATIENT.AddressID = ADDRESS.AddressID AND PATIENT.Lname = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+    
+}
+// private: used with search_for_patient_primary
+function make_query_pat_primary_by_patid($value) {
+    global $db_conn;
+    $query = 'SELECT PATIENT.*, ADDRESS.* FROM PATIENT, ADDRESS WHERE 
+              PATIENT.AddressID = ADDRESS.AddressID AND PATIENT.PatientID = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+}
+
+/**
+ * Updates a Patient's Primary Record.
+ * @param  [string] $patid    [description]
+ * @param  [string] $fname    [description]
+ * @param  [string] $lname    [description]
+ * @param  [string] $ssn      [description]
+ * @param  [string] $bday     [description]
+ * @param  [string] $phoneNum [description]
+ * @param  [string] $gender   [description]
+ * @param  [string] $street   [description]
+ * @param  [string] $city     [description]
+ * @param  [string] $state    [description]
+ * @param  [string] $zip      [description]
+ * @return Returns non-zero value upon success, otherwise returns zero
+ */
+function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum, 
+                                           $gender, $street, $city, $state, $zip) {
+    global $db_conn;
+
+    $query = 'UPDATE PATIENT,ADDRESS SET PATIENT.Fname = ?, PATIENT.Lname = ?,
+              PATIENT.SSN = ?, PATIENT.Birthdate = ?, PATIENT.Sex = ?, ADDRESS.Street = ?,
+              ADDRESS.City = ?, ADDRESS.State = ?, ADDRESS.Zip = ? WHERE
+              PATIENT.PatientID = ? AND PATIENT.AddressID = ADDRESS.AddressID';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $fname);
+        $statement->bindValue( 2 , $lname);
+        $statement->bindValue( 3 , $ssn);
+        $statement->bindValue( 4 , $bday);
+        $statement->bindValue( 5 , $gender);
+        $statement->bindValue( 6 , $street);
+        $statement->bindValue( 7 , $city);
+        $statement->bindValue( 8 , $state);
+        $statement->bindValue( 9 , $zip);
+        $statement->bindValue( 10 , $patid);
+
+        $result = $statement->execute();
+        $statement->closeCursor();
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error Updating Patient Primary & address: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }    
+}
+
+
+
+/*-------------      End of Primary Patient Record Queries      --------------*/
 
 
 /*==============================================================================
@@ -410,6 +540,131 @@ function get_full_name_of_patient($pat_id) {
 
 /*------------------     End of Doc and Nurse Queries  -----------------------*/
 
+/*==============================================================================
+=                      Medical Record Related Queries                          =
+==============================================================================*/
+
+/**
+ * Gets the allergies belonging to a patient by patient id
+ * @param  [string/int] $pat_id the patient's ID
+ * @return [array]  An array of allergies AllergyID, AllergyName, Severity
+ */
+function get_allergy_records_by_id($pat_id) {
+    global $db_conn;
+
+    $query = 'SELECT AllergyID, AllergyName, Severity FROM ALLERGY WHERE AllergyID =
+             (SELECT AllergyID from MED_RECORD_has_ALLERGY WHERE RecordID= 
+             (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Allergy Record: 
+             $e </p>";
+        }   
+        return "Allergies Error";  // error 
+    } 
+}
+
+/**.
+ * Gets the treatments given to a Patient
+ * @param  [type] $pat_id [description]
+ * @return [type]         [description]
+ */
+function get_treatments_records_by_id($pat_id) {
+    global $db_conn;
+
+    $query = 'SELECT TreatmentID, Treats, Description, Duration, DateDiagnosed, 
+              EmployeeID FROM TREATMENT WHERE TreatmentID = 
+              (SELECT TREATMENT_TreatmentID from MED_RECORD_has_TREATMENT WHERE 
+              MED_RECORD_RecordID = (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Allergy Record: 
+             $e </p>";
+        }   
+        return "Allergies Error";  // error 
+    } 
+}
+
+function search_for_patient_id($criteria, $value) {
+    global $db_conn;   
+
+    $statement = "";
+    switch ($criteria) {                              // prepare query statement
+        case 'ssn':
+            $statement = get_pat_info_by_ssn($value);
+            break;
+        case 'lname':
+            $statement = get_pat_info_by_lname($value);
+            break;
+        case 'patid':
+            $statement = get_pat_info_by_patid($value);
+            break;
+        default:
+            return 0;
+            break;
+    }
+    try {
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);                 // filter
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Patient Info: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }
+}
+
+// private: used with search_for_patient_id
+function get_pat_info_by_ssn($value) {
+    global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              SSN = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+}
+// private: used with search_for_patient_id
+function get_pat_info_by_lname($value) {
+   global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              Lname = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+    
+}
+// private: used with search_for_patient_id
+function get_pat_info_by_patid($value) {
+    global $db_conn;
+    $query = 'SELECT * FROM PATIENT WHERE 
+              PatientID = ?';
+    $statement = $db_conn->prepare($query);
+    $statement->bindValue( 1 , $value);
+    return $statement;
+}
+
+
+/*------------------     End of Medical Record Queries  -----------------------*/
 
 
 

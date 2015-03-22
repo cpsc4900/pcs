@@ -32,6 +32,12 @@ USE pcs_db;
 DELETE FROM SECTIONED;
 ALTER TABLE SECTIONED AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM APPOINTMENT;
+DELETE FROM MED_RECORD_has_TREATMENT;
+ALTER TABLE MED_RECORD_has_TREATMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
+DELETE FROM MED_RECORD_has_ALLERGY;
+ALTER TABLE MED_RECORD_has_ALLERGY AUTO_INCREMENT = 1;    -- Reset auto increment to 1
+DELETE FROM MED_RECORD;
+ALTER TABLE MED_RECORD AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 ALTER TABLE APPOINTMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 ALTER TABLE MEDICATION AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM MEDICATION;
@@ -152,14 +158,14 @@ INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, P
     
    
 /************************ TREATMENT *************************/
-INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
-	VALUES(DEFAULT, 'Generic Syndrome', 'A generic condition treatment in which 
-    generalities generate recovery.', '1-2 days/weeks', DEFAULT);
+INSERT INTO TREATMENT(Treats, Description, Duration, `Ongoing?`, EmployeeID)
+	SELECT 'Generic Syndrome', 'A generic condition treatment in which 
+    generalities generate recovery.', '1-2 days/weeks', 0, EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
     
-INSERT INTO TREATMENT(TreatmentID, Treats, Description, Duration, `Ongoing?`)
-	VALUES(DEFAULT, 'Common Elderly Disorder', 'Medication prescribed to help 
+INSERT INTO TREATMENT(Treats, Description, Duration, `Ongoing?`, EmployeeID)
+	SELECT 'Common Elderly Disorder', 'Medication prescribed to help 
     combat ailments to be taken until symptoms are reduced, combined with weekly checkup.', 
-	'2-5 months', DEFAULT);
+	'2-5 months', 0, EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
     
 
 /*********************** MEDICATION *************************/
@@ -794,6 +800,19 @@ INSERT INTO SECTIONED(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID
 				WHERE EmployeeID = 1)
 		FROM PATIENT
 			WHERE IsSectioned = 1;
+
+/*************************MED_RECORD***************************/
+/**
+ * This is sloppy
+ */
+INSERT INTO MED_RECORD(RecordID, PatientID) VALUES(1,1);
+
+/*************************MED_RECORD_has_ALLERGY***************************/
+INSERT INTO MED_RECORD_has_ALLERGY(RecordID, AllergyID) VALUES(1,1);
+
+/*************************MED_RECORD_has_TREATMENT***************************/
+INSERT INTO MED_RECORD_has_TREATMENT(MED_RECORD_RecordID, TREATMENT_TreatmentID) VALUES(1,1);
+
 			
     
 /************************* LOGIN ****************************/

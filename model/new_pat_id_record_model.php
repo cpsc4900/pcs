@@ -1,37 +1,6 @@
 <?php
 
 ?>
-<div class="row" id="spacer"></div>                <!-- Row Spacer -->
-
-<!-- Search bar for Patient Records -->
-<div class="row">                        
-  <div class="col-sm-8 col-sm-offset-4">
-    <div class="control-group pull-right">
-      <div class="controls">
-        <div class="input-append">
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" 
-               data-toggle="dropdown">
-               Primary <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-               <li><a href="#">Action</a></li>
-               <li><a href="#">Another action</a></li>
-               <li><a href="#">Something else here</a></li>
-               <li class="divider"></li>
-               <li><a href="#">Separated link</a></li>
-            </ul>
-          </div>
-          <label class="control-label" for="searchForPatient">
-            Search for Patient Records:
-          </label>
-          <input id="searchForPatient" name="searchForPatient" class="input-medium" placeholder="Enter Patient Criteria" type="text">
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</div>                               <!-- End Search bar for Patient Records -->
 
 <div class="row" id="spacer"></div>                          <!-- Row Spacer -->
 
@@ -140,7 +109,7 @@
     <!-- Buttons Submit and Cancel -->
     <div class="form-group pull-right">
       <div class="controls form-inline">
-        <button id="submit" onclick="handle_new_pat_record()"class="btn btn-success btn-sm">Submit</button>
+        <button id="submit" onclick="handle_new_pat_record()"class="btn btn-success btn-sm clearFields">Submit</button>
         <button id="formCancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
       </div>
     </div>

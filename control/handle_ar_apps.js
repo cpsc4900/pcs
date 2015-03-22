@@ -122,6 +122,7 @@ function removeAndUpdateAppTable(app_id) {
   }
   getApps(thisDateTime);            // redraw table
   drawAppTable();
+  createCalendar(year, month, "calendar_matrix");
 }
 
 // removes app from database, returns "success" or  "failed"

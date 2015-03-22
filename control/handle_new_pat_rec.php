@@ -27,9 +27,12 @@ if (isset($_POST['firstName']) && isset($_POST['lastName'])  && isset($_POST['pa
 
     if ($result == 1) {                // a returned one means the new
         echo "success";                // patient record and address where added
+    } else {
+        echo "error_empty";
     }
 } else {
-    echo "error_empty";
+    header("Location: ../PermissionDenied.php");
+    exit();
     
 }
 
