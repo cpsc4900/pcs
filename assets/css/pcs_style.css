@@ -89,3 +89,13 @@ button.delApp {
   font-size: 14px;
   color:#4E7BB1;
 }
+
+#pcsClock {
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+
+
