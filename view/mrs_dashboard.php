@@ -128,6 +128,8 @@ if($UserType != 'MRS') {
   <script src="../control/handle_new_pat_prim_rec.js"></script>
   <script src="../control/handle_edit_pat_prim_rec.js"></script>
   <script src="../control/handle_medical_rec_search.js"></script>
+  <script src="../control/handle_new_allergy.js"></script>
+
 
 
 

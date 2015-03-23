@@ -367,8 +367,8 @@ function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum,
     global $db_conn;
 
     $query = 'UPDATE PATIENT,ADDRESS SET PATIENT.Fname = ?, PATIENT.Lname = ?,
-              PATIENT.SSN = ?, PATIENT.Birthdate = ?, PATIENT.Sex = ?, ADDRESS.Street = ?,
-              ADDRESS.City = ?, ADDRESS.State = ?, ADDRESS.Zip = ? WHERE
+              PATIENT.SSN = ?, PATIENT.Birthdate = ?, PATIENT.Sex = ?, PATIENT.PhoneNum = ?, 
+              ADDRESS.Street = ?, ADDRESS.City = ?, ADDRESS.State = ?, ADDRESS.Zip = ? WHERE 
               PATIENT.PatientID = ? AND PATIENT.AddressID = ADDRESS.AddressID';
 
     try {
@@ -378,11 +378,12 @@ function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum,
         $statement->bindValue( 3 , $ssn);
         $statement->bindValue( 4 , $bday);
         $statement->bindValue( 5 , $gender);
-        $statement->bindValue( 6 , $street);
-        $statement->bindValue( 7 , $city);
-        $statement->bindValue( 8 , $state);
-        $statement->bindValue( 9 , $zip);
-        $statement->bindValue( 10 , $patid);
+        $statement->bindValue( 6 , $phoneNum);
+        $statement->bindValue( 7 , $street);
+        $statement->bindValue( 8 , $city);
+        $statement->bindValue( 9 , $state);
+        $statement->bindValue( 10 , $zip);
+        $statement->bindValue( 11 , $patid);
 
         $result = $statement->execute();
         $statement->closeCursor();
@@ -544,6 +545,9 @@ function get_full_name_of_patient($pat_id) {
 =                      Medical Record Related Queries                          =
 ==============================================================================*/
 
+// NOTE: These nested selects are not effecient, should use JOIN, but no time
+
+
 /**
  * Gets the allergies belonging to a patient by patient id
  * @param  [string/int] $pat_id the patient's ID
@@ -552,8 +556,8 @@ function get_full_name_of_patient($pat_id) {
 function get_allergy_records_by_id($pat_id) {
     global $db_conn;
 
-    $query = 'SELECT AllergyID, AllergyName, Severity FROM ALLERGY WHERE AllergyID =
-             (SELECT AllergyID from MED_RECORD_has_ALLERGY WHERE RecordID= 
+    $query = 'SELECT AllergyID, AllergyName, Severity FROM ALLERGY WHERE AllergyID IN
+             (SELECT AllergyID from MED_RECORD_has_ALLERGY WHERE RecordID IN 
              (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
 
     try {
@@ -581,9 +585,9 @@ function get_treatments_records_by_id($pat_id) {
     global $db_conn;
 
     $query = 'SELECT TreatmentID, Treats, Description, Duration, DateDiagnosed, 
-              EmployeeID FROM TREATMENT WHERE TreatmentID = 
+              EmployeeID FROM TREATMENT WHERE TreatmentID IN 
               (SELECT TREATMENT_TreatmentID from MED_RECORD_has_TREATMENT WHERE 
-              MED_RECORD_RecordID = (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
+              MED_RECORD_RecordID IN (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
 
     try {
         $statement = $db_conn->prepare($query);
@@ -598,6 +602,39 @@ function get_treatments_records_by_id($pat_id) {
              $e </p>";
         }   
         return "Allergies Error";  // error 
+    } 
+}
+
+/**
+ * Gets the medication records for the given Patient ID
+ * @param  [type] $pat_id the patient's id
+ * @return  an array of medications
+ */
+function get_medication_records_by_id($pat_id) {
+    global $db_conn;
+
+    $query = 'SELECT MedicationID, CommonName, Side_Effects, Dosage FROM 
+              MEDICATION WHERE MedicationID IN (SELECT MEDICATION_MedicationID 
+              FROM TREATMENT_has_MEDICATION WHERE 
+              TREATMENT_TreatmentID IN (SELECT TreatmentID FROM TREATMENT WHERE 
+              TreatmentID IN 
+              (SELECT TREATMENT_TreatmentID FROM MED_RECORD_has_TREATMENT WHERE 
+              MED_RECORD_RecordID IN
+              (SELECT RecordID FROM MED_RECORD WHERE PatientID = ?))))';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Medication Record: 
+             $e </p>";
+        }   
+        return "Medications Error";  // error 
     } 
 }
 
@@ -663,8 +700,102 @@ function get_pat_info_by_patid($value) {
     return $statement;
 }
 
+// gets a single allergy id by allergy name
+function get_allergy_id($allergyName) {
+    global $db_conn;
+
+    $query = 'SELECT AllergyID from ALLERGY WHERE AllergyName = ?';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $allergyName);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);
+        $result = $result[0];
+        return pull_single_element("AllergyID", $result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Allergy Record: 
+             $e </p>";
+        }   
+        return "Allergies Error";  // error 
+    } 
+}
 
 /*------------------     End of Medical Record Queries  -----------------------*/
+
+/*==============================================================================
+=                       Set Medical Record Queries                             =
+==============================================================================*/
+function set_new_patient_allergy($allergyName, $severity, $patid) {
+    global $db_conn;
+    $allergyID = "";                          
+
+    $query = 'INSERT INTO MED_RECORD(PatientID) VALUES( ? )';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $pat_id);
+        $statement->execute();
+        $rec_id = $db_conn->lastInsertID();    // ISSUE HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        echo "rec_id = ". $rec_id. "<br/>";
+        $statement->closeCursor();
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new MED_RECORD: 
+             $e </p>";
+        }   
+        return "failed";  // error 
+    }
+
+    $allergyID = set_new_allergy($allergyName, $severity);
+    echo "allergyID = ". $allergyID;
+    $query = 'INSERT INTO MED_RECORD_has_ALLERGY(RecordID, AllergyID) VALUES(?, ?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $rec_id);
+        $statement->bindValue( 2 , $allergyID);
+        $statement->execute();
+        $statement->closeCursor();
+        return "success";
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new MED_RECORD: 
+             $e </p>";
+        }   
+        return "failed";  // error 
+    }
+}
+
+function set_new_allergy($allergyName, $severity) {
+    global $db_conn;
+
+    $query = 'INSERT INTO ALLERGY(AllergyName, Severity) VALUES(?, ?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $allergyName);
+        $statement->bindValue( 2 , $severity);
+        $statement->execute();
+        $allergyID = $db_conn->lastInsertID();
+        $statement->closeCursor();
+        return $allergyID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new Allergy RECORD: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }
+}
+
+
+
+/*--------------   End of Set Medical Record Queries            --------------*/
+
 
 
 
@@ -717,4 +848,40 @@ print $result;
                             "1982-12-23", "4545 Cummings Hwy", "Roanoke", "VA", "45685");
 
 print $result;*/
+
+/*$result = get_allergy_records_by_id("1");
+
+var_dump($result);
+echo "<br/> <br/>";
+
+
+$result1 = get_medication_records_by_id("1");
+
+var_dump($result1);
+echo "<br/> <br/>";
+
+$result2 = get_treatments_records_by_id("1");
+
+var_dump($result2);
+echo "<br/> <br/>";
+
+$result3 = array_merge($result, $result1, $result2);
+
+var_dump($result3);
+echo "<br/> <br/>";
+
+$result4 = json_encode($result3);
+
+echo "<br/> <br/>";
+var_dump($result4);*/
+/*
+$result = get_allergy_id("Sulfa");
+
+print $result;
+var_dump($result);*/
+
+$result = set_new_patient_allergy('latex', 'moderate', '1');
+
+echo "result = ". $result;
 ?>
+

@@ -32,15 +32,15 @@ USE pcs_db;
 DELETE FROM SECTIONED;
 ALTER TABLE SECTIONED AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM APPOINTMENT;
+ALTER TABLE APPOINTMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM MED_RECORD_has_TREATMENT;
 ALTER TABLE MED_RECORD_has_TREATMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM MED_RECORD_has_ALLERGY;
 ALTER TABLE MED_RECORD_has_ALLERGY AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM MED_RECORD;
 ALTER TABLE MED_RECORD AUTO_INCREMENT = 1;    -- Reset auto increment to 1
-ALTER TABLE APPOINTMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
-ALTER TABLE MEDICATION AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM MEDICATION;
+ALTER TABLE MEDICATION AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM TREATMENT;
 ALTER TABLE TREATMENT AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 DELETE FROM PATIENT;
@@ -144,16 +144,16 @@ SELECT "Leroy", "Clint's Brother", "AR", ClinicID
 FROM CLINIC WHERE ClinicName = "Remain Insane";
 
 /***************************PATIENT*************************/
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
-	SELECT 'Adam', 'Apple', 1970-1-1, 728649680, 'male', ADDRESS.AddressID, 0, '123'
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum, PhoneNum) 
+	SELECT 'Adam', 'Apple', '1970-01-01', 728649680, 'male', ADDRESS.AddressID, 0, 'ABC123', 5555555555
 		FROM ADDRESS WHERE Street = '1 Infinite Loop';
     
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
-	SELECT 'Big', 'Ben', 1994-2-4, 637485918, 'male', ADDRESS.AddressID, 0, 'def456'
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum, PhoneNum) 
+	SELECT 'Big', 'Ben', '1994-02-04', 637485918, 'male', ADDRESS.AddressID, 0, 'DEF456', 5555555555
 		FROM ADDRESS WHERE Street = 'SW1A Westminster';
     
-INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum) 
-	SELECT 'Chris', 'Columbus', 1492-8-3, 202102010, 'male', ADDRESS.AddressID, 0, 'ghi789'
+INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum, PhoneNum) 
+	SELECT 'Chris', 'Columbus', '1492-08-03', 202102010, 'male', ADDRESS.AddressID, 0, 'GHI789', 5555555555
 		FROM ADDRESS WHERE Street = '0 Wilderness';
     
    
@@ -169,13 +169,13 @@ INSERT INTO TREATMENT(Treats, Description, Duration, `Ongoing?`, EmployeeID)
     
 
 /*********************** MEDICATION *************************/
-INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+INSERT INTO MEDICATION(MedicationID, CommonName, Side_Effects, Dosage, TimesPerDay)
 	VALUES(DEFAULT, 'Cure-It-All', 'bloating; nausea; fatigue', 100+'mg', 'twice daily');
 
-INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+INSERT INTO MEDICATION(MedicationID, CommonName, Side_Effects, Dosage, TimesPerDay)
 	VALUES(DEFAULT, 'The Sanity Pill', 'dementia; depression; anxiety; insanity', 100+'mg', 'once daily');
     
-INSERT INTO MEDICATION(MedicationID, CommonName, `Side Effects`, Dosage, TimesPerDay)
+INSERT INTO MEDICATION(MedicationID, CommonName, Side_Effects, Dosage, TimesPerDay)
 	VALUES(DEFAULT, 'Depression Repression', 'smiles; loss of appetite; cerebral amputation', 100+'mg', 'thrice daily'); 
     
 
@@ -803,17 +803,21 @@ INSERT INTO SECTIONED(RoomNumber, DateSectioned, PatientID, ClinicID, EmployeeID
 
 /*************************MED_RECORD***************************/
 /**
- * This is sloppy
+ * This is sloppy: Need to clean up....need more patients first !!!!
  */
 INSERT INTO MED_RECORD(RecordID, PatientID) VALUES(1,1);
-
+INSERT INTO MED_RECORD(RecordID, PatientID) VALUES(2,1);
 /*************************MED_RECORD_has_ALLERGY***************************/
 INSERT INTO MED_RECORD_has_ALLERGY(RecordID, AllergyID) VALUES(1,1);
+INSERT INTO MED_RECORD_has_ALLERGY(RecordID, AllergyID) VALUES(2,2);
+
 
 /*************************MED_RECORD_has_TREATMENT***************************/
 INSERT INTO MED_RECORD_has_TREATMENT(MED_RECORD_RecordID, TREATMENT_TreatmentID) VALUES(1,1);
+INSERT INTO MED_RECORD_has_TREATMENT(MED_RECORD_RecordID, TREATMENT_TreatmentID) VALUES(2,2);
 
-			
+INSERT INTO TREATMENT_has_MEDICATION(TREATMENT_TreatmentID, MEDICATION_MedicationID, MEDICATION_CommonName) VALUES(1, 1,"Cure-It-All");
+
     
 /************************* LOGIN ****************************/
 /**
