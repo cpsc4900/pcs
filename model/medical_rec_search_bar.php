@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Requires:    handle_medical_rec_search.js
+ * Depends on:  model/search_for_med_recs.php
+ */
 ?>
 
 <div class="row" id="spacer"></div>                <!-- Row Spacer -->
@@ -13,7 +17,8 @@
       <div class="controls">
         <div class="input-append">
           <div class="btn-group">
-            <button id="searchMedCrit" type="button" class="btn btn-primary dropdown-toggle btn-xs"
+            <button id="searchMedCrit" type="button" 
+               class="btn btn-primary dropdown-toggle btn-xs"
                data-toggle="dropdown">
                Search By <span class="caret"></span>
             </button>
@@ -23,7 +28,9 @@
                <li id="patid"><a href="#">Patient ID</a></li>
             </ul>
           </div>
-          <input id="searchForPatientMedValue" name="patient_criteria" class="input-medium search-query" placeholder="Enter Patient Criteria" type="text" required="">
+          <input id="searchForPatientMedValue" name="patient_criteria" 
+                class="input-medium search-query" placeholder="Enter Patient Criteria" 
+                type="text" required="">
         </div>
       </div>
     </div>

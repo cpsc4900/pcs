@@ -142,6 +142,7 @@ function set_edit_fields(pat_rec) {
     $('#edit_lastName').val(jsonSearchResults[pat_rec].Lname);
     $('#edit_patSSN').val(jsonSearchResults[pat_rec].SSN);
     $('#edit_patBday').val(jsonSearchResults[pat_rec].Birthdate);
+    $('#edit_phoneNum').val(jsonSearchResults[pat_rec].PhoneNum);
     $('#edit_patStAdd').val(jsonSearchResults[pat_rec].Street);
     $('#edit_patCity').val(jsonSearchResults[pat_rec].City);
     $('#edit_patState').val(jsonSearchResults[pat_rec].State);
@@ -167,12 +168,12 @@ function handle_edit_pat_record() {
     url_string += "&fname=" + $('#edit_firstName').val(); 
     url_string += "&lname=" + $('#edit_lastName').val(); 
     url_string += "&ssn=" + $('#edit_patSSN').val(); 
-    url_string += "&bday=" + $('#edit_patBday').val(); 
+    url_string += "&bday=" + $('#edit_patBday').val();
     url_string += "&street=" + $('#edit_patStAdd').val(); 
     url_string += "&city=" + $('#edit_patCity').val(); 
     url_string += "&state=" + $('#edit_patState').val(); 
     url_string += "&zip=" +  $('#edit_patZip').val(); 
-    url_string += "&phoneNum=" + "1234565555";
+    url_string += "&phoneNum=" + $('#edit_phoneNum').val(); 
 
     // gender check box
     var gender = "";

@@ -4,6 +4,9 @@ var searchForValue = "";
 var jsonIDRecords = "";
 var jsonMedicalRecords = "";
 
+/*==============================================================================
+=                          Document Ready Binding                              =
+==============================================================================*/
 
 $(document).ready(function(){
 
@@ -21,9 +24,7 @@ $(document).ready(function(){
   // search submit button
   $('#submit-search-button').click(function() {
       searchForValue = $('#searchForPatientMedValue').val();
-      console.log("searchForValue = " + searchForValue);
       searchByCriteria = $('#search-by').val();
-      console.log("searchByCriteria = " + searchByCriteria);
 
       if (errorCheck(searchByCriteria, searchForValue)) {
         getSearchResults();
@@ -36,8 +37,24 @@ $(document).ready(function(){
     $('#pat_table_med_search_results').slideUp("slow");
   });
 
-});  //-- end of document ready
+  // add new allergy
+  $('#new-allergy-option').click(function(){
+    // make sure a patient's record is open before adding a new allergy
+    var patientssn = $('#gen-info-ssn').html();
+    if (patientssn == "") {
+      $('#newAllergyModel').modal('toggle');  // close modal before it opens
+      alert("No Patient Record is open! Please search for a patient" +
+            "\n or add a new Patient Identity Record first");
+    }
+  });
 
+});
+
+/*----------------      End of Document Ready Binding         ----------------*/
+
+/*==============================================================================
+=                          Patient Med Rec Search                              =
+==============================================================================*/
 
 // set hidden searchBy input
 function updateSearchByHiddenField(searchType) {
@@ -103,7 +120,7 @@ function formatRecToTable() {
         newTable += "<td><button id=\"edit_pat_rec\" type=\"button\""; 
         // Nasty, but it works
         newTable += "class= \"btn btn-primary btn-success btn-xs\"";
-        newTable += "onclick=\"selectPatient(";
+        newTable += "onclick=\"selectedPatient(";
         newTable += jsonIDRecords[record].PatientID;
         newTable += ")\">";
         newTable += "Select</button></td>";
@@ -111,22 +128,172 @@ function formatRecToTable() {
     }
     return newTable;
 }
+/*----------------      End of Patient Med Rec Search         ----------------*/
 
-// TODO fill out medical record display
-function selectPatient(patid) {
-  var medRecords = getJsonMedRecords(patid);
-  $('#p_patName').html();
-  $('#p_ssn').html();
-  $('#p_birthday').html();
-  $('#p_gender').html();     
+/*==============================================================================
+=                          Medical Record Display                              =
+==============================================================================*/
 
-}
-
-// Searches for medical records by id
+// Searches for medical records by id, 
+// then places result in global jsonMedicalRecords
 function getJsonMedRecords(patid) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "http://pcs/model/search_for_med_recs.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("patid" + patid);
-    jsonMedicalRecords = JSON.parse(xmlhttp.responseText); 
+    xmlhttp.send("patid=" + patid);
+    jsonMedicalRecords = JSON.parse(xmlhttp.responseText);
 }
+
+// Main Call from selected patient search results
+function selectedPatient(patid) {
+  $('#pat_table_med_search_results').slideUp("slow");
+
+  getJsonMedRecords(patid);
+  var numOfAll = countAllergiesInJson();
+  var numOfTreats = countTreatmentsInJson();
+  var numOfMeds = countMedicationsInJson();
+  
+
+  showPatientGeneralInfo();                       // display gen info of patient
+  showPatientKnownAllergies(numOfAll);            // display known allergies
+  showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds);
+  //testPrintJson();  // test: remove me
+}
+
+/************************************
+ * Fills Patient's General Information in medical_record_model.php
+ * 
+ */
+function showPatientGeneralInfo() {
+  // format name
+  var formattedName = formatPatName(jsonMedicalRecords[0].Fname, 
+                                    jsonMedicalRecords[0].Lname);
+
+  $('#gen-info-patName').html(formattedName);
+  $('#gen-info-ssn').html("<b>SSN:</b>  " + jsonMedicalRecords[0].SSN);
+  $('#gen-info-birthday').html("<b>Birthdate:</b>  " +  
+                                jsonMedicalRecords[0].Birthdate);
+  $('#gen-info-gender').html("<b>Gender:</b>  " +
+                                jsonMedicalRecords[0].Sex); 
+  $("#gen-info-phoneNum").html("<b>Phone Number:</b>  " +
+                                jsonMedicalRecords[0].PhoneNum);
+  $('#address-header').html("<b>Address:</b>");
+  $("#gen-info-street").html(jsonMedicalRecords[0].Street);
+  $("#gen-info-rest-of-address").html(formatAddress());
+} 
+
+function showPatientKnownAllergies(numOfAll) {
+  if (numOfAll == 0) {   // no allergies
+    $('#patient-known-allergies').html("<h5>No known Allergies</h5>");
+    return;
+  }
+  var drawAllergies ="";
+
+  drawAllergies += "<dl class=\"dl-horizontal\">";  
+  for (var i = 1; i < (numOfAll + 1); i++) {  // skip patient primary record and go
+    drawAllergies += " <dt>(" + i + ") Allergy: " + jsonMedicalRecords[i].AllergyName + "</dt>";  
+    drawAllergies += " <dd>Severity: " + jsonMedicalRecords[i].Severity + "</dd>";
+  }
+  drawAllergies += "</dl>"; 
+  $('#patient-known-allergies').html(drawAllergies);
+}
+
+function showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds) {
+  numOfAll += 1;                                     // compensate for id record
+  numOfTreats += numOfAll;                            // set offset
+  numOfMeds += numOfTreats;                           // set offset
+  var drawTreats = "";
+
+  for (var i = numOfAll; i < numOfTreats; i++) {
+    drawTreats += "<dt>Diagnosis</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Treats + "</dd>";
+    drawTreats += "<dt>Description of Symptons</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Description + "</dd>";
+    drawTreats += "<dt>Duration of Treatment</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Duration + "</dd>";
+    drawTreats += "<dt>Date Diagnosed</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].DateDiagnosed + "</dd>";
+    drawTreats += "<dt>ID of Diagnosing Doctor or Nurse</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].EmployeeID + "</dd>";
+    drawTreats += "<hr>";
+  }
+  for (var i = numOfTreats; i < numOfMeds; i++) {
+    drawTreats += "<dt>Medication's Common Name</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].CommonName + "</dd>";
+    drawTreats += "<dt>Known Side Effects</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Side_Effects + "</dd>";
+    drawTreats += "<dt>Perscribed Dosage</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Dosage + "</dd>";
+    drawTreats += "<hr>";
+  }
+  // No data to show
+  if (drawTreats == "") {
+    drawTreats = "<h5>No previous treatments to be displayed</h5>";
+  }
+  $('#patient-prev-treatments').html(drawTreats);
+}
+
+/*===============  Med Record Display Helper Functions  ================*/
+
+// formats the patient's name for displaying
+function formatPatName(fname, lname) {
+  return "<b>Name:</b>    " + lname + ", " + fname;
+}
+
+function formatAddress() {
+  var returnAddress ="";
+  returnAddress = jsonMedicalRecords[0].City + ", " + 
+                  jsonMedicalRecords[0].State + "   " +
+                  jsonMedicalRecords[0].Zip;
+  return returnAddress;
+}
+// counts the number of Allergies in the jsonMedicalRecords
+function countAllergiesInJson() {
+  var numOfAllergies = 0;
+  for (var field in jsonMedicalRecords) {
+    if (jsonMedicalRecords[field].hasOwnProperty('AllergyID')) {
+      numOfAllergies += 1;
+    }
+  }
+  return numOfAllergies;
+}
+
+// counts the number of Treatments in the jsonMedicalRecords
+function countTreatmentsInJson() {
+  var numOfTreatments = 0;
+  for (var field in jsonMedicalRecords) {
+    if (jsonMedicalRecords[field].hasOwnProperty('TreatmentID')) {
+      numOfTreatments += 1;
+    }
+  }
+  return numOfTreatments;
+}
+
+// counts the number of Medications in the jsonMedicalRecords
+function countMedicationsInJson() {
+  var numOfMedications = 0;
+  for (var field in jsonMedicalRecords) {
+    if (jsonMedicalRecords[field].hasOwnProperty('MedicationID')) {
+      numOfMedications += 1;
+    }
+  }
+  return numOfMedications;
+}
+
+/*==========  End Med Record Display Helper Functions  ==========*/
+
+
+// for testing
+/*function testPrintJson() {
+  console.log(jsonMedicalRecords[0].Fname);
+  var numOfAll = countAllergiesInJson();
+  console.log("numOfAll = " + numOfAll);
+  var numOfTreatments = countTreatmentsInJson();
+  console.log("numOfTreatments = " + numOfTreatments);
+  var numOfMedications = countMedicationsInJson();
+  console.log("numOfMedications = " + numOfMedications);
+}*/
+
+
+
+/*----------------      End of Medical Record Display         ----------------*/

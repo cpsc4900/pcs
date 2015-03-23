@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Requires:    control/handle_medical_rec_search.js
+ * Depends On;  model/medical_rec_search_bar.php
+ */
+  include "new_allergy_model.php";
 ?>
 
 <!-- **************          Search Results                      *********** -->
@@ -44,13 +48,21 @@
          <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" 
                href="#collapseOne">
-               Patient General Info
+               Patient's General Information
             </a>
          </h4>
       </div>
       <div id="collapseOne" class="panel-collapse collapse in">
          <div class="panel-body">
             <!-- General Info Here -->
+            <p id="gen-info-patName"></p>
+            <p id="gen-info-ssn"></p>
+            <p id="gen-info-birthday"></p>
+            <p id="gen-info-gender"></p>
+            <p id="gen-info-phoneNum"></p>
+            <p id="address-header"></p>
+            <p id="gen-info-street"></p>
+            <p id="gen-info-rest-of-address"></p>
          </div>
       </div>
    </div>
@@ -64,9 +76,17 @@
          </h4>
       </div>
       <div id="collapseTwo" class="panel-collapse collapse">
-         <div class="panel-body">
-            Known Allerigies here
-         </div>
+          <div id="patient-known-allergies"class="panel-body">
+           <!-- filled by showPatientKnownAllergies() in handle_medical_rec_search.js -->   
+          </div>
+          <div class="row">
+           <div class="col-sm-4 col-sm-offset-10">
+            <a data-toggle="modal" role="button" class="btn btn-success btn-xs" id="new-allergy-option" 
+               href="#" data-target="#newAllergyModel">
+              New Allergy
+            </a>
+            </div>
+          </div>
       </div>
    </div>
    <div class="panel panel-info">
@@ -80,9 +100,17 @@
       </div>
       <div id="collapseThree" class="panel-collapse collapse">
          <div class="panel-body">
-            Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred 
-            nesciunt sapiente ea proident. Ad vegan excepteur butcher vice 
-            lomo.
+            <div id="patient-prev-treatments"class="panel-body">
+             <!-- filled by showPatientPreviousTreatments() in handle_medical_rec_search.js -->   
+            </div>
+            <div class="row">
+             <div class="col-sm-4 col-sm-offset-7">
+              <a data-toggle="modal" role="button" class="btn btn-info btn-xs" id="new-allergy-option" 
+                 href="#" data-target="#newTreatmentModal">
+                New Treatment/Medication Record
+              </a>
+              </div>
+            </div>
          </div>
       </div>
    </div>
