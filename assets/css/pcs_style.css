@@ -90,6 +90,11 @@ button.delApp {
   color:#4E7BB1;
 }
 
+.r3_border {
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
+
 #pcsClock {
     text-align: center;
     border: 2px solid #ccc;

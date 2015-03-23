@@ -32,41 +32,42 @@ include_once "control/global.php";
 </head>
 
 <body>
+
 <div class="container-fluid">
+    <div class="row" id="spacer"></div>  <!-- Row Spacer -->
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-7 r3_border">
 
-  <div class="page-header">
-     <h1>Patient Care System 
-     </h1>
-  </div>
-
-  <div class="row" id="spacer"></div>  <!-- Row Spacer -->
-  <div class="row"> <!-- main row -->
-    <div class="col-sm-3"></div>
-
-    <div class="col-sm-6">  <!-- Center Column -->
+      <!-- PCS Logo -->
+      <img src="/docs/img/pcs_logo.png">
+      <br> <br>
       <!-- Login Form -->
       <div id="login_form">
-        <form class="form-horizontal" name="loginForm" action="control/handle_login.php" 
-              onsubmit="return validateForm()" method="post">
-          <div class="form-group">
-            <label for="usrName" class="col-sm-3 control-label">User Name</label>
-            <div class="col-sm-5">
-              <input type="text"  name="userName" class="form-control" id="usrName">
-            </div>
+
+        <form class="form-horizontal" name="loginForm" action="control/handle_login.php"
+        onsubmit="return validateForm()" method="post">
+        <div class="form-group">
+          <label for="usrName" class="col-sm-offset-1 col-sm-3 control-label">User Name</label>
+          <div class="col-sm-5">
+          <input type="text" name="userName" class="form-control" id="usrName">
           </div>
-          <div class="form-group">
-            <label for="pwd" class="col-sm-3 control-label">Password</label>
-            <div class="col-sm-5">
-              <input type="password" name="passWord" class="form-control" id="pwd">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-primary">Sign in</button>
-            </div>
-          </div>
-        </form>
-      </div>  <!-- end of Login Form -->
+        </div>
+
+        <div class="form-group">
+          <label for="pwd" class="col-sm-offset-1 col-sm-3 control-label">Password</label>
+        <div class="col-sm-5">
+          <input type="password" name="passWord" class="form-control" id="pwd">
+        </div>
+        </div>
+
+        <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </div>
+        </div>
+      </form>
+      </div> <!-- end of Login Form -->
+
     </div>    <!-- end of Center Column -->
     <div class="col-sm-3">
     <?php
@@ -84,7 +85,10 @@ include_once "control/global.php";
     </div> <!-- end of third column -->
   </div>  <!-- end of row -->
 </div> <!-- end of container-fluid -->
-	
+
+
+
+
   <!-- Load scripts last, speeds up loading -->	
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
