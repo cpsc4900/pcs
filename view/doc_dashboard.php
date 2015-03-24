@@ -35,7 +35,7 @@ if($UserType != 'Doctor') {
 
   <div class="row" id="header">
     <div class="col-sm-offset-2 col-sm-4"><h2>Patient Care System</h2></div>
-  <div class="col-sm-offset-1 col-sm-2">
+    <div class="col-sm-offset-1 col-sm-2">
       <div id="pcsClock"></div>
     </div>
     <div class="col-sm-2">
@@ -44,8 +44,8 @@ if($UserType != 'Doctor') {
       <span class="glyphicon glyphicon-log-out"></span>
       </button>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="../control/handle_apps.php">Log out</a></li>
-        </ul>
+          <li><a href="#">Log out</a></li>
+       </ul>
     </div>
   </div>  <!-- **** End Of Header *** -->
 
