@@ -3,6 +3,7 @@ var searchByCriteria = "";
 var searchForValue = "";
 var jsonIDRecords = "";
 var jsonMedicalRecords = "";
+var globalCurrentPatientID = "";
 
 /*==============================================================================
 =                          Document Ready Binding                              =
@@ -85,7 +86,7 @@ function errorCheck(searchBy, searchValue) {
 function drawSearchResults() {
   var resultTable = formatRecToTable;
   $('#pat_med_search_results').html(resultTable);
-  $('#pat_table_med_search_results').slideDown("slow");
+  $('#pat_table_med_search_results').show("slow");
 }
 
 /**
@@ -147,7 +148,7 @@ function getJsonMedRecords(patid) {
 // Main Call from selected patient search results
 function selectedPatient(patid) {
   $('#pat_table_med_search_results').slideUp("slow");
-
+  globalCurrentPatientID = patid;
   getJsonMedRecords(patid);
   var numOfAll = countAllergiesInJson();
   var numOfTreats = countTreatmentsInJson();
@@ -203,12 +204,13 @@ function showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds) {
   numOfTreats += numOfAll;                            // set offset
   numOfMeds += numOfTreats;                           // set offset
   var drawTreats = "";
-
   for (var i = numOfAll; i < numOfTreats; i++) {
     drawTreats += "<dt>Diagnosis</dt>";
-    drawTreats += "<dd>" + jsonMedicalRecords[i].Treats + "</dd>";
-    drawTreats += "<dt>Description of Symptons</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Diagnosis + "</dd>";
+    drawTreats += "<dt>Description of Symptons/Diagnosis</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].Description + "</dd>";
+    drawTreats += "<dt>Treatment</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].Treats + "</dd>";
     drawTreats += "<dt>Duration of Treatment</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].Duration + "</dd>";
     drawTreats += "<dt>Date Diagnosed</dt>";
@@ -218,12 +220,20 @@ function showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds) {
     drawTreats += "<hr>";
   }
   for (var i = numOfTreats; i < numOfMeds; i++) {
+    var currentlyOnMed = "No";
+    if (jsonMedicalRecords[i].ActiveRx == 1) {
+      currentlyOnMed = "Yes";
+    }
     drawTreats += "<dt>Medication's Common Name</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].CommonName + "</dd>";
     drawTreats += "<dt>Known Side Effects</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].Side_Effects + "</dd>";
     drawTreats += "<dt>Perscribed Dosage</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].Dosage + "</dd>";
+    drawTreats += "<dt>Times per Day</dt>";
+    drawTreats += "<dd>" + jsonMedicalRecords[i].TimesPerDay + "</dd>";
+    drawTreats += "<dt>Currently taking Medication?</dt>";
+    drawTreats += "<dd>" + currentlyOnMed + "</dd>";
     drawTreats += "<hr>";
   }
   // No data to show

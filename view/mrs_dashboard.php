@@ -70,6 +70,7 @@ if($UserType != 'MRS') {
             <h3>add medical records here</h3>
             <?php include "../model/medical_rec_search_bar.php" ?>
             <?php include "../model/medical_record_model.php" ?>
+            <?php include "../model/treatment_model.php" ?>
           </div>
         </div>    
         
@@ -128,7 +129,7 @@ if($UserType != 'MRS') {
   <script src="../control/handle_new_pat_prim_rec.js"></script>
   <script src="../control/handle_edit_pat_prim_rec.js"></script>
   <script src="../control/handle_medical_rec_search.js"></script>
-  <script src="../control/handle_new_allergy.js"></script>
+  <script src="../control/handle_new_allergy.js"></script> <!-- depends on the script right above -->
 
 
 

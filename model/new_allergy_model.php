@@ -9,7 +9,7 @@
     <div class="modal-dialog incmodalwidth">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close clearFields" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close clearFields jsonUpdate" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <center><h3 class="modal-title" id="newAllergyTitle">New Allergy</h3></center>
         </div>
         <div class="modal-body">
@@ -41,7 +41,7 @@
         </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default clearFields" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default clearFields jsonUpdate" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

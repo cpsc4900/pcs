@@ -362,8 +362,7 @@ function make_query_pat_primary_by_patid($value) {
  * @param  [string] $zip      [description]
  * @return Returns non-zero value upon success, otherwise returns zero
  */
-function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum, 
-                                           $gender, $street, $city, $state, $zip) {
+function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum, $gender, $street, $city, $state, $zip) {
     global $db_conn;
 
     $query = 'UPDATE PATIENT,ADDRESS SET PATIENT.Fname = ?, PATIENT.Lname = ?,
@@ -584,7 +583,7 @@ function get_allergy_records_by_id($pat_id) {
 function get_treatments_records_by_id($pat_id) {
     global $db_conn;
 
-    $query = 'SELECT TreatmentID, Treats, Description, Duration, DateDiagnosed, 
+    $query = 'SELECT TreatmentID, Diagnosis, Treats, Description, Duration, DateDiagnosed, 
               EmployeeID FROM TREATMENT WHERE TreatmentID IN 
               (SELECT TREATMENT_TreatmentID from MED_RECORD_has_TREATMENT WHERE 
               MED_RECORD_RecordID IN (SELECT RecordID from MED_RECORD WHERE PatientID = ?))';
@@ -613,7 +612,7 @@ function get_treatments_records_by_id($pat_id) {
 function get_medication_records_by_id($pat_id) {
     global $db_conn;
 
-    $query = 'SELECT MedicationID, CommonName, Side_Effects, Dosage FROM 
+    $query = 'SELECT MedicationID, CommonName, Side_Effects, Dosage, TimesPerDay, ActiveRx FROM 
               MEDICATION WHERE MedicationID IN (SELECT MEDICATION_MedicationID 
               FROM TREATMENT_has_MEDICATION WHERE 
               TREATMENT_TreatmentID IN (SELECT TreatmentID FROM TREATMENT WHERE 
@@ -638,6 +637,13 @@ function get_medication_records_by_id($pat_id) {
     } 
 }
 
+/**
+ * Searches for a patient record by a certain criteria and the value supplied
+ * for that criteria
+ * @param  [string] $criteria either ssn | lname | patid
+ * @param  [string] $value    the value to search by
+ * @return [array]  returns an array of the matched results
+ */
 function search_for_patient_id($criteria, $value) {
     global $db_conn;   
 
@@ -729,7 +735,15 @@ function get_allergy_id($allergyName) {
 /*==============================================================================
 =                       Set Medical Record Queries                             =
 ==============================================================================*/
-function set_new_patient_allergy($allergyName, $severity, $patid) {
+
+/**
+ * Creates a new medical record with a new allergy. Optional, a pre-existing record
+ * can be used if known, otherwise a new record is created
+ * @param [string] $allergyName the name of the allergy
+ * @param [string] $severity    the severity of the allergy
+ * @param [string] $patid       the patient ID
+ */
+function set_new_patient_allergy($allergyName, $severity, $patid, $rec_id = 0) {
     global $db_conn;
     $allergyID = "";                          
 
@@ -737,10 +751,11 @@ function set_new_patient_allergy($allergyName, $severity, $patid) {
 
     try {
         $statement = $db_conn->prepare($query);
-        $statement->bindValue( 1 , $pat_id);
+        $statement->bindValue( 1 , $patid);
         $statement->execute();
-        $rec_id = $db_conn->lastInsertID();    // ISSUE HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        echo "rec_id = ". $rec_id. "<br/>";
+        if ($rec_id === 0) {
+            $rec_id = $db_conn->lastInsertID();
+        }
         $statement->closeCursor();
     } catch (Exception $e) {
         if($is_dev) {
@@ -751,7 +766,7 @@ function set_new_patient_allergy($allergyName, $severity, $patid) {
     }
 
     $allergyID = set_new_allergy($allergyName, $severity);
-    echo "allergyID = ". $allergyID;
+
     $query = 'INSERT INTO MED_RECORD_has_ALLERGY(RecordID, AllergyID) VALUES(?, ?)';
 
     try {
@@ -770,6 +785,7 @@ function set_new_patient_allergy($allergyName, $severity, $patid) {
     }
 }
 
+// sets a new allergy.
 function set_new_allergy($allergyName, $severity) {
     global $db_conn;
 
@@ -880,8 +896,8 @@ $result = get_allergy_id("Sulfa");
 print $result;
 var_dump($result);*/
 
-$result = set_new_patient_allergy('latex', 'moderate', '1');
+/*$result = set_new_patient_allergy('latex', 'moderate', '1');
 
-echo "result = ". $result;
+echo "result = ". $result;*/
 ?>
 

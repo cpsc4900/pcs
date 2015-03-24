@@ -158,14 +158,14 @@ INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, P
     
    
 /************************ TREATMENT *************************/
-INSERT INTO TREATMENT(Treats, Description, Duration, `Ongoing?`, EmployeeID)
-	SELECT 'Generic Syndrome', 'A generic condition treatment in which 
-    generalities generate recovery.', '1-2 days/weeks', 0, EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
+INSERT INTO TREATMENT(Treats, Diagnosis, Description, Duration, `Ongoing?`, DateDiagnosed, EmployeeID)
+	SELECT 'Medication', 'Generic Syndrome', 'A generic condition treatment in which 
+    generalities generate recovery.', '1-2 days/weeks', 0, '2015-02-21', EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
     
-INSERT INTO TREATMENT(Treats, Description, Duration, `Ongoing?`, EmployeeID)
-	SELECT 'Common Elderly Disorder', 'Medication prescribed to help 
+INSERT INTO TREATMENT(Treats, Diagnosis, Description, Duration, `Ongoing?`, DateDiagnosed, EmployeeID)
+	SELECT 'On-site Therapy', 'Common Elderly Disorder', 'Medication prescribed to help 
     combat ailments to be taken until symptoms are reduced, combined with weekly checkup.', 
-	'2-5 months', 0, EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
+	'2-5 months', 0, '2015-01-01', EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
     
 
 /*********************** MEDICATION *************************/
