@@ -54,7 +54,6 @@ DELETE FROM ADDRESS;
 ALTER TABLE ADDRESS AUTO_INCREMENT = 1;    -- Reset auto increment to 1
 
 
-
 /************************* Adresses ****************************/
 
 INSERT INTO ADDRESS (Street, City, State, Zip)  
@@ -76,7 +75,7 @@ INSERT INTO ADDRESS (Street, City, State, Zip)
 INSERT INTO ADDRESS (Street, City, State, Zip)
 	VALUES('1414 Dead End Drive', 'Plymouth Rock', 'Massachusetts', 90909);
     
-    INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("Ap #904-2418 Dui, Ave","Denny","Tennessee","91790");
+INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("Ap #904-2418 Dui, Ave","Denny","Tennessee","91790");
 INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("424-8442 Sem St.","Boise","Tennessee","37899");
 INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("Ap #317-1726 Sed St.","Levallois-Perret","Tennessee","69396");
 INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("4410 Pharetra, St.","Provo","Tennessee","9210");
@@ -180,71 +179,73 @@ INSERT INTO ADDRESS (Street,City,State,Zip) VALUES ("1583 Massa Rd.","Zwolle","A
 
 /************************* CLINIC ****************************/
 INSERT INTO CLINIC(ClinicName, AddressID) 
-SELECT "Crazy Co.", AddressID 
-FROM ADDRESS WHERE Street = '4019 Lost Oak Drive'
-LIMIT 1;
+VALUES ("Crazy Co.", 1);
 
 INSERT INTO CLINIC(ClinicName, AddressID) 
-SELECT "Mental Health Care Clinic", AddressID 
-FROM ADDRESS WHERE Street = '753 Easy Way'
-LIMIT 1;
+VALUES ("Mental Health Care Clinic", 2);
 
 INSERT INTO CLINIC(ClinicName, AddressID)
-SELECT "Remain Insane", AddressID
-FROM ADDRESS WHERE Street = '1414 Dead End Drive'
-LIMIT 1;
+VALUES ("Remain Insane", 9);
 
 
 /************************* EMPLOYEE ****************************/
-/***Mental Health Care Clinic***/
+				/***Crazy Co.***/
+/**Doctors**/
+INSERT INTO EMPLOYEE (Fname,Lname,UserType,ClinicID) 
+VALUES ("Xander","Fitzgerald","Doctor","1"),("Anne","Cote","Doctor","1"),("Anne","Kidd","Doctor","1");
+/**Nurses**/
+INSERT INTO EMPLOYEE (Fname,Lname,UserType,ClinicID) 
+VALUES ("Phoebe","Lindsey","Nurse","1"),("Isaiah","Deleon","Nurse","1"),("Penelope","Rosales","Nurse","1");
+/**EMs**/
+INSERT INTO EMPLOYEE (Fname,Lname,UserType,ClinicID) 
+VALUES ("Mira","Wright","EM","1"),("Cairo","Schwartz","EM","1"),("Jena","Dennis","EM","1");
+/**ARs**/
+INSERT INTO EMPLOYEE (Fname,Lname,UserType,ClinicID) 
+VALUES ("Liberty","Rivers","AR","1"),("Wade","Woods","AR","1"),("Iliana","Baird","AR","1");
+/**MRSs**/
+INSERT INTO EMPLOYEE (Fname,Lname,UserType,ClinicID) 
+VALUES ("Carlos","Carr","MRS","1"),("Regan","Garrison","MRS","1"),("Wang","Wiley","MRS","1");
+
+
+			/***Mental Health Care Clinic***/
+/**Doctors**/
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Joe", "the Doc", "Doctor", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+VALUES ("Joe", "the Doc", "Doctor", 2 );
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Moe", "the Doc", "Doctor", 2 );
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Doc", "the Doc", "Doctor", 2 );
+/**Nurses**/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Alice", "the Nurse", "Nurse", 2 );
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Jen", "Jenson", "Nurse", 2 );
+/**MRSs**/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Bob", "the MRS", "MRS", 2 );
+/**EMs**/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Jenny", "the EM", "EM", 2 );
+/**ARs**/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Mark", "the AR", "AR", 2 );
+
+			/***Remain Insane***/
+INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
+VALUES ( "Gunther", "el Doctore", "Doctor", 3 );
 
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Moe", "the Doc", "Doctor", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+VALUES ( "Betsy", "la Secretaria", "Nurse", 3 );
 
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Doc", "the Doc", "Doctor", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+VALUES ( "Clint", "Medwreck", "MRS", 3 );
 
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Alice", "the Nurse", "Nurse", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+VALUES ( "Senior", "Boss", "EM", 3 );
 
 INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Bob", "the MRS", "MRS", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
+VALUES ( "Leroy", "Clint's Brother", "AR", 3 );
 
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Jenny", "the EM", "EM", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
-
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Mark", "the AR", "AR", ClinicID 
-FROM CLINIC WHERE ClinicName = "Mental Health Care Clinic";
-
-/***Remain Insane***/
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Gunther", "el Doctore", "Doctor", ClinicID 
-FROM CLINIC WHERE ClinicName = "Remain Insane";
-
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Betsy", "la Secretaria", "Nurse", ClinicID 
-FROM CLINIC WHERE ClinicName = "Remain Insane";
-
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Clint", "Medwreck", "MRS", ClinicID 
-FROM CLINIC WHERE ClinicName = "Remain Insane";
-
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Senior", "Boss", "EM", ClinicID 
-FROM CLINIC WHERE ClinicName = "Remain Insane";
-
-INSERT INTO EMPLOYEE(Fname, Lname, UserType, ClinicID)
-SELECT "Leroy", "Clint's Brother", "AR", ClinicID 
-FROM CLINIC WHERE ClinicName = "Remain Insane";
 
 /***************************PATIENT*************************/
 INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum, PhoneNum) 
@@ -360,19 +361,18 @@ INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,Patient
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Beau","Noel","09-16-63","454730233","Female",108,"1","T2I 2B4","(408) 130-7492");
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Clinton","Lowery","03-27-30","827880947","Female",109,"1","I4A 9R2","(876) 686-1432");
 
-
-
-
    
 /************************ TREATMENT *************************/
 INSERT INTO TREATMENT(Treats, Diagnosis, Description, Duration, `Ongoing?`, DateDiagnosed, EmployeeID)
 	SELECT 'Medication', 'Generic Syndrome', 'A generic condition treatment in which 
-    generalities generate recovery.', '1-2 days/weeks', 0, '2015-02-21', EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
+    generalities generate recovery.', '1-2 days/weeks', 0, '2015-02-21', EmployeeID 
+		FROM EMPLOYEE WHERE Fname = 'Joe' AND ClinicId = 2 AND UserType = Doctor;
     
 INSERT INTO TREATMENT(Treats, Diagnosis, Description, Duration, `Ongoing?`, DateDiagnosed, EmployeeID)
 	SELECT 'On-site Therapy', 'Common Elderly Disorder', 'Medication prescribed to help 
     combat ailments to be taken until symptoms are reduced, combined with weekly checkup.', 
-	'2-5 months', 0, '2015-01-01', EmployeeID FROM EMPLOYEE WHERE Fname = 'Joe';
+	'2-5 months', 0, '2015-01-01', EmployeeID 
+		FROM EMPLOYEE WHERE Fname = 'Joe' AND ClinicId = 2 AND UserType = Doctor;
     
 
 /*********************** MEDICATION *************************/
@@ -384,7 +384,18 @@ INSERT INTO MEDICATION(MedicationID, CommonName, Side_Effects, Dosage, TimesPerD
     
 INSERT INTO MEDICATION(MedicationID, CommonName, Side_Effects, Dosage, TimesPerDay)
 	VALUES(DEFAULT, 'Depression Repression', 'smiles; loss of appetite; cerebral amputation', 100+'mg', 'thrice daily'); 
-    
+/**10 inserts per INSERT, random words are substitute for side effects**/
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Tricor","felis ullamcorper viverra. Maecenas iaculis aliquet diam. Sed",5mg,"1-2 times daily"),("Actos","ac mi eleifend egestas. Sed pharetra,",10mg,"1-2 times daily"),("Amlodipine Besylate","pede. Praesent eu dui.",15mg,"1-2 times daily"),("Cialis","Duis sit amet",20mg,"1-2 times daily"),("Albuterol","ut odio vel est tempor bibendum. Donec felis",25mg,"1-2 times daily"),("Triamterene/Hydrochlorothiazide","Integer vitae nibh. Donec",30mg,"1-2 times daily"),("Tricor","Curabitur consequat, lectus sit",35mg,"1-2 times daily"),("Gabapentin","Proin dolor. Nulla semper tellus id",40mg,"1-2 times daily"),("Suboxone","litora torquent per conubia",45mg,"1-2 times daily"),("Seroquel","ut aliquam iaculis, lacus",50mg,"1-2 times daily");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Lovastatin","nisi. Aenean eget metus. In nec orci.",55mg,"1-3 times daily"),("Simvastatin","tortor, dictum eu, placerat eget, venenatis a, magna. Lorem ipsum",60mg,"1-3 times daily"),("Sertraline HCl","nulla magna, malesuada vel, convallis in, cursus et, eros.",65mg,"1-3 times daily"),("Citalopram HBr","vulputate ullamcorper magna. Sed eu",70mg,"1-3 times daily"),("Omeprazole (Rx)","nisl. Nulla eu",75mg,"1-3 times daily"),("Levothyroxine Sodium","est arcu ac orci. Ut semper pretium neque. Morbi quis",80mg,"1-3 times daily"),("Hydrocodone/APAP","Duis cursus, diam at pretium aliquet, metus urna convallis",85mg,"1-3 times daily"),("Omeprazole (Rx)","libero et tristique pellentesque, tellus sem mollis dui, in sodales",90mg,"1-3 times daily"),("Oxycodone HCl","nulla ante, iaculis nec,",95mg,"1-3 times daily"),("Lexapro","est. Nunc laoreet lectus quis massa. Mauris vestibulum, neque",100mg,"1-3 times daily");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Amlodipine Besylate","scelerisque neque. Nullam",105mg,"2-3 times daily"),("Amoxicillin","arcu. Vestibulum ut eros non enim",110mg,"2-3 times daily"),("Enalapril Maleate","a odio semper cursus. Integer",115mg,"2-3 times daily"),("Famotidine","parturient montes, nascetur ridiculus mus. Proin",120mg,"2-3 times daily"),("Atenolol","dapibus id, blandit at, nisi.",125mg,"2-3 times daily"),("Lantus","lobortis, nisi nibh lacinia orci, consectetuer euismod est arcu",130mg,"2-3 times daily"),("Tamsulosin HCl","in consectetuer ipsum nunc",135mg,"2-3 times daily"),("Lantus","eget laoreet posuere, enim nisl elementum purus, accumsan interdum libero",140mg,"2-3 times daily"),("Furosemide","ultrices posuere cubilia Curae; Donec tincidunt. Donec vitae erat vel",145mg,"2-3 times daily"),("Metformin HCl","at augue id ante dictum cursus.",150mg,"2-3 times daily");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Gianvi","placerat eget, venenatis a, magna. Lorem",155mg,"3-5 times daily, or as needed"),("Nuvaring","non dui nec urna",160mg,"3-5 times daily, or as needed"),("Flovent HFA","Quisque porttitor eros nec tellus. Nunc lectus",165mg,"3-5 times daily, or as needed"),("Nasonex","Fusce mi lorem,",170mg,"3-5 times daily, or as needed"),("Amoxicillin Trihydrate/Potassium Clavulanate","nisl. Quisque fringilla euismod enim. Etiam gravida molestie",175mg,"3-5 times daily, or as needed"),("Warfarin Sodium","egestas. Duis ac arcu. Nunc",180mg,"3-5 times daily, or as needed"),("Azithromycin","lorem ipsum sodales purus, in molestie tortor nibh",185mg,"3-5 times daily, or as needed"),("Prednisone","non sapien molestie orci tincidunt adipiscing. Mauris molestie",190mg,"3-5 times daily, or as needed"),("Alprazolam","In at pede. Cras vulputate velit eu",195mg,"3-5 times daily, or as needed"),("Potassium Chloride","gravida non, sollicitudin",200mg,"3-5 times daily, or as needed");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Omeprazole (Rx)","sit amet lorem semper auctor. Mauris vel turpis. Aliquam adipiscing",205mg,"5-7 times daily, or as needed"),("Omeprazole (Rx)","sociis natoque penatibus et magnis dis parturient montes,",210mg,"5-7 times daily, or as needed"),("Potassium Chloride","luctus felis purus ac tellus. Suspendisse",215mg,"5-7 times daily, or as needed"),("Lisinopril","lacus. Mauris non dui nec urna suscipit nonummy.",220mg,"5-7 times daily, or as needed"),("Fluticasone Propionate","nisi magna sed dui. Fusce",225mg,"5-7 times daily, or as needed"),("Clindamycin HCl","dolor dolor, tempus non, lacinia at, iaculis quis, pede.",230mg,"5-7 times daily, or as needed"),("Paroxetine HCl","lorem, luctus ut, pellentesque eget, dictum placerat,",235mg,"5-7 times daily, or as needed"),("Omeprazole (Rx)","risus. Donec egestas. Duis",240mg,"5-7 times daily, or as needed"),("Triamcinolone Acetonide","egestas a, dui. Cras pellentesque.",245mg,"5-7 times daily, or as needed"),("Prednisone","neque sed dictum eleifend, nunc risus varius orci, in",250mg,"5-7 times daily, or as needed");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Zetia","faucibus ut, nulla. Cras eu tellus",255mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Lexapro","gravida non, sollicitudin a, malesuada id, erat. Etiam",260mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Lisinopril","commodo tincidunt nibh. Phasellus nulla.",265mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Tamsulosin HCl","senectus et netus et malesuada",270mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Loestrin 24 Fe","at pretium aliquet,",275mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Paroxetine HCl","Sed eget lacus. Mauris non dui nec urna suscipit",280mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Vyvanse","feugiat. Sed nec metus",285mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Pantoprazole Sodium","Morbi quis urna. Nunc quis arcu",290mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Nexium","non, bibendum sed, est. Nunc laoreet lectus quis",295mg,"1-3 times daily, not to exceed 2 doses in 6 hours"),("Alendronate Sodium","tempus mauris erat eget ipsum. Suspendisse sagittis. Nullam vitae diam.",300mg,"1-3 times daily, not to exceed 2 doses in 6 hours");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Amlodipine Besylate","porttitor scelerisque neque. Nullam nisl. Maecenas malesuada",305mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Amlodipine Besylate","tincidunt orci quis lectus. Nullam suscipit, est",310mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Amoxicillin","malesuada. Integer id magna et ipsum cursus vestibulum. Mauris",315mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Amlodipine Besylate","luctus sit amet, faucibus ut, nulla. Cras eu tellus",320mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Folic Acid","Proin ultrices. Duis volutpat nunc sit amet",325mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Nuvaring","et ipsum cursus",330mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Hydrochlorothiazide","ligula elit, pretium et, rutrum non, hendrerit id, ante. Nunc",335mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Promethazine HCl","mauris sagittis placerat. Cras dictum ultricies",340mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Hydrocodone/APAP","tincidunt, nunc ac mattis",345mg,"2-4 times daily, not to exceed 3 doses in 12 hours"),("Carisoprodol","sapien. Aenean massa. Integer vitae",350mg,"2-4 times daily, not to exceed 3 doses in 12 hours");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Premarin","est tempor bibendum. Donec felis orci, adipiscing non,",355mg,"8-9 times daily"),("Triamterene/Hydrochlorothiazide","ligula eu enim.",360mg,"8-9 times daily"),("Pantoprazole Sodium","a purus. Duis",365mg,"8-9 times daily"),("Simvastatin","semper auctor. Mauris vel",370mg,"8-9 times daily"),("Levoxyl","Nulla eget metus eu erat semper rutrum. Fusce dolor quam,",375mg,"8-9 times daily"),("Fluconazole","a, enim. Suspendisse",380mg,"8-9 times daily"),("Clindamycin HCl","aliquet, metus urna convallis erat, eget",385mg,"8-9 times daily"),("Fluticasone Propionate","tellus lorem eu metus. In lorem. Donec elementum, lorem ut",390mg,"8-9 times daily"),("Diovan HCT","eget metus eu erat semper rutrum. Fusce dolor quam,",395mg,"8-9 times daily"),("Glipizide","natoque penatibus et magnis dis parturient montes,",400mg,"8-9 times daily");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Vytorin","consectetuer adipiscing elit. Etiam laoreet, libero et tristique pellentesque, tellus",405mg,"3-7 times daily"),("Meloxicam","nec ante blandit viverra. Donec tempus, lorem fringilla ornare",410mg,"3-7 times daily"),("Alprazolam","urna. Nunc quis arcu vel quam",415mg,"3-7 times daily"),("Ciprofloxacin HCl","ac mattis ornare, lectus ante dictum mi, ac",420mg,"3-7 times daily"),("Promethazine HCl","consectetuer ipsum nunc id enim. Curabitur massa.",425mg,"3-7 times daily"),("Cyclobenzaprin HCl","mauris erat eget ipsum. Suspendisse sagittis. Nullam vitae diam. Proin",430mg,"3-7 times daily"),("Alprazolam","Quisque ornare tortor",435mg,"3-7 times daily"),("Carvedilol","convallis in, cursus et, eros. Proin ultrices. Duis volutpat",440mg,"3-7 times daily"),("Clonazepam","dictum. Phasellus in felis. Nulla tempor augue ac",445mg,"3-7 times daily"),("Allopurinol","fames ac turpis egestas. Aliquam fringilla cursus purus. Nullam scelerisque",450mg,"3-7 times daily");
+INSERT INTO MEDICATION (CommonName,Side_Effects,Dosage,TimesPerDay) VALUES ("Fluticasone Propionate","vehicula et, rutrum eu, ultrices sit amet, risus. Donec",455mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Clonazepam","ut mi. Duis risus odio, auctor vitae,",460mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Spiriva Handihaler","vel lectus. Cum sociis natoque penatibus et magnis dis parturient",465mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Amlodipine Besylate","nec quam. Curabitur vel lectus. Cum sociis",470mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Klor-Con M20","Donec felis orci, adipiscing",475mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Furosemide","arcu imperdiet ullamcorper. Duis",480mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Amoxicillin Trihydrate/Potassium Clavulanate","luctus vulputate, nisi sem semper erat, in",485mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Amoxicillin","arcu. Sed et libero.",490mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Nasonex","non enim commodo hendrerit. Donec porttitor tellus non magna. Nam",495mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours"),("Alprazolam","arcu iaculis enim, sit",500mg,"10-15 times daily, not to exceed 4 doses in 6-8 hours");
+
 
 /************************ ALLERGY ***************************/
 INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
@@ -395,6 +406,12 @@ INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
     
 INSERT INTO ALLERGY(AllergyID, AllergyName, Severity)
 	VALUES(DEFAULT, 'Latex', 'medium');
+/**20 inserts per INSERT**/
+INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Ibuprofen (Rx)","mild"),("Carvedilol","medium"),("Singulair","severe"),("Namenda","mild"),("Metoprolol Succinatee","medium"),("Pravastatin Sodium","severe"),("Zolpidem Tartrate","mild"),("Fluticasone Propionate","medium"),("Digoxin","severe"),("Methylprednisolone","mild"),("Hydrochlorothiazide","medium"),("Symbicort","severe"),("Lisinopril","mild"),("Atenolol","medium"),("Fluoxetine HCl","severe"),("Alprazolam","mild"),("Alendronate Sodium","medium"),("Lorazepam","severe"),("Fluoxetine HCl","mild"),("Alendronate Sodium","medium");
+INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Methylprednisolone","severe"),("Tramadol HCl","mild"),("Pravastatin Sodium","medium"),("Nuvaring","severe"),("Hydrochlorothiazide","mild"),("Oxycodone HCl","medium"),("Lisinopril","severe"),("Ranitidine HCl","mild"),("Vyvanse","medium"),("Amphetamine Salts","severe"),("Amitriptyline HCl","mild"),("Citalopram HBR","medium"),("Prednisone","severe"),("Prednisone","mild"),("Proair HFA","medium"),("Oxycontin","severe"),("Lisinopril","mild"),("Amoxicillin Trihydrate/Potassium Clavulanate","medium"),("Folic Acid","severe"),("Alprazolam","mild");
+INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Ibuprofen (Rx)","medium"),("Lisinopril","severe"),("Sertraline HCl","mild"),("Penicillin VK","medium"),("Warfarin Sodium","severe"),("Clonazepam","mild"),("Plavix","medium"),("Namenda","severe"),("Amoxicillin","mild"),("Glipizide","medium"),("Warfarin Sodium","severe"),("Pantoprazole Sodium","mild"),("Amoxicillin","medium"),("Ranitidine HCl","severe"),("Cheratussin AC","mild"),("Atenolol","medium"),("Tamsulosin HCl","severe"),("Sertraline HCl","mild"),("Seroquel","medium"),("Ventolin HFA","severe");
+INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Omeprazole (Rx)","mild"),("Lisinopril/Hydrochlorothiazide","medium"),("Vitamin D (Rx)","severe"),("Doxycycline Hyclate","mild"),("Hydrocodone/APAP","medium"),("TriNessa","severe"),("Tamsulosin HCl","mild"),("Furosemide","medium"),("Gabapentin","severe"),("Atenolol","mild"),("Hydrocodone/APAP","medium"),("Enalapril Maleate","severe"),("Lorazepam","mild"),("Azithromycin","medium"),("Lipitor","severe"),("Cephalexin","mild"),("Potassium Chloride","medium"),("Metformin HCl","severe"),("Lisinopril","mild"),("Metformin HCl","medium");
+INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Ciprofloxacin HCl","severe"),("Klor-Con M20","mild"),("Carisoprodol","medium"),("Carvedilol","severe"),("Tri-Sprintec","mild"),("Oxycodone/APAP","medium"),("Celebrex","severe"),("Hydrochlorothiazide","mild"),("Metformin HCl","medium"),("Penicillin VK","severe"),("Metoprolol Tartrate ","mild"),("Glyburide","medium"),("Warfarin Sodium","severe"),("Glyburide","mild"),("Lorazepam","medium"),("Diazepam","severe"),("Carvedilol","mild"),("Fluoxetine HCl","medium"),("Glyburide","severe"),("Simvastatin","mild");
     
 
 /*********************** APPOINTMENT ************************/
