@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
 *
 * Authenticates a user who is attempting to login.  Login requires comparing a

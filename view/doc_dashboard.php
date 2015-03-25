@@ -68,24 +68,20 @@ if($UserType != 'Doctor') {
       </ul>                                                <!-- End Nav tabs -->
 
   <!-- *****************         Content          *****************  -->
-
   <br> <br>
   <div class="row">
     <div class="col-sm-offset-1 col-sm-11">
-	  <div class="panel panel-default">
-		<div class="panel-heading">
-		  Doctor Daily Appointments
-		</div>
-		<div class="panel-body">
-          <table class="table" id="doctor_appointments_table">
-
-	  	    <!-- Appointment Information Table Here -->
-
-
-		  </table>
-		</div>
+	   <div class="panel panel-default">
+		    <div class="panel-heading">
+		      Doctor Daily Appointments
+		    </div>
+		    <div class="panel-body">
+            <table class="table" id="doctor_appointments_table">
+  	   	    <!-- Appointment Information Table Here -->
+    		    </table>
+  		  </div>
       </div>
-	</div>
+	  </div>
   </div>
 
 </body>

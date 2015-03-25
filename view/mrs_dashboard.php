@@ -1,11 +1,11 @@
 <?php
 session_start();
+include "../control/global.php";
 include "../control/access_control.php";
 include "../control/handle_apps.php";
 
-
 // Make sure user has the right to view this page
-if($UserType != 'MRS') {
+if($_SESSION['UserType'] != 'MRS') {
   header("Location: ../PermissionDenied.php");
   exit();
 }
@@ -20,7 +20,7 @@ if($UserType != 'MRS') {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MRS Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/bootstrap-3.3.4-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/pcs_style.css">
 </head>
 
@@ -67,7 +67,6 @@ if($UserType != 'MRS') {
         <div class="tab-pane active fade in" id="patient_med_rec_view">
           <div class="row" id="spacer"></div>                <!-- Row Spacer -->
           <div class="col-sm-12">
-            <h3>add medical records here</h3>
             <?php include "../model/medical_rec_search_bar.php" ?>
             <?php include "../model/medical_record_model.php" ?>
             <?php include "../model/treatment_model.php" ?>
@@ -124,13 +123,14 @@ if($UserType != 'MRS') {
   <!-- Load scripts last, speeds up loading --> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="../assets/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+
   <script src="../model/global.js"></script>
   <script src="../control/handle_new_pat_prim_rec.js"></script>
   <script src="../control/handle_edit_pat_prim_rec.js"></script>
   <script src="../control/handle_medical_rec_search.js"></script>
   <script src="../control/handle_new_allergy.js"></script> <!-- depends on the script right above -->
-
+  <script src="../control/handle_new_treatment.js"></script>
 
 
 

@@ -9,16 +9,15 @@
 <div class="row" id="spacer"></div>                <!-- Row Spacer -->
 
 <!-- Search bar for Patient Medical Records -->
-<div class="row">                        
-  <form class="well form-search">  
-  <div class="col-sm-7 col-sm-offset-4">
+<div class="row temp-color">                        
+  <div class="col-sm-10 col-sm-offset-2">
 
     <div class="control-group pull-right">
       <div class="controls">
-        <div class="input-append">
+        <div class="input-prepend input-append">
           <div class="btn-group">
             <button id="searchMedCrit" type="button" 
-               class="btn btn-primary dropdown-toggle btn-xs"
+               class="btn btn-info dropdown-toggle btn-xs"
                data-toggle="dropdown">
                Search By <span class="caret"></span>
             </button>
@@ -29,14 +28,14 @@
             </ul>
           </div>
           <input id="searchForPatientMedValue" name="patient_criteria" 
-                class="input-medium search-query" placeholder="Enter Patient Criteria" 
+                class="span2 input-medium search-query" placeholder="Enter Patient Criteria" 
                 type="text" required="">
+          <button id="submit-search-button" class="btn btn-sm" type="button">Search</button>  
         </div>
+          <input id="search-by" type="hidden" name="search_by_value">  
       </div>
     </div>
   </div>
-  <input id="search-by"type="hidden" name="search_by_value">  
-  <button id="submit-search-button" class="btn">Search</button>  
-  </form>
 </div>                               <!-- End Search bar for Patient Records -->
+<div class="row" id="spacer"></div>                <!-- Row Spacer -->
 

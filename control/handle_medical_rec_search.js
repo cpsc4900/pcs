@@ -4,6 +4,7 @@ var searchForValue = "";
 var jsonIDRecords = "";
 var jsonMedicalRecords = "";
 var globalCurrentPatientID = "";
+var xmlhttpSearchRequest = new XMLHttpRequest();
 
 /*==============================================================================
 =                          Document Ready Binding                              =
@@ -26,7 +27,6 @@ $(document).ready(function(){
   $('#submit-search-button').click(function() {
       searchForValue = $('#searchForPatientMedValue').val();
       searchByCriteria = $('#search-by').val();
-
       if (errorCheck(searchByCriteria, searchForValue)) {
         getSearchResults();
         drawSearchResults();
@@ -64,13 +64,30 @@ function updateSearchByHiddenField(searchType) {
 
 // Searches for medical records by either SSN | Lname | PatID
 function getSearchResults() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/search_for_med_recs.php", false);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("searchBy=" + searchByCriteria + "&searchValue=" + 
+    console.log("in search result");
+    xmlhttpSearchRequest.open("POST", "http://pcs/model/search_for_med_recs.php", false);
+    xmlhttpSearchRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttpSearchRequest.send("searchBy=" + searchByCriteria + "&searchValue=" + 
                   searchForValue);
-    jsonIDRecords = JSON.parse(xmlhttp.responseText); 
+    jsonIDRecords = JSON.parse(xmlhttpSearchRequest.responseText); 
 }
+
+/*xmlhttpSearchRequest.onreadystatechange=function(){
+    if (xmlhttpSearchRequest.readyState==4) {
+    }
+}
+*/
+
+// This is the proper way to handle AJAX...Make it work son !!!
+/*xmlhttp.onreadystatechange=function() {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlhttp.send("searchBy=" + searchByCriteria + "&searchValue=" + 
+                      searchForValue);
+        jsonIDRecords = JSON.parse(xmlhttp.responseText); 
+        
+      }
+}*/
 
 // Basic null check for searchByCriteria
 function errorCheck(searchBy, searchValue) {

@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include "db_connect.php";
 include "../model/date_formatter.php";
 include "../model/num_gen.php";

@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "../control/global.php";
 include "../control/access_control.php";
 include "../control/handle_apps.php";
 
@@ -20,7 +21,7 @@ if($UserType != 'AR') {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AR Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/bootstrap-3.3.4-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/pcs_style.css">
 </head>
 
@@ -136,7 +137,8 @@ if($UserType != 'AR') {
   <!-- Load scripts last, speeds up loading --> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="../assets/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+
   <script src="../model/global.js"></script>
   <script src="../model/calendar.js"></script>
   <script src="../control/handle_ar_calendar.js"></script>
