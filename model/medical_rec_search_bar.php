@@ -22,9 +22,9 @@
                Search By <span class="caret"></span>
             </button>
             <ul id="searchByVal" class="dropdown-menu" role="menu">
-               <li id="ssn"><a href="#">SSN</a></li>
-               <li id="lname"><a href="#">Last Name</a></li>
-               <li id="patid"><a href="#">Patient ID</a></li>
+               <li id="ssn"><a tabindex="-1" href="#">SSN</a></li>
+               <li id="lname"><a tabindex="-1" href="#">Last Name</a></li>
+               <li id="patid"><a tabindex="-1" href="#">Patient ID</a></li>
             </ul>
           </div>
           <input id="searchForPatientMedValue" name="patient_criteria" 

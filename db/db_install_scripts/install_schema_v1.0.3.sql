@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `pcs_db`.`TREATMENT` (
   `Treats` TINYTEXT NOT NULL,
   `Description` TEXT NOT NULL COMMENT 'Description of the treatment',
   `Duration` VARCHAR(45) NOT NULL COMMENT 'Duration of the treatment',
-  `Ongoing?` TINYINT(1) NOT NULL COMMENT 'Is it an ongoing treatment?',
+  `isOngoing` TINYINT(1) NOT NULL COMMENT 'Is it an ongoing treatment?',
   `DateDiagnosed` DATE NULL,
   `EmployeeID` INT NOT NULL,
   PRIMARY KEY (`TreatmentID`),

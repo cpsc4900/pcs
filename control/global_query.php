@@ -5,7 +5,7 @@ include "../model/date_formatter.php";
 include "../model/num_gen.php";
 
 /*=============================================================================
-=                         Global Formatting                                   =
+=                         Global Formatting/Queries                            =
 ==============================================================================*/
 
 // get a single value from an array of tuples (key => value)
@@ -49,7 +49,38 @@ function helper_filter_result($result) {
     return $filtered;
 }
 
-/*------------------    End of Global Formatting        ----------------------*/
+/**
+ * Gets the user type from the supplied id number
+ * @param  [type] $id the employee's id to search for
+ * @return string     if the employee does not exist in the database, then returns
+ *                    'EDE', otherwise returns the user type found
+ */
+function get_user_type($id) {
+    global $db_conn;
+    $query = 'SELECT UserType FROM EMPLOYEE WHERE 
+              EmployeeID = ?';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $id);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        $result = pull_single_element('UserType', $result);
+        if ($result == null) {
+            $result = "EDE";
+        }
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving APPOINTMENT: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }     
+}
+
+/*------------------    End of Global Formatting/Queries ----------------------*/
 
 
 /*==============================================================================
@@ -126,7 +157,7 @@ function get_address_id($street, $city, $state, $zip) {
 function set_new_address($stAdd, $city, $state, $zip) {
     global $db_conn;
 
-    $query = 'INSERT INTO ADDRESS (Street, City, State, Zip)
+    $query = 'INSERT INTO ADDRESS (Street, City, State, Zip) 
               VALUES(?, ?, ?, ?)';
 
     try {
@@ -137,7 +168,7 @@ function set_new_address($stAdd, $city, $state, $zip) {
         $statement->bindValue( 4 , $zip);
         $statement->execute();
         $statement->closeCursor();
-        return $list_of_docs;
+        return $statement->lastInsertID();
     } catch (Exception $e) {
         if($is_dev) {
             echo "<p>Error inseting Address: 
@@ -160,8 +191,7 @@ function set_new_address($stAdd, $city, $state, $zip) {
  * @param [string] $patZip    
  * @param [string] $patState  
  */
-function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk, 
-                            $patBday, $patStAdd, $patCity, $patState, $patZip) {
+function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk, $patBday, $patStAdd, $patCity, $patState, $patZip) {
     global $db_conn;
 
     // add new address, and get the addressID
@@ -430,7 +460,33 @@ function get_list_of_doctor_names_and_ids($clinic_id = null) {
         return $list_of_docs;
     } catch (Exception $e) {
         if($is_dev) {
-            echo "<p>Error retrieving APPOINTMENT: 
+            echo "<p>Error retrieving Doctor: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }
+}
+/**
+ * Returns an array of all the Doctors
+ * 
+ * @return [array] a list of doctors.
+ */
+function get_list_of_all_doctor_names_and_ids() {
+    global $db_conn;
+
+    $query = 'SELECT Fname, Lname, EmployeeID FROM EMPLOYEE WHERE 
+              UserType = \'Doctor\'';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $list_of_docs = helper_filter_result($result);                 // filter
+        return $list_of_docs;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Doctor: 
              $e </p>";
         }   
         return 0;  // error 
@@ -538,10 +594,25 @@ function get_full_name_of_patient($pat_id) {
     }    
 }
 
+/**
+ * Returns true if $doc_id is the employee of id of a 'Doctor' employee UserType
+ * @param  [string | int]  $doc_id the id of the employee in question
+ * @return boolean         true if $doc_id is of UserType 'Doctor', otherwise 
+ *                         returns false.
+ */
+function is_doctor($doc_id) {
+    $usr_type = get_user_type($doc_id);
+    if ($usr_type == 'Doctor') {
+        return true;
+    } else {
+        return false;
+    } 
+}
+
 /*------------------     End of Doc and Nurse Queries  -----------------------*/
 
-/*==============================================================================
-=                      Medical Record Related Queries                          =
+/*=========================================================================
+=                      Get Medical Record Related Queries                          =
 ==============================================================================*/
 
 // NOTE: These nested selects are not effecient, should use JOIN, but no time
@@ -730,10 +801,10 @@ function get_allergy_id($allergyName) {
     } 
 }
 
-/*------------------     End of Medical Record Queries  -----------------------*/
+/*----------------- End of Get Medical Record Queries  -----------------------*/
 
-/*==============================================================================
-=                       Set Medical Record Queries                             =
+/*==============================================================================   
+=                       Set Allergy Records                               =
 ==============================================================================*/
 
 /**
@@ -810,7 +881,315 @@ function set_new_allergy($allergyName, $severity) {
 
 
 
-/*--------------   End of Set Medical Record Queries            --------------*/
+/*--------------      End of Set Allergy Records                --------------*/
+
+/*==============================================================================
+=                         Set Treatment Records                                =
+==============================================================================*/
+
+
+
+
+// ========== New Therapy Treatment Handlers
+/**
+ * Sets a new treatment record of type therapy.
+ * @param [type] $patid           [description]
+ * @param [type] $diagnosis       [description]
+ * @param [type] $descript        [description]
+ * @param [type] $therapyDescript [description]
+ * @param [type] $therapyDuration [description]
+ */
+function set_new_therapy_record($patid, $diagnosis, $descript, $therapyDescript, $therapyDuration, $employeeID) {
+    global $db_conn;
+
+    $medRecID = get_med_record_id($patid);
+    if ($medRecID == 0) {                           // create new med rec if DNE
+        $medRecID = create_new_med_record($patid);
+    }
+    // get current date
+    $date = date('y-m-d');
+
+    // format therapy description
+    $therapyDescript = parse_therapy_description($therapyDescript);
+
+    $query = 'INSERT INTO TREATMENT(Diagnosis, Treats, Description, Duration, isOngoing,
+              DateDiagnosed, EmployeeID) VALUES(?, ?, ?, ?, ?, ?, ?)';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $diagnosis);
+        $statement->bindValue( 2 , $therapyDescript);
+        $statement->bindValue( 3 , $descript);
+        $statement->bindValue( 4 , $therapyDuration);
+        $statement->bindValue( 5 , '1');
+        $statement->bindValue( 6 , $date);
+        $statement->bindValue( 7 , $employeeID);
+        $statement->execute();
+        $statement->closeCursor();
+        
+        $treatmentID = get_last_treat_id_added();
+
+        // update MED_RECORD_has_TREATMENT table
+        $isSuccess = update_med_rec_has_treat($medRecID, $treatmentID);
+
+        if ($isSuccess != 0)  {
+            return $treatmentID;
+        } else {
+            return 0;
+        }
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new Therapy Treatment: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }    
+}
+
+// private
+function get_last_treat_id_added() {
+    global $db_conn;
+
+    $query = 'SELECT MAX(TreatmentID) FROM TREATMENT';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);
+        $treatID = 0;
+        foreach ($result as $entry) {
+            foreach ($entry as $key => $value) {
+                if ($key == 'MAX(TreatmentID)') {
+                    $treatID = $value;
+                }
+            }
+        }
+        return $treatID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error getting last TreatmentID: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }  
+}
+// private
+function update_med_rec_has_treat($medRecID, $treatID) {
+    global $db_conn;
+
+    $query = 'INSERT INTO MED_RECORD_has_TREATMENT(MED_RECORD_RecordID, 
+              TREATMENT_TreatmentID) VALUES(?, ?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $medRecID);
+        $statement->bindValue( 2 , $treatID);
+        $statement->execute();
+        $statement->closeCursor();
+        return 1;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error updating MED_RECORD_has_TREATMENT: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }  
+}
+
+// private
+function parse_therapy_description($therapyDescript) {
+    $prepend = "Suggested Therapy: ";
+    return $prepend . $therapyDescript;
+}
+
+// ---------- End of New Therapy Treatment Handlers
+
+// ========== New Referral Treatment Handlers
+
+/**
+ * Sets a new referral record in the TREATMENT Table
+ * @param [string | int] $patid      [description]
+ * @param [string] $diagnosis  [description]
+ * @param [string] $descript   [description]
+ * @param [string | int] $docID      [description]
+ * @param [string] $docFname   [description]
+ * @param [string] $docLname   [description]
+ * @param [string | int] $employeeID [description]
+ */
+function set_new_referral_record($patid, $diagnosis, $descript, $docID, $docFname, $docLname, $employeeID) {
+    global $db_conn;
+
+    $medRecID = get_med_record_id($patid);
+
+    if ($medRecID == 0) {                           // create new med rec if DNE
+        $medRecID = create_new_med_record($patid);
+    }
+
+    // get current date
+    $date = date('y-m-d');
+
+    // parse doctor referral info for displaying purposes
+    $docReferral = parse_doc_referral($docFname, $docLname);
+    echo $docReferral;
+
+    $query = 'INSERT INTO TREATMENT(Diagnosis, Treats, Description, Duration, isOngoing,
+              DateDiagnosed, EmployeeID) VALUES(?, ?, ?, ?, ?, ?, ?)';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $diagnosis);
+        $statement->bindValue( 2 , $docReferral);
+        $statement->bindValue( 3 , $descript);
+        $statement->bindValue( 4 , "n/a");
+        $statement->bindValue( 5 , '1');
+        $statement->bindValue( 6 , $date);
+        $statement->bindValue( 7 , $employeeID);
+        $statement->execute();
+        $statement->closeCursor();
+        
+        $treatmentID = get_last_treat_id_added();
+        update_med_rec_has_treat($medRecID, $treatmentID);
+        return $treatmentID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new Therapy Treatment: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }    
+}
+
+// private: formats a doctor referral for the Treats field in TREATMENT
+function parse_doc_referral($docFname, $docLname) {
+    $format_string = "Referred to Doctor: ";
+    $format_string = $format_string . $docLname . ", " . $docFname;
+    return $format_string; 
+}
+
+// ---------- New Referral Treatment Handlers
+
+// ========== New Medication Treatment Handlers
+
+function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sideEff, 
+                                           $dosage, $timesPerDay, $docID, $employeeID) {
+    global $db_conn;
+
+    $medRecID = get_med_record_id($patid);
+    if ($medRecID == 0) {                           // create new med rec if DNE
+        $medRecID = create_new_med_record($patid);
+    }
+    // get current date
+    $date = date('y-m-d');
+
+    // format medication description
+    $therapyDescript = parse_therapy_description($medName);
+
+    $query = 'INSERT INTO TREATMENT(Diagnosis, Treats, Description, Duration, isOngoing,
+              DateDiagnosed, EmployeeID) VALUES(?, ?, ?, ?, ?, ?, ?)';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $diagnosis);
+        $statement->bindValue( 2 , $therapyDescript);
+        $statement->bindValue( 3 , $descript);
+        $statement->bindValue( 4 , $therapyDuration);
+        $statement->bindValue( 5 , '1');
+        $statement->bindValue( 6 , $date);
+        $statement->bindValue( 7 , $employeeID);
+        $statement->execute();
+        $statement->closeCursor();
+        
+        $treatmentID = get_last_treat_id_added();
+
+        // update MED_RECORD_has_TREATMENT table
+        $isSuccess = update_med_rec_has_treat($medRecID, $treatmentID);
+
+        if ($isSuccess != 0)  {
+            return $treatmentID;
+        } else {
+            return 0;
+        }
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new Therapy Treatment: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }        
+}
+
+function parse_med_for_treatment_descript($medName) {
+    return "Medication perscribed: " . $medName;
+}
+
+// ---------- End of New Medication Treatment Handlers
+
+
+
+/**
+ * Creates a new record MED_RECORD
+ * @param  [type] $patID the patient's id to create a new medical record
+ * @return the medical record's id
+ * @precondition should perform a search for a pre-existing medical record first
+ *               however, this function allows for "fail-safe".  In other words, 
+ *               a patient can have multiple med records OR a patient can have a 
+ *               single med record that all treatments and allergies point to.
+ */
+function create_new_med_record($patID) {
+    global $db_conn;
+
+    $query = 'INSERT INTO MED_RECORD(PatientID) VALUES(?)';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $patID);
+        $statement->execute();
+        $recordID = $db_conn->lastInsertID();
+        $statement->closeCursor();
+        return $recordID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new medical record: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }  
+}
+
+// todo MOVE ME
+/**
+ * Gets the medical record id belonging to a patient.  If no medical record
+ * exsist, returns 0;
+ * @param  [int] $patID the patient's id to search for medical record ids for
+ * @return [int] returns one of the medical record ids belonging to the patient
+ *               if it exists, otherwise returns 0;
+ */
+function get_med_record_id($patID) {
+    global $db_conn;
+
+    $query = 'SELECT RecordID from MED_RECORD WHERE PatientID = ?';
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $patID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);
+        $result = $result[0];
+        $result = pull_single_element("RecordID", $result);
+        if (is_null($result)) $result = 0;
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Med Record ID: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }     
+}
+/*-----               End of Set Treatment Records                      ------*/
 
 
 
@@ -899,5 +1278,24 @@ var_dump($result);*/
 /*$result = set_new_patient_allergy('latex', 'moderate', '1');
 
 echo "result = ". $result;*/
+//var_dump(json_encode(get_list_of_all_doctor_names_and_ids()));
+
+//
+/*
+$result = create_new_med_record(1);
+echo $result;*/
+/*$date = date('y-m-d');
+echo $date;*/
+/*
+$result = get_last_treat_id_added();
+$result = set_new_therapy_record('1', "Cray-Cray", "foot fetish", "Wear Socks", 
+                                "1-2 Years");
+
+
+var_dump($result);*/
+/*
+$result = parse_doc_referral("Joe", "the Doc");
+
+echo $result;*/
 ?>
 

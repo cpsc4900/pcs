@@ -64,7 +64,6 @@ function updateSearchByHiddenField(searchType) {
 
 // Searches for medical records by either SSN | Lname | PatID
 function getSearchResults() {
-    console.log("in search result");
     xmlhttpSearchRequest.open("POST", "http://pcs/model/search_for_med_recs.php", false);
     xmlhttpSearchRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttpSearchRequest.send("searchBy=" + searchByCriteria + "&searchValue=" + 
@@ -72,11 +71,6 @@ function getSearchResults() {
     jsonIDRecords = JSON.parse(xmlhttpSearchRequest.responseText); 
 }
 
-/*xmlhttpSearchRequest.onreadystatechange=function(){
-    if (xmlhttpSearchRequest.readyState==4) {
-    }
-}
-*/
 
 // This is the proper way to handle AJAX...Make it work son !!!
 /*xmlhttp.onreadystatechange=function() {
@@ -186,7 +180,7 @@ function showPatientGeneralInfo() {
   // format name
   var formattedName = formatPatName(jsonMedicalRecords[0].Fname, 
                                     jsonMedicalRecords[0].Lname);
-
+  $('#gen-info-patID').val(jsonMedicalRecords[0].PatientID);
   $('#gen-info-patName').html(formattedName);
   $('#gen-info-ssn').html("<b>SSN:</b>  " + jsonMedicalRecords[0].SSN);
   $('#gen-info-birthday').html("<b>Birthdate:</b>  " +  
@@ -200,6 +194,10 @@ function showPatientGeneralInfo() {
   $("#gen-info-rest-of-address").html(formatAddress());
 } 
 
+/************************************
+ * Fills Patient's Known Allergies in medical_record_model.php
+ * 
+ */
 function showPatientKnownAllergies(numOfAll) {
   if (numOfAll == 0) {   // no allergies
     $('#patient-known-allergies').html("<h5>No known Allergies</h5>");
@@ -216,6 +214,11 @@ function showPatientKnownAllergies(numOfAll) {
   $('#patient-known-allergies').html(drawAllergies);
 }
 
+
+/************************************
+ * Fills Patient's Previous Treatments in medical_record_model.php
+ * 
+ */
 function showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds) {
   numOfAll += 1;                                     // compensate for id record
   numOfTreats += numOfAll;                            // set offset
@@ -232,7 +235,7 @@ function showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds) {
     drawTreats += "<dd>" + jsonMedicalRecords[i].Duration + "</dd>";
     drawTreats += "<dt>Date Diagnosed</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].DateDiagnosed + "</dd>";
-    drawTreats += "<dt>ID of Diagnosing Doctor or Nurse</dt>";
+    drawTreats += "<dt>Record Submitted by (Employee ID)</dt>";
     drawTreats += "<dd>" + jsonMedicalRecords[i].EmployeeID + "</dd>";
     drawTreats += "<hr>";
   }
@@ -267,6 +270,7 @@ function formatPatName(fname, lname) {
   return "<b>Name:</b>    " + lname + ", " + fname;
 }
 
+// formats the address
 function formatAddress() {
   var returnAddress ="";
   returnAddress = jsonMedicalRecords[0].City + ", " + 
@@ -310,7 +314,7 @@ function countMedicationsInJson() {
 /*==========  End Med Record Display Helper Functions  ==========*/
 
 
-// for testing
+// ----- for testing
 /*function testPrintJson() {
   console.log(jsonMedicalRecords[0].Fname);
   var numOfAll = countAllergiesInJson();

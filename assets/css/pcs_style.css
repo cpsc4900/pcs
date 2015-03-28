@@ -102,5 +102,7 @@ button.delApp {
     background-color: #fff;
 }
 
-
+.hidden {
+  display: none;
+}
 

@@ -11,7 +11,7 @@ Your file path will be different.
 
 > supply password
 
-mysql> \. /var/www/pcs/db/db_install_scripts/install_schema_v1.0.0.sql
+mysql> \. /var/www/pcs/db/db_install_scripts/install_schema_v1.0.3.sql
 
 ```
 Note: The first install should not produce any errors.  As Mike edits the database, the install script needs to be updated.  So, two options:

@@ -54,6 +54,7 @@
       </div>
       <div id="collapseOne" class="panel-collapse collapse in">
          <div class="panel-body">
+          <input id="gen-info-patID" name="gen-info-patID" hidden>
             <!-- General Info Here -->
             <p id="gen-info-patName"></p>
             <p id="gen-info-ssn"></p>

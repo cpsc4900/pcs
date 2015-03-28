@@ -1,6 +1,9 @@
 <?php
 
-
+/**
+ * Relies on handle_new_treatment.js
+ *           handle_new_treatment.php
+ */
 ?>
 
 
@@ -43,11 +46,13 @@
                  </div>
              </div>
             </div>
+            <div class="row" id="spacer"></div>                <!-- Row Spacer -->
 
-            <div id="main-medication-form-group"> <!-- Medication Form Group -->
+             <!-- Medication Form Group -->
+            <div id="main-medication-form-group">
                 <div class="form-group">
                     <label for="medCommonName"class="col-sm-4 control-label">Name of Medication:</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
                         <input type="text" id="medCommonName" class="form-control input-sm" name="medCommonName" placeholder="name">
                     </div>
                 </div>
@@ -65,32 +70,94 @@
                             <span class="input-group-addon">mg</span>
                         </div>
                     </div>
-                    <label for="timesPerDay"class="control-label">Per Day</label>
                     <div class="col-sm-2">
-                        <input type="text" id="timesPerDay" class="form-control input-sm" name="timesPerDay" placeholder="per day">
+                        <div class="input-group">
+                        <select id="timesPerDay">
+                            <option value="1">once</option>
+                            <option value="2">twice</option>
+                            <option value="3">three times</option>
+                            <option value="4">four times</option>
+                            <option value="5">five times</option>
+                            <option value="6">six times</option>
+                            <option value="7">seven times</option>
+                            <option value="8">eight times</option>
+                            <option value="9">nine times</option>
+                            <option value="10">ten times</option>
+                            <option value="11">11 times</option>
+                            <option value="12">12 times</option>
+                        </select>
+                        <span class="input-group-addon">per day</span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="prescribingDoc"class="col-sm-4 control-label">Perscribing Doctor ID</label>
                     <div class="col-sm-2">
-                        <input type="text" id="prescribingDoc" class="form-control input-sm" name="prescribingDoc" placeholder="name">
+                        <input type="text" id="prescribingDoc" class="form-control input-sm" name="prescribingDoc" placeholder="##">
                     </div>
                     <!-- TODO Add Doctor ID look up -->
                 </div>
             </div>                                <!-- Medication Form Group -->
 
 
+            <!-- End of Doctor Referral -->
+            <div id="main-referral-form-group">
+                <div class="control-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                    <label for="docReferral" class="control-label">Select Doctor</label>
+                     <div class="btn-group">
+                        <button id="doc-ref-btn"class="btn dropdown-toggle" data-toggle="dropdown">
+                        Select
+                        <span class="caret"></span>
+                        </button>
+                        <ul id="doc-referral-list" class="dropdown-menu">
+                            <!-- filled by handle_new_treatment.js -->
+                        </ul>
+                     </div>
+                    </div>
+                </div>
+                <div class="row" id="spacer"></div>                <!-- Row Spacer -->
+               
+                <div class="form-group">
+                    <label for="docRefFname"class="col-sm-4 control-label">First Name:</label>
+                    <div class="col-sm-3">
+                            <input type="text" id="docRefFname" class="form-control span1 input-sm" name="docRefFname" placeholder="name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="docRefLname"class="col-sm-4 control-label">Last Name:</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="docRefLname" class="form-control input-sm" name="docRefLname" placeholder="name">
+                    </div>
+                </div>
+                <input id="docRefID" name="docRefID" hidden>  
+            </div>                  <!-- End of Doctor Referral -->
 
+            <!-- Therapy Form -->
+            <div id="main-therapy-form-group">
+                <div class="form-group">
+                    <label for="therapyDescript" class="col-sm-4 control-label">Brief Description of Therapy:</label>
+                    <div class="col-sm-4">
+                        <textarea class="form-control input-sm" rows="5" id="therapyDescript"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="therapyDuration"class="col-sm-4 control-label">Anticapted Duration of Therapy:</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="therapyDuration" class="form-control input-sm" name="therapyDuration" placeholder="in weeks or months">
+                    </div>
+                </div>
+            </div>                  <!-- End of Therapy Form -->
 
             <div class="form-group">
                 <div class="col-sm-3 col-sm-offset-7">
-                    <button type="button" class="btn btn-primary btn-sm" id="setValueButton">Add New Treatment</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="submitNewTreat">Add New Treatment</button>
                 </div>
             </div>
         </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default clearFields jsonUpdate" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default clearFields" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
