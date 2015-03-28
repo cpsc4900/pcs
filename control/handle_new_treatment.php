@@ -43,8 +43,29 @@ if (isset($_POST['getDocList']) && ($_POST['getDocList'] == "true")) {
         exit();
 
     // ------------- New Medication Treatment
-    } else if (isset($_POST['medName'])) {                  
+    } else if (isset($_POST['medCommonName'])) {                  
+        $medName = $_POST['medCommonName'];
+        $sideEffect = $_POST['sideEffects'];
+        $dosage = $_POST['dosage'];
+        $timesPerDay = $_POST['timesPerDay'];
+        $docID = $_POST['docID'];
+        $employeeID = $_SESSION['EmployeeID'];
 
+        // make sure the docID is a valid doctor's id
+        $isDoc = is_doctor($docID);
+        if (!$isDoc) {
+            echo "err:10";
+            exit();
+        }
+        $result = set_new_medication_record($patID, $diagnosis, $description, 
+                                            $medName, $sideEffect, $dosage, 
+                                            $timesPerDay, $docID, $employeeID);
+        if ($result != 0) { 
+            echo "success";
+        } else {
+            echo "err:09";
+        }
+        exit();
     // ------------- Section Patient Treatment
     } else if (isset($_POST['section'])) {                  // FOR DOCTOR USE ONLY !!!
 
@@ -63,6 +84,8 @@ if (isset($_POST['getDocList']) && ($_POST['getDocList'] == "true")) {
  * 13: incorrect formatted new treatment submission
  * 12: Therapy Treatment specific error
  * 11: Doctor referral Treatment specific error
+ * 10: Invalid doctor ID supplied to new Medication Treatment
+ * 09: Medication Treatment Submission Error
  */
 
 

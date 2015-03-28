@@ -36,13 +36,14 @@ $(document).ready(function(){
     // Handles new Treatment submission
     $('#submitNewTreat').click(function(event) {
         currentPatientID = $('#gen-info-patID').val();
-        console.log(currentPatientID);
+        console.log("currPatientID=" + currentPatientID);
+        console.log("treatType=" + treatType);
         switch(treatType) {
             case "therapy":
                 submitNewTherapyTreat();
                 break;
             case "medication":
-                submitNewMedicationTreat()
+                submitNewMedicationTreat();
                 break;
             case "doc-referral":
                 submitNewReferralTreat();
@@ -122,7 +123,7 @@ function submitNewReferralTreat() {
     var docLname = $('#docRefLname').val();
 
     if (docFname == "" || docLname == "") {
-        alert("Please fill out all fields with valid values");
+        alert("from refPlease fill out all fields with valid values");
         return;        
     }
     sendReq += "&treats=Referral";
@@ -142,7 +143,7 @@ function submitNewTherapyTreat() {
     // make sure we have some values
     if ((descript == "" || typeof descript != 'string')  || 
         (duration == "" || typeof duration != 'string')) {
-        alert("Please fill out all fields with valid values");
+        alert("from therapy Please fill out all fields with valid values");
         return;
     }
     sendReq += "&therapy=\"true\"";
@@ -158,6 +159,10 @@ function submitNewMedicationTreat() {
     var dosage = $('#dosage').val();
     var timesPerDay = $('#timesPerDay').val();
     var docID = $('#prescribingDoc').val();
+    console.log("name=" + name);
+    console.log("sideEffects=" + sideEffects);
+    console.log("dosage=" + dosage);
+    console.log("docID=" + docID);
 
     if(name == "" || sideEffects == "" || dosage == "" || docID == "") {
         alert("Please fill out all fields with valid values");
@@ -168,7 +173,7 @@ function submitNewMedicationTreat() {
     sendReq += "&dosage=" + dosage;
     sendReq += "&timesPerDay=" + timesPerDay;
     sendReq += "&docID=" + docID;
-    submitNewTherapyTreat(sendReq);
+    updateTreatmentTable(sendReq);
 }
 
 function generalSubmissionInfo() {

@@ -1,6 +1,7 @@
 <?php
 
 include "db_connect.php";
+include "handle_activity_log.php";
 include "../model/date_formatter.php";
 include "../model/num_gen.php";
 
@@ -79,6 +80,9 @@ function get_user_type($id) {
         return 0;  // error 
     }     
 }
+
+
+
 
 /*------------------    End of Global Formatting/Queries ----------------------*/
 
@@ -168,7 +172,7 @@ function set_new_address($stAdd, $city, $state, $zip) {
         $statement->bindValue( 4 , $zip);
         $statement->execute();
         $statement->closeCursor();
-        return $statement->lastInsertID();
+        return $db_conn->lastInsertID();
     } catch (Exception $e) {
         if($is_dev) {
             echo "<p>Error inseting Address: 
@@ -215,6 +219,8 @@ function set_new_pat_record($fname, $lastName, $patSSN, $phoneNum, $genderChk, $
         $statement->bindValue( 7 , $patNum);
         $isInserted = $statement->execute();
         $statement->closeCursor();
+        $lastInsert = $db_conn->lastInsertID();
+        update_activity_log('PrimaryNew', $_SESSION['EmployeeID'], $lastInsert);
         if ($isInserted) {
             return 1;   // TODO Return new patient ID for adding new appointment
         } else {
@@ -416,6 +422,8 @@ function update_pat_record($patid, $fname, $lname, $ssn, $bday, $phoneNum, $gend
 
         $result = $statement->execute();
         $statement->closeCursor();
+        $lastUpate = $db_conn->lastInsertID();
+        update_activity_log('PrimaryEdit', $_SESSION['EmployeeID'], $lastUpate);
         return $result;
     } catch (Exception $e) {
         if($is_dev) {
@@ -846,6 +854,7 @@ function set_new_patient_allergy($allergyName, $severity, $patid, $rec_id = 0) {
         $statement->bindValue( 2 , $allergyID);
         $statement->execute();
         $statement->closeCursor();
+        update_activity_log('AllergyNew', $_SESSION['EmployeeID'], $allergyID);
         return "success";
     } catch (Exception $e) {
         if($is_dev) {
@@ -855,6 +864,7 @@ function set_new_patient_allergy($allergyName, $severity, $patid, $rec_id = 0) {
         return "failed";  // error 
     }
 }
+
 
 // sets a new allergy.
 function set_new_allergy($allergyName, $severity) {
@@ -928,6 +938,9 @@ function set_new_therapy_record($patid, $diagnosis, $descript, $therapyDescript,
         $statement->closeCursor();
         
         $treatmentID = get_last_treat_id_added();
+
+        // update activity log
+        update_activity_log('TreatmentNew', $_SESSION['EmployeeID'], $treatmentID);
 
         // update MED_RECORD_has_TREATMENT table
         $isSuccess = update_med_rec_has_treat($medRecID, $treatmentID);
@@ -1032,7 +1045,6 @@ function set_new_referral_record($patid, $diagnosis, $descript, $docID, $docFnam
 
     // parse doctor referral info for displaying purposes
     $docReferral = parse_doc_referral($docFname, $docLname);
-    echo $docReferral;
 
     $query = 'INSERT INTO TREATMENT(Diagnosis, Treats, Description, Duration, isOngoing,
               DateDiagnosed, EmployeeID) VALUES(?, ?, ?, ?, ?, ?, ?)';
@@ -1050,6 +1062,9 @@ function set_new_referral_record($patid, $diagnosis, $descript, $docID, $docFnam
         $statement->closeCursor();
         
         $treatmentID = get_last_treat_id_added();
+
+        // update activity log
+        update_activity_log('TreatmentNew', $_SESSION['EmployeeID'], $treatmentID);
         update_med_rec_has_treat($medRecID, $treatmentID);
         return $treatmentID;
     } catch (Exception $e) {
@@ -1076,15 +1091,16 @@ function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sid
                                            $dosage, $timesPerDay, $docID, $employeeID) {
     global $db_conn;
 
-    $medRecID = get_med_record_id($patid);
+    $medRecID = get_med_record_id($patID);
     if ($medRecID == 0) {                           // create new med rec if DNE
         $medRecID = create_new_med_record($patid);
     }
+
     // get current date
     $date = date('y-m-d');
 
     // format medication description
-    $therapyDescript = parse_therapy_description($medName);
+    $medTreat = parse_med_for_treatment_descript($medName, $docID);
 
     $query = 'INSERT INTO TREATMENT(Diagnosis, Treats, Description, Duration, isOngoing,
               DateDiagnosed, EmployeeID) VALUES(?, ?, ?, ?, ?, ?, ?)';
@@ -1092,9 +1108,9 @@ function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sid
     try {
         $statement = $db_conn->prepare($query);
         $statement->bindValue( 1 , $diagnosis);
-        $statement->bindValue( 2 , $therapyDescript);
+        $statement->bindValue( 2 , $medTreat);
         $statement->bindValue( 3 , $descript);
-        $statement->bindValue( 4 , $therapyDuration);
+        $statement->bindValue( 4 , "n/a");
         $statement->bindValue( 5 , '1');
         $statement->bindValue( 6 , $date);
         $statement->bindValue( 7 , $employeeID);
@@ -1103,8 +1119,16 @@ function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sid
         
         $treatmentID = get_last_treat_id_added();
 
+        // update activity log
+        update_activity_log('TreatmentNew', $_SESSION['EmployeeID'], $treatmentID);
+        
+        $medicationID = add_new_medication($medName, $sideEff, $dosage, $timesPerDay);
+
         // update MED_RECORD_has_TREATMENT table
-        $isSuccess = update_med_rec_has_treat($medRecID, $treatmentID);
+        update_med_rec_has_treat($medRecID, $treatmentID);
+
+        // update TREATMENT_has_MEDICATION
+        $isSuccess = update_treatment_has_med($treatmentID, $medicationID, $medName);
 
         if ($isSuccess != 0)  {
             return $treatmentID;
@@ -1120,8 +1144,107 @@ function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sid
     }        
 }
 
-function parse_med_for_treatment_descript($medName) {
-    return "Medication perscribed: " . $medName;
+// private: parses medictaion treatment for TREATMENT table's Treats field
+function parse_med_for_treatment_descript($medName, $docID) {
+    $returnString = "Medication perscribed: " . $medName;
+    $returnString = $returnString . "\n Prescribing Doctor ID: " . $docID;
+    return $returnString;
+}
+
+// private
+function get_last_medication_id_added() {
+    global $db_conn;
+
+    $query = 'SELECT MAX(MedicationID) FROM MEDICATION';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);
+        $medID = 0;
+        foreach ($result as $entry) {
+            foreach ($entry as $key => $value) {
+                if ($key == 'MAX(MedicationID)') {
+                    $medID = $value;
+                }
+            }
+        }
+        return $medID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error getting last MedicationID: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    } 
+
+}
+/**
+ * Adds new medication record and returns the MedicationID of the field added.
+ * @param [type]  $name    [description]
+ * @param [type]  $sideEff [description]
+ * @param [type]  $dosage  [description]
+ * @param [type]  $perDay  [description]
+ * @param integer $active  [description]
+ */
+function add_new_medication($name, $sideEff, $dosage, $perDay, $active=1) {
+    global $db_conn;
+
+    $query = 'INSERT INTO MEDICATION(CommonName, Side_Effects, Dosage, 
+              TimesPerDay, ActiveRx) VALUES(?, ?, ?, ?, ?)';
+    
+    $perDay = $perDay . " per day";
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $name);
+        $statement->bindValue( 2 , $sideEff);
+        $statement->bindValue( 3 , $dosage);
+        $statement->bindValue( 4 , $perDay);
+        $statement->bindValue( 5 , $active);
+        $statement->execute();
+        $statement->closeCursor();
+        
+        $medID = get_last_medication_id_added();
+        return $medID;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting new MEDICATION: 
+             $e </p>";
+        }   
+    }     
+    return 0;  // error 
+}
+/**
+ * Updates the TREATMENT_has_MEDICATION table
+ * @param  [type] $treatID [description]
+ * @param  [type] $medID   [description]
+ * @param  [type] $name    [description]
+ * @return [type]          [description]
+ */
+function update_treatment_has_med($treatID, $medID, $name) {
+    global $db_conn;
+
+    $query = 'INSERT INTO TREATMENT_has_MEDICATION(TREATMENT_TreatmentID, 
+              MEDICATION_MedicationID, MEDICATION_CommonName)
+              VALUES(?, ?, ?)';
+    
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $treatID);
+        $statement->bindValue( 2 , $medID);
+        $statement->bindValue( 3 , $name);
+        $statement->execute();
+        $statement->closeCursor();
+        return true;    
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error setting TREATMENT_has_MEDICATION: 
+             $e </p>";
+        }   
+    }           
+    return false;  // error 
 }
 
 // ---------- End of New Medication Treatment Handlers
@@ -1196,106 +1319,7 @@ function get_med_record_id($patID) {
 
 
 //**************************    Temp Test Queries ******************************
-/*$result = get_list_of_doctor_names_and_ids();
-foreach ($result as $child) {
-    print "child = <br/>";
-    foreach ($child as $key => $value) {
-    print $key. "=>". $value. "<br/>";
-        # code...
-    }
-    print "endOfchild <br/>";
-}*/
 
 
-/*$result = get_first_name_of_patient(1);
-var_dump($result);
-*/
-
-/*$result = get_patient_id_lname_ssn_map();
-foreach ($result as $child) {
-    print "child = <br/>";
-    foreach ($child as $key => $value) {
-    print $key. "=>". $value. "<br/>";
-        # code...
-    }
-    print "endOfchild <br/>";
-}*/
-
-/*$result = get_apps_per_datetime("2015-03-04 10:00:00");
-foreach ($result as $child) {
-    print "child = <br/>";
-    foreach ($child as $key => $value) {
-        print $key. "=>". $value. "<br/>";
-    }
-    print "endOfchild <br/>";
-}*/
-
-/*
-$result = get_address_id('4019 Lost Oak Drive', 'Ooltewah', 'TN', '37363');
-print $result;
-
-$result = get_address_id("753 Easy Way", "Chattanooga", "TN",  "37421");
-print $result;
-*/
-
-
-/*$result = set_new_pat_record("Bob", "Hope", "8887774646", "1236545555", "male",
-                            "1982-12-23", "4545 Cummings Hwy", "Roanoke", "VA", "45685");
-
-print $result;*/
-
-/*$result = get_allergy_records_by_id("1");
-
-var_dump($result);
-echo "<br/> <br/>";
-
-
-$result1 = get_medication_records_by_id("1");
-
-var_dump($result1);
-echo "<br/> <br/>";
-
-$result2 = get_treatments_records_by_id("1");
-
-var_dump($result2);
-echo "<br/> <br/>";
-
-$result3 = array_merge($result, $result1, $result2);
-
-var_dump($result3);
-echo "<br/> <br/>";
-
-$result4 = json_encode($result3);
-
-echo "<br/> <br/>";
-var_dump($result4);*/
-/*
-$result = get_allergy_id("Sulfa");
-
-print $result;
-var_dump($result);*/
-
-/*$result = set_new_patient_allergy('latex', 'moderate', '1');
-
-echo "result = ". $result;*/
-//var_dump(json_encode(get_list_of_all_doctor_names_and_ids()));
-
-//
-/*
-$result = create_new_med_record(1);
-echo $result;*/
-/*$date = date('y-m-d');
-echo $date;*/
-/*
-$result = get_last_treat_id_added();
-$result = set_new_therapy_record('1', "Cray-Cray", "foot fetish", "Wear Socks", 
-                                "1-2 Years");
-
-
-var_dump($result);*/
-/*
-$result = parse_doc_referral("Joe", "the Doc");
-
-echo $result;*/
 ?>
 

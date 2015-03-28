@@ -5,7 +5,6 @@ session_start();
 *
 **/
 include "authenticate.php";
-include "global.php";
 
 /*==================================
 =            Test Suite            =
@@ -69,6 +68,9 @@ if (isset($_POST['userName']) && !empty($_POST['userName'])
     $now_unix_ts = $date->getTimeStamp();
     $_SESSION['StartTime'] = $now_unix_ts;
     include "access_control.php";
+
+    // update activity log
+    update_activity_log('UserLogin', $_SESSION['EmployeeID']);
 
     // Take the User to the appropiate Dashboard
     // TODO: Assign passwords to database, depending on usertype!!!!

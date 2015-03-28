@@ -337,11 +337,12 @@ DROP TABLE IF EXISTS `pcs_db`.`ACTIVITY_LOG` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `pcs_db`.`ACTIVITY_LOG` (
   `LogID` INT NOT NULL AUTO_INCREMENT,
-  `ActivityType` SET('AllergyEdit', 'UserLogin','UserAdded','Treatment') NOT NULL,
+  `ActivityType` SET('PrimaryNew','PrimaryEdit','AllergyEdit','AllergyNew','UserLogin','UserLogout','TreatmentNew','TreatmentRemove') NOT NULL,
   `EmployeeID` INT NOT NULL,
   `AllergyID` INT NULL,
   `TimeStamp` DATETIME NOT NULL,
   `TreatmentID` INT NULL,
+  `PatientRecID` INT NULL,
   PRIMARY KEY (`LogID`),
   UNIQUE INDEX `LogID_UNIQUE` (`LogID` ASC))
 ENGINE = InnoDB;
