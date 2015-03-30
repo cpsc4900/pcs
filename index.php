@@ -39,7 +39,7 @@ include_once "control/global.php";
         <div class="col-sm-offset-2 col-sm-7 r3_border">
 
       <!-- PCS Logo -->
-      <img src="/docs/img/pcs_logo.png">
+      <img src="/docs/img/pcs_logo.png" class="img-responsive">
       <br> <br>
       <!-- Login Form -->
       <div id="login_form">
