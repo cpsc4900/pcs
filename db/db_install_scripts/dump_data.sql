@@ -257,7 +257,7 @@ INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, P
 		FROM ADDRESS WHERE Street = 'SW1A Westminster';
     
 INSERT INTO PATIENT(Fname, Lname, Birthdate, SSN, Sex, AddressID, isSectioned, PatientNum, PhoneNum) 
-	SELECT 'Chris', 'Columbus', '1492-08-03', 202102010, 'male', ADDRESS.AddressID, 0, 'GHI789', 5555555555
+	SELECT 'Chris', 'Columbus', '1492-08-03', 202102010, 'male', ADDRESS.AddressID, 1, 'GHI789', 5555555555
 		FROM ADDRESS WHERE Street = '0 Wilderness';
 
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Gage","Bridges","09-12-80","261765904","Male",10,"0","O6M 5U8","(331) 738-2422");
@@ -360,6 +360,7 @@ INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,Patient
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Latifah","Oconnor","10-25-68","107399791","Female",107,"1","K6S 6C5","(413) 650-2877");
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Beau","Noel","09-16-63","454730233","Female",108,"1","T2I 2B4","(408) 130-7492");
 INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Clinton","Lowery","03-27-30","827880947","Female",109,"1","I4A 9R2","(876) 686-1432");
+INSERT INTO PATIENT (Fname,Lname,Birthdate,SSN,Sex,AddressID,isSectioned,PatientNum,PhoneNum) VALUES ("Vladmir","Apple","03-27-70","820080947","Male",110,"0","I8B 172","(876) 680-1002");
 
    
 /************************ TREATMENT *************************/
@@ -418,37 +419,45 @@ INSERT INTO ALLERGY (AllergyName,Severity) VALUES ("Ciprofloxacin HCl","severe")
 
 /*********************** APPOINTMENT ************************/
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT "2015-03-17 13:00:00", ClinicID, (
-		SELECT PatientID 
-			FROM PATIENT 
-				WHERE Fname = 'Adam'), (
+	SELECT "2015-03-31 8:00:00", 2, PatientID, (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE EmployeeID = 1)
-		FROM CLINIC
-			WHERE ClinicName = 'Mental Health Care Clinic';
+				WHERE Fname = 'Joe' AND Lname = 'the Doc')
+		FROM PATIENT 
+			WHERE Fname = 'Adam' AND Lname = 'Apple';
             
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT "2015-03-17 11:00:00", ClinicID, (
-		SELECT PatientID
-			FROM PATIENT
-				WHERE Fname = 'Big'), (
+	SELECT "2015-03-31 10:00:00", 2, PatientID, (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE EmployeeID = 1)
-		FROM CLINIC 
-			WHERE ClinicName = 'Mental Health Care Clinic';
+				WHERE Fname = 'Joe' AND Lname = 'the Doc')
+		FROM PATIENT
+			WHERE Fname = 'Big' AND Lname = 'Ben';
         
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
-	SELECT "2015-03-17 14:00:00", ClinicID, (
-		SELECT PatientID
-			FROM PATIENT
-				WHERE Fname = 'Chris'), (
+	SELECT "2015-03-31 13:00:00", 2, PatientID, (
 		SELECT EmployeeID
 			FROM EMPLOYEE
-				WHERE EmployeeID = 1)
-		FROM CLINIC
-			WHERE ClinicName = 'Mental Health Care Clinic';
+				WHERE Fname = 'Joe' AND Lname = 'the Doc')
+		FROM PATIENT
+			WHERE Fname = 'Chris' AND Lname = 'Columbus';
+            
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-03-31 15:00:00", 2, PatientID, (
+		SELECT EmployeeID 
+			FROM EMPLOYEE 
+				WHERE Fname = 'Joe' AND Lname = 'the Doc')
+		FROM PATIENT 
+			WHERE Fname = 'Blake' AND Lname = 'Lowery';
+            
+INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
+	SELECT "2015-04-01 10:00:00", 2, PatientID, (
+		SELECT EmployeeID
+			FROM EMPLOYEE
+				WHERE Fname = 'Joe' AND Lname = 'the Doc')
+		FROM PATIENT
+			WHERE Fname = 'Vladmir' AND Lname = 'Apple';
+        
 
 INSERT INTO APPOINTMENT(AppTime, ClinicID, PatientID, EmployeeID)
 	SELECT "2015-03-14 08:00:00", ClinicID, 
