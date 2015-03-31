@@ -173,6 +173,7 @@ function autoFillAppForm(pat_ssn) {
       if (jsonPatInfo[field].SSN == pat_ssn) {
         document.getElementById("fname").value = jsonPatInfo[field].Fname;
         document.getElementById("lname").value = jsonPatInfo[field].Lname;
+        console.log(jsonPatInfo[field].Lname);
         document.getElementById("pat_id").value = jsonPatInfo[field].PatientID;
       }
     }
