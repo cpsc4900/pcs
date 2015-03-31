@@ -1,0 +1,72 @@
+\subsection*{Unit Test}
+
+
+
+
+
+\subsubsection*{P\-H\-P\-Unit}
+
+Install P\-H\-P\-Unit Test Framework.
+
+Add the php
+
+Refer to \href{https://phpunit.de/manual/current/en/installation.html}{\tt https\-://phpunit.\-de/manual/current/en/installation.\-html} for install and using php unit testing.
+
+For Linux Install, do the following at command line\-:
+
+``` \$\-: wget \href{https://phar.phpunit.de/phpunit.phar}{\tt https\-://phar.\-phpunit.\-de/phpunit.\-phar}
+
+\$\-: chmod +x phpunit.\-phar
+
+\$\-: sudo mv phpunit.\-phar /usr/local/bin/phpunit
+
+\$\-: phpunit --version ```
+
+\paragraph*{Usage}
+
+Create a test class for each unit test. See authenticate\-\_\-test.\-php as an example.
+
+Run test using the following at the command line\-:
+
+``` \$\-: phpunit --bootstrap control/authenticate.\-php tests/authenticate\-\_\-test.\-php ```
+
+To see the test run in verbose\-:
+
+``` \$\-: phpunit --debug --bootstrap control/authenticate.\-php tests/authenticate\-\_\-test.\-php ```
+
+Note\-: the above example assumes that the command prompt is at the \char`\"{}pcs\char`\"{} main folder.
+
+As can be seen in the above command \-\_\---bootstrap--\-\_\- will load the file being tested. This way {\itshape tests/authenticate\-\_\-test.\-php} can access (and test) anything in {\itshape control/authenticate.\-php}
+
+\subsubsection*{T\-O\-D\-O}
+
+Add each command line exection of each unit test into master\-\_\-test\-\_\-script. This script should be able to execute from the command line under the pcs folder and work.
+
+$\ast$$\ast$\-N\-O\-T\-E\-: Keep all file path dependencies relavtive from the pcs root folder. D\-O N\-O\-T U\-S\-E A\-B\-S\-O\-L\-U\-T\-E P\-A\-T\-H\-S $\ast$$\ast$
+
+\subsection*{List of command line running test unit}
+
+The following is a list of command-\/line ran unit test. These eventually need to be put in one script.
+
+``` phpunit --debug --bootstrap control/authenticate.\-php tests/authenticate\-\_\-test.\-php
+
+``` 
+
+
+
+\subsubsection*{js\-\_\-unit\-\_\-test}
+
+Under this folder you will find Java\-Script Unit Test (using Q\-Unitsjs).
+
+To run a test\-:
+
+
+\begin{DoxyEnumerate}
+\item Create javascript test file. (This file should be named so the actual file in the system is easy to reference).
+\item Add the test js file to {\itshape js\-\_\-test.\-html}
+\item Run the test by simple opening the {\itshape js\-\_\-test.\-html} in a browser.
+\end{DoxyEnumerate}
+
+That's it !
+
+{\itshape See calendar\-\_\-test.\-js for examples of creating a unit test.} 

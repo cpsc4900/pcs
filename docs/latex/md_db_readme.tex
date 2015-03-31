@@ -1,0 +1,143 @@
+\subsection*{Include}
+
+
+\begin{DoxyEnumerate}
+\item Keep copies of the script needed to generate the database in \char`\"{}db\-\_\-install\-\_\-scripts\char`\"{}
+\item Keep test scripts in \char`\"{}db\-\_\-test\char`\"{}
+\item Keep pics of the E\-R\-D in \char`\"{}db\-\_\-model\char`\"{}
+\item Keep a test T\-O\-D\-O list in \char`\"{}db\-\_\-test\char`\"{}
+\item Keep the mysql workbench project in \char`\"{}db\-\_\-model\char`\"{}
+\end{DoxyEnumerate}
+
+\subsection*{General Note}
+
+See db\-\_\-install\-\_\-scripts to install the pcs\-\_\-db locally
+
+I am by no means a database tester, so if you find a more elegant way to handle testing, go for it. Below is just a suggested method. In any event, we need to document functional queries to the database A\-N\-D have proof that they work. The following is just a suggestion.
+
+\subsection*{Test Scripts}
+
+Test scripts need to include the commands used to access the database. The test script should also include the user type that is used to log in to the database. These test scripts should be direct My\-S\-Q\-L queries, testable in the mysql command prompt. For example\-: a test case needed is to test if the A\-R user can retrieve all appointments (by time and by patient\-I\-D) that have already been made. So, the script should be something similar to the one below\-:
+
+``` // Note\-: This assumes that mysql has been invoked at the command prompt // (i.\-e. shell$>$ mysql) // Also, I am using \$ to represent the command line, and P\-C\-S as the database name.
+
+\$ mysql --host=localhost --user=A\-R --password=arpass P\-C\-S
+
+// Test Case\-: get appointments by time and the patient\-I\-D of the patient // returns a table of the appointments in order of time S\-E\-L\-E\-C\-T Date, Time, Patient\-I\-D F\-R\-O\-M A\-P\-P\-O\-I\-N\-T\-M\-E\-N\-T O\-R\-D\-E\-R B\-Y Date D\-E\-S\-C, Time D\-E\-S\-C
+
+```
+
+\subsubsection*{Saving test results to a file for comparing expected results}
+
+To save the output of a mysql query to a file, simply use the {\itshape I\-N\-T\-O O\-U\-T\-F\-I\-L\-E} command. By default, mysql uses tab separators. We should change this to comma separated (makes it easier to work with in an excel program). Reusing the Query test above, it would look like this\-:
+
+``` S\-E\-L\-E\-C\-T Date, Time, Patient\-I\-D F\-R\-O\-M A\-P\-P\-O\-I\-N\-T\-M\-E\-N\-T O\-R\-D\-E\-R B\-Y Date D\-E\-S\-C, Time D\-E\-S\-C I\-N\-T\-O O\-U\-T\-F\-I\-L\-E '/tmp/test\-\_\-ar\-\_\-appointment\-\_\-retrieve.csv' F\-I\-E\-L\-D\-S T\-E\-R\-M\-I\-N\-A\-T\-E\-D B\-Y ',' E\-N\-C\-L\-O\-S\-E\-D B\-Y '\char`\"{}' L\-I\-N\-E\-S T\-E\-R\-M\-I\-N\-A\-T\-E\-D B\-Y '\par
+' ``` W\-A\-R\-N\-I\-N\-G\-: the output file must not exist!!! So, each test case must create a new file. Label each file so it makes sense like above.
+
+As for where to store the file??? It will be different for all of us, cause if you use relative paths it will be different depending on the O\-S being used. So, I would recommend () just storing in a folder called test\-\_\-scripts under {\bfseries T\-H\-I\-S} folder. Then, Paul and I can adjust accordingly.
+
+\subsubsection*{One Master Script}
+
+After each individual test script proves to be working as expected, add it to a \char`\"{}\-Master Test Script\char`\"{}. This script should be able to run all the test cases at once. This way, when we get the database as somewhat expected, we can run the master script after any changes made to the database and the script should point out any errors. 
+
+ \subsection*{Test T\-O\-D\-O}
+
+\subsubsection*{Description}
+
+List individual test cases that need to be tested here.
+
+\subsubsection*{Test Cases}
+
+
+\begin{DoxyEnumerate}
+\item 
+
+ \subsection*{Login to the database\-:}
+\end{DoxyEnumerate}
+
+We need 7 users right now to be able to login to the database. Use the following\-:
+
+\begin{TabularC}{2}
+\hline
+\rowcolor{lightgray}{\bf username }&{\bf password  }\\\cline{1-2}
+A\-R &arpass \\\cline{1-2}
+E\-M &empass \\\cline{1-2}
+Doctor &docpass \\\cline{1-2}
+Nurse &nursepass \\\cline{1-2}
+M\-R\-S &mrspass \\\cline{1-2}
+Master &masterpass \\\cline{1-2}
+Login &loginpass \\\cline{1-2}
+\end{TabularC}
+\subsubsection*{User Priveleges\-: To be completed !!!}
+
+The following list the privileges each user type will need. Note I am using r for read and w for write, and by {\itshape resource} I mean the table(s) in which each user should have access to.
+
+
+\begin{DoxyEnumerate}
+\item Master\-: will have global permissions (much like root) on the database. T\-E\-S\-T\-I\-N\-G P\-U\-R\-P\-O\-S\-E\-S O\-N\-L\-Y (via php and javascript). This user will be removed at deployment
+\item Login\-: Login user is used at initial login to check username and password. O\-N\-L\-Y L\-O\-G\-I\-N U\-S\-E\-R S\-H\-O\-U\-L\-D H\-A\-V\-E A\-C\-C\-E\-S\-S T\-O T\-H\-E L\-O\-G\-I\-N T\-A\-B\-L\-E !!!
+\end{DoxyEnumerate}
+
+\begin{TabularC}{2}
+\hline
+\rowcolor{lightgray}{\bf privilege }&{\bf resource  }\\\cline{1-2}
+r &L\-O\-G\-I\-N \\\cline{1-2}
+r &E\-M\-P\-L\-O\-Y\-E\-E \\\cline{1-2}
+\end{TabularC}
+
+\begin{DoxyEnumerate}
+\item A\-R
+\end{DoxyEnumerate}
+
+\begin{TabularC}{2}
+\hline
+\rowcolor{lightgray}{\bf privilege }&{\bf resource  }\\\cline{1-2}
+wr &A\-P\-P\-O\-I\-N\-T\-M\-E\-N\-T \\\cline{1-2}
+wr &P\-A\-T\-I\-E\-N\-T \\\cline{1-2}
+wr &A\-D\-D\-R\-E\-S\-S \\\cline{1-2}
+r &C\-L\-I\-N\-I\-C \\\cline{1-2}
+r &E\-M\-P\-L\-O\-Y\-E\-E \\\cline{1-2}
+\end{TabularC}
+
+
+
+\begin{DoxyEnumerate}
+\item E\-M -\/ Will Need to think about this one B\-U\-T, only read permissions !
+\end{DoxyEnumerate}
+
+privilege $\vert$ resource -\/-\/-\/-\/-\/-\/-\/---$\vert$-\/-\/-\/-\/-\/-\/---
+
+
+\begin{DoxyEnumerate}
+\item Doctor
+\end{DoxyEnumerate}
+
+\begin{TabularC}{2}
+\hline
+\rowcolor{lightgray}{\bf privilege }&{\bf resource  }\\\cline{1-2}
+rw &A\-P\-P\-O\-I\-N\-T\-M\-E\-N\-T \\\cline{1-2}
+rw &M\-E\-D\-I\-C\-A\-T\-I\-O\-N\-S \\\cline{1-2}
+rw &T\-E\-A\-T\-E\-M\-E\-N\-T \\\cline{1-2}
+rw &M\-E\-D\-\_\-\-R\-E\-C\-O\-R\-D \\\cline{1-2}
+rw &A\-L\-L\-E\-R\-G\-Y \\\cline{1-2}
+rw &S\-E\-C\-T\-I\-O\-N\-E\-D \\\cline{1-2}
+r &P\-A\-T\-I\-E\-N\-T \\\cline{1-2}
+r &R\-X \\\cline{1-2}
+r &C\-L\-I\-N\-I\-C \\\cline{1-2}
+r &E\-M\-P\-L\-O\-Y\-E\-E \\\cline{1-2}
+\end{TabularC}
+
+
+
+\begin{DoxyEnumerate}
+\item Nurse
+\end{DoxyEnumerate}
+
+privilege $\vert$ resource -\/-\/-\/-\/-\/-\/-\/---$\vert$-\/-\/-\/-\/-\/-\/---
+
+
+\begin{DoxyEnumerate}
+\item M\-R\-S
+\end{DoxyEnumerate}
+
+privilege $\vert$ resource -\/-\/-\/-\/-\/-\/-\/---$\vert$-\/-\/-\/-\/-\/-\/--- 

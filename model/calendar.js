@@ -10,7 +10,7 @@ var jsonMonthApps = "";
  */
 function getAppointmentsByMonth(year, month) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/calendar.php", false);
+    xmlhttp.open("POST", "https://pcs/model/calendar.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("month="+month+"&year="+year);
     jsonMonthApps = JSON.parse(xmlhttp.responseText); 

@@ -81,7 +81,7 @@ function get_values() {
 function set_new_pat_record() {
     print_vars();
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/control/handle_new_pat_rec.php", false);
+    xmlhttp.open("POST", "https://pcs/control/handle_new_pat_rec.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     // Send POST
     xmlhttp.send('firstName=' + firstName +'&lastName=' + lastName +'&patSSN=' + 
