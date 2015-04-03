@@ -1,0 +1,131 @@
+\hypertarget{authenticate_8php}{\section{control/authenticate.php File Reference}
+\label{authenticate_8php}\index{control/authenticate.\-php@{control/authenticate.\-php}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{authenticate_8php_a290dc9b08db6ef2c2b26400c5b04d750}{{\bfseries init\-\_\-login\-\_\-db\-\_\-conn} ()}\label{authenticate_8php_a290dc9b08db6ef2c2b26400c5b04d750}
+
+\item 
+\hyperlink{authenticate_8php_ada393ceabbc91639c41bfb9ffd5e852e}{create\-\_\-hash} (\$string, \$hash\-\_\-method= 'sha256')
+\item 
+\hyperlink{authenticate_8php_a5654a813bd8d07f822099476c8ebf2aa}{validate\-Login} (\$pass, \$hashed\-\_\-pass, \$hash\-\_\-method= 'sha256')
+\item 
+\hyperlink{authenticate_8php_a497c371aa0f8c35ba3bcd92befafd960}{retrieve\-Hashed\-Pwd} (\$usr\-\_\-name)
+\item 
+\hyperlink{authenticate_8php_a9885c0712436d8e44830c054fdc04370}{retrieve\-User\-Type} (\$emp\-\_\-id)
+\item 
+\hyperlink{authenticate_8php_a40198bd17220f2f39b96138e0b7e5f93}{retrieve\-Employee\-I\-D} (\$usr\-\_\-name)
+\item 
+\hyperlink{authenticate_8php_a3809efbee136c0e0ec034bcccb98a4a9}{retrieve\-User\-Clinic\-I\-D} (\$emp\-\_\-id)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{authenticate_8php_a1d006a7b6406a114b344a7e62e438edf}{const {\bfseries U\-N\-I\-Q\-U\-E\-\_\-\-S\-A\-L\-T} '5\&n\-L$\ast$d\-F4'}\label{authenticate_8php_a1d006a7b6406a114b344a7e62e438edf}
+
+\item 
+\hypertarget{authenticate_8php_af20afa9ec8b1fdbebf95b48a90e74cab}{{\bfseries \$login\-\_\-conn}}\label{authenticate_8php_af20afa9ec8b1fdbebf95b48a90e74cab}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Authenticates a user who is attempting to login. Login requires comparing a supplied username and passwords against an entry in the L\-O\-G\-I\-N table. The initial connection to the database is done using a \char`\"{}\-Login\char`\"{} user. This user can only access the Login table. After the username and password have been validated, all following queries are done using the user type of the username.
+
+The functions below support\-: creating a sha-\/256 hash retreiving a hashed password w/ a given username retreiving a \char`\"{}\-User Type\char`\"{} w/ a given Employee\-I\-D validating username and password 
+
+\subsection{Function Documentation}
+\hypertarget{authenticate_8php_ada393ceabbc91639c41bfb9ffd5e852e}{\index{authenticate.\-php@{authenticate.\-php}!create\-\_\-hash@{create\-\_\-hash}}
+\index{create\-\_\-hash@{create\-\_\-hash}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{create\-\_\-hash}]{\setlength{\rightskip}{0pt plus 5cm}create\-\_\-hash (
+\begin{DoxyParamCaption}
+\item[{}]{\$string, }
+\item[{}]{\$hash\-\_\-method = {\ttfamily 'sha256'}}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_ada393ceabbc91639c41bfb9ffd5e852e}
+Hashes a string 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$string} & The string to hash \\
+\hline
+string & {\em \$hash\-\_\-method} & the hash to use \\
+\hline
+\end{DoxyParams}
+\hypertarget{authenticate_8php_a40198bd17220f2f39b96138e0b7e5f93}{\index{authenticate.\-php@{authenticate.\-php}!retrieve\-Employee\-I\-D@{retrieve\-Employee\-I\-D}}
+\index{retrieve\-Employee\-I\-D@{retrieve\-Employee\-I\-D}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{retrieve\-Employee\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}retrieve\-Employee\-I\-D (
+\begin{DoxyParamCaption}
+\item[{}]{\$usr\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_a40198bd17220f2f39b96138e0b7e5f93}
+Retrieves the employee I\-D belonging to the supplied username. 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$usr\-\_\-name} & the login username to find the matching employee id for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}int\mbox{]} Returns the employee's I\-D, otherwise returns 0 if a match is not found 
+\end{DoxyReturn}
+\hypertarget{authenticate_8php_a497c371aa0f8c35ba3bcd92befafd960}{\index{authenticate.\-php@{authenticate.\-php}!retrieve\-Hashed\-Pwd@{retrieve\-Hashed\-Pwd}}
+\index{retrieve\-Hashed\-Pwd@{retrieve\-Hashed\-Pwd}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{retrieve\-Hashed\-Pwd}]{\setlength{\rightskip}{0pt plus 5cm}retrieve\-Hashed\-Pwd (
+\begin{DoxyParamCaption}
+\item[{}]{\$usr\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_a497c371aa0f8c35ba3bcd92befafd960}
+Retrieves a hashed password from the Login table. 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$usr\-\_\-name} & The user name of the hashed password that should be retrieved. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string the hashed password or 0 if the supplied user name is not in the Login table 
+\end{DoxyReturn}
+\hypertarget{authenticate_8php_a3809efbee136c0e0ec034bcccb98a4a9}{\index{authenticate.\-php@{authenticate.\-php}!retrieve\-User\-Clinic\-I\-D@{retrieve\-User\-Clinic\-I\-D}}
+\index{retrieve\-User\-Clinic\-I\-D@{retrieve\-User\-Clinic\-I\-D}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{retrieve\-User\-Clinic\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}retrieve\-User\-Clinic\-I\-D (
+\begin{DoxyParamCaption}
+\item[{}]{\$emp\-\_\-id}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_a3809efbee136c0e0ec034bcccb98a4a9}
+Retrieves the Clinic I\-D the User belongs to. 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}type\mbox{]}} & \$emp\-\_\-id \mbox{[}description\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}type\mbox{]} \mbox{[}description\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{authenticate_8php_a9885c0712436d8e44830c054fdc04370}{\index{authenticate.\-php@{authenticate.\-php}!retrieve\-User\-Type@{retrieve\-User\-Type}}
+\index{retrieve\-User\-Type@{retrieve\-User\-Type}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{retrieve\-User\-Type}]{\setlength{\rightskip}{0pt plus 5cm}retrieve\-User\-Type (
+\begin{DoxyParamCaption}
+\item[{}]{\$emp\-\_\-id}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_a9885c0712436d8e44830c054fdc04370}
+Retrieves the \char`\"{}\-User\-Type\char`\"{} field in the E\-M\-P\-L\-O\-Y\-E\-E table. Valid values for \char`\"{}\-User\-Type\char`\"{} are\-: A\-R, E\-M, Doctor, Nurse, or M\-R\-S. 
+\begin{DoxyParams}[1]{Parameters}
+int & {\em \$emp\-\_\-id} & The id of the employee. \\
+\hline
+\end{DoxyParams}
+\hypertarget{authenticate_8php_a5654a813bd8d07f822099476c8ebf2aa}{\index{authenticate.\-php@{authenticate.\-php}!validate\-Login@{validate\-Login}}
+\index{validate\-Login@{validate\-Login}!authenticate.php@{authenticate.\-php}}
+\subsubsection[{validate\-Login}]{\setlength{\rightskip}{0pt plus 5cm}validate\-Login (
+\begin{DoxyParamCaption}
+\item[{}]{\$pass, }
+\item[{}]{\$hashed\-\_\-pass, }
+\item[{}]{\$hash\-\_\-method = {\ttfamily 'sha256'}}
+\end{DoxyParamCaption}
+)}}\label{authenticate_8php_a5654a813bd8d07f822099476c8ebf2aa}
+Compares a plaintext value to its hash value. Returns non-\/zero if hashes match. 
+\begin{DoxyParams}[1]{Parameters}
+string & {\em \$pass} & The user submitted password \\
+\hline
+string & {\em \$hashed\-\_\-pass} & The hashed password pulled from the database \\
+\hline
+string & {\em \$hash\-\_\-method} & The hashing method used to generate the hashed password \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the supplied password hashed equals the stored hashed password. Otherwise, returns false. 
+\end{DoxyReturn}

@@ -1,0 +1,25 @@
+\hypertarget{handle__edit__pat__rec_8php}{\section{control/handle\-\_\-edit\-\_\-pat\-\_\-rec.php File Reference}
+\label{handle__edit__pat__rec_8php}\index{control/handle\-\_\-edit\-\_\-pat\-\_\-rec.\-php@{control/handle\-\_\-edit\-\_\-pat\-\_\-rec.\-php}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+if(isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'criteria'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'value'\mbox{]})) \\*
+else if(isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'patid'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'fname'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'lname'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'ssn'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'bday'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'phone\-Num'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'gender'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'street'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'city'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'state'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'zip'\mbox{]})) {\bfseries else}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles all A\-J\-A\-X requests from the edit\-\_\-pat\-\_\-record\-\_\-model.\-php. See control/handle\-\_\-edit\-\_\-pat\-\_\-prim\-\_\-rec.\-js for A\-J\-A\-X requests
+
+This file handles; (a) request for returning patient primary records based on search criteria (S\-S\-N, Lname, or Patient\-Id), (b) request for updating a patient's primary record. 
+
+\subsection{Variable Documentation}
+\hypertarget{handle__edit__pat__rec_8php_ae977646182091e9d676fab7abaa34912}{\index{handle\-\_\-edit\-\_\-pat\-\_\-rec.\-php@{handle\-\_\-edit\-\_\-pat\-\_\-rec.\-php}!else@{else}}
+\index{else@{else}!handle_edit_pat_rec.php@{handle\-\_\-edit\-\_\-pat\-\_\-rec.\-php}}
+\subsubsection[{else}]{\setlength{\rightskip}{0pt plus 5cm}if (isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'criteria'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'value'\mbox{]})) else if (isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'patid'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'fname'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'lname'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'ssn'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'bday'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'phone\-Num'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'gender'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'street'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'city'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'state'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'zip'\mbox{]})) else}}\label{handle__edit__pat__rec_8php_ae977646182091e9d676fab7abaa34912}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+\{
+    header(\textcolor{stringliteral}{"Location: ../PermissionDenied.php"})
+\end{DoxyCode}

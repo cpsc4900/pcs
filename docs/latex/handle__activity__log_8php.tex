@@ -1,0 +1,61 @@
+\hypertarget{handle__activity__log_8php}{\section{control/handle\-\_\-activity\-\_\-log.php File Reference}
+\label{handle__activity__log_8php}\index{control/handle\-\_\-activity\-\_\-log.\-php@{control/handle\-\_\-activity\-\_\-log.\-php}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{handle__activity__log_8php_a3bb79b6acd51d8001ecfd557799c83aa}{update\-\_\-activity\-\_\-log} (\$activity\-Type, \$emp\-I\-D, \$rec\-I\-D=0)
+\item 
+\hypertarget{handle__activity__log_8php_aebdcbbcd60209ede1b77fbbface3fec1}{{\bfseries gen\-\_\-activity\-\_\-pat\-\_\-new\-\_\-rec\-\_\-query} (\$emp\-I\-D, \$prim\-Rec\-I\-D)}\label{handle__activity__log_8php_aebdcbbcd60209ede1b77fbbface3fec1}
+
+\item 
+\hypertarget{handle__activity__log_8php_a6699fc94168c0df540182f97ff6dd48e}{{\bfseries gen\-\_\-activity\-\_\-pat\-\_\-edit\-\_\-rec\-\_\-query} (\$emp\-I\-D, \$prim\-Rec\-I\-D)}\label{handle__activity__log_8php_a6699fc94168c0df540182f97ff6dd48e}
+
+\item 
+\hypertarget{handle__activity__log_8php_a1c302941777c6678840bc88431474877}{{\bfseries gen\-\_\-activity\-\_\-allergy\-\_\-edit\-\_\-query} (\$emp\-I\-D, \$allergy\-I\-D)}\label{handle__activity__log_8php_a1c302941777c6678840bc88431474877}
+
+\item 
+\hypertarget{handle__activity__log_8php_a49b407f45fdbc26675b9534a62a6bb49}{{\bfseries gen\-\_\-activity\-\_\-new\-\_\-allergy\-\_\-query} (\$emp\-I\-D, \$allergy\-I\-D)}\label{handle__activity__log_8php_a49b407f45fdbc26675b9534a62a6bb49}
+
+\item 
+\hypertarget{handle__activity__log_8php_a22b8e4fec0508102ba4a76bb9bb1db70}{{\bfseries gen\-\_\-activity\-\_\-user\-\_\-login\-\_\-query} (\$emp\-I\-D)}\label{handle__activity__log_8php_a22b8e4fec0508102ba4a76bb9bb1db70}
+
+\item 
+\hypertarget{handle__activity__log_8php_a56b59e5bdad20bd7c2dd26e202c088d5}{{\bfseries gen\-\_\-activity\-\_\-user\-\_\-logout\-\_\-query} (\$emp\-I\-D)}\label{handle__activity__log_8php_a56b59e5bdad20bd7c2dd26e202c088d5}
+
+\item 
+\hypertarget{handle__activity__log_8php_a99c26fb9e2ca4c0bc60cf7547e0d9812}{{\bfseries gen\-\_\-activity\-\_\-treat\-\_\-new\-\_\-rec\-\_\-query} (\$emp\-I\-D, \$treat\-I\-D)}\label{handle__activity__log_8php_a99c26fb9e2ca4c0bc60cf7547e0d9812}
+
+\item 
+\hypertarget{handle__activity__log_8php_abac3a188ab6499996d203b8252fe0e68}{{\bfseries gen\-\_\-activity\-\_\-treat\-\_\-remove\-\_\-rec\-\_\-query} (\$emp\-I\-D, \$treat\-I\-D)}\label{handle__activity__log_8php_abac3a188ab6499996d203b8252fe0e68}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles updating the A\-C\-T\-I\-V\-I\-T\-Y\-\_\-\-L\-O\-G table. When a user performs an 'activity' worth logging, the table is updated with the I\-D of the user, timestamp, and an id of the record that the user changed, deleted, or created. See the function description for update\-\_\-activity\-\_\-log for activities that get logged. 
+
+\subsection{Function Documentation}
+\hypertarget{handle__activity__log_8php_a3bb79b6acd51d8001ecfd557799c83aa}{\index{handle\-\_\-activity\-\_\-log.\-php@{handle\-\_\-activity\-\_\-log.\-php}!update\-\_\-activity\-\_\-log@{update\-\_\-activity\-\_\-log}}
+\index{update\-\_\-activity\-\_\-log@{update\-\_\-activity\-\_\-log}!handle_activity_log.php@{handle\-\_\-activity\-\_\-log.\-php}}
+\subsubsection[{update\-\_\-activity\-\_\-log}]{\setlength{\rightskip}{0pt plus 5cm}update\-\_\-activity\-\_\-log (
+\begin{DoxyParamCaption}
+\item[{}]{\$activity\-Type, }
+\item[{}]{\$emp\-I\-D, }
+\item[{}]{\$rec\-I\-D = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{handle__activity__log_8php_a3bb79b6acd51d8001ecfd557799c83aa}
+Updates the activity logs. Activity logs include\-:
+
+Primary\-New Primary\-Edit Allergy\-Edit Allergy\-New User\-Login User\-Logout Treatment\-New Treatment\-Remove 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}string\mbox{]}} & \$activity\-Type See list above \\
+\hline
+{\em \mbox{[}int\mbox{]}} & \$emp\-I\-D The id of the user who performed the logged activity \\
+\hline
+{\em \mbox{[}int\mbox{]}} & \$rec\-I\-D If the activity includes updating, creating, or deleting a record, the id of the record must be supplied. For example, Primary\-New activity\-Type would require the primary key (i.\-e. Patient\-I\-D) from the newly created record in the P\-A\-T\-I\-E\-N\-T table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}int/string\mbox{]} Returns zero if the activity\-Type is not recognized. Returns 'failed' if the actual query fails to insert the log. Otherwise, returns the last Activity\-\_\-\-L\-O\-G I\-D (i.\-e. the last inserted row's id). 
+\end{DoxyReturn}

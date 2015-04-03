@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file 
+ *
+ * Handles retrieving and setting appointments for the AR Dashboard's  app_form module.
+ * See model/app_form.php for the model details.
+ */
 session_start();
 include "global.php";
 include "db_connect.php";
@@ -7,7 +13,7 @@ include "global_query.php";
 
 
 /**
- * Creates either the upper or lower bounds for querying a table that contains
+ * Helper function: Creates either the upper or lower bounds for querying a table that contains
  * a datetime field.  Use the $uppperBound param to determine if the return
  * datetime is upper bound or not.
  * @param  integer  $year 

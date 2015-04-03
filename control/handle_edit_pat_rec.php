@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * @file
+ *
+ * Handles all AJAX requests from the edit_pat_record_model.php.  See
+ * control/handle_edit_pat_prim_rec.js for AJAX requests
+ *
+ * This file handles; (a) request for returning patient primary records
+ * based on search criteria (SSN, Lname, or PatientId), (b) request for
+ * updating a patient's primary record.
+ * 
+ */
 include "global_query.php";
 
 

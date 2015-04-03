@@ -1,4 +1,11 @@
 <?php
+/**
+ * @file
+ *
+ * Handles AJAX requests for creating new patient primary records.
+ * See handle_new_pat_prim_rec.js for AJAX requests
+ * 
+ */
 
 include "global_query.php";
 

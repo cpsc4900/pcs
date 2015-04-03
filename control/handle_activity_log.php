@@ -1,5 +1,13 @@
 <?php
 include "db_connect.php";
+/**
+ * @file
+ *
+ * Handles updating the ACTIVITY_LOG table.  When a user performs an 'activity'
+ * worth logging, the table is updated with the ID of the user, timestamp, and
+ * an id of the record that the user changed, deleted, or created.  See the function
+ * description for update_activity_log for activities that get logged.
+ */
 /*==============================================================================
 =                           Activity Log Queries                               =
 ==============================================================================*/
@@ -14,11 +22,15 @@ include "db_connect.php";
  *   UserLogout
  *   TreatmentNew
  *   TreatmentRemove
- * @param  [type] $activityType See list above
- * @param  [type] $empID        [description]
- * @param  [type] $recID        [description]
- * @param  [type] $recType      [description]
- * @return [type]               [description]
+ * @param  [string] $activityType See list above
+ * @param  [int] $empID        The id of the user who performed the logged activity
+ * @param  [int] $recID        If the activity includes updating, creating, or deleting
+ * a record, the id of the record must be supplied.  For example, PrimaryNew activityType
+ * would require the primary key (i.e. PatientID) from the newly created record in the
+ * PATIENT table
+ * @return [int/string]        Returns zero if the activityType is not recognized. Returns
+ *                             'failed' if the actual query fails to insert the log.  Otherwise,
+ *                             returns the last Activity_LOG ID (i.e. the last inserted row's id).
  */
 function update_activity_log($activityType, $empID, $recID = 0) {
     global $db_conn;
@@ -65,7 +77,6 @@ function update_activity_log($activityType, $empID, $recID = 0) {
     }
 }
 
-update_activity_log('TreatmentNew', 2, 4);
 // private: prepare insert query for primary new log
 function gen_activity_pat_new_rec_query($empID, $primRecID){
     global $db_conn;
@@ -209,10 +220,5 @@ function gen_activity_treat_remove_rec_query($empID, $treatID){
 
 
 /*----------------------  End of Activity Log Queries  -----------------------*/
-
-
-// Test
-/*$result = update_activity_log('AllergyNew', 1, 104);
-var_dump($result);*/
 
 ?>

@@ -1,0 +1,25 @@
+\hypertarget{handle__login_8php}{\section{control/handle\-\_\-login.php File Reference}
+\label{handle__login_8php}\index{control/handle\-\_\-login.\-php@{control/handle\-\_\-login.\-php}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+if(\$is\-\_\-dev) if(isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})\&\&!empty(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})\&\&!empty(\$\-\_\-\-P\-O\-S\-T\mbox{[}'pass\-Word'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})) \hyperlink{handle__login_8php_a8ccfa260cf1b11e9f57f551d5e02f56e}{else}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles initial logging in. This file excepts a username and password, checks for valigation using \hyperlink{authenticate_8php}{control/authenticate.\-php}, and redirects the user upon authentication to the correct user Dashboard. This is where the Session starts. Session data includes\-: (a)Employee\-I\-D, (b) User\-Type, (c) Clinic\-I\-D, (d) and a timestamp, for logging when a user has logged in. This session data is persistant until a user logs out O\-R the session expires due to no activity (currently set to 10 minutes). 
+
+\subsection{Variable Documentation}
+\hypertarget{handle__login_8php_a8ccfa260cf1b11e9f57f551d5e02f56e}{\index{handle\-\_\-login.\-php@{handle\-\_\-login.\-php}!else@{else}}
+\index{else@{else}!handle_login.php@{handle\-\_\-login.\-php}}
+\subsubsection[{else}]{\setlength{\rightskip}{0pt plus 5cm}if (\$is\-\_\-dev) if (isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})\&\&!empty(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})\&\&!empty(\$\-\_\-\-P\-O\-S\-T\mbox{[}'pass\-Word'\mbox{]})\&\&isset(\$\-\_\-\-P\-O\-S\-T\mbox{[}'user\-Name'\mbox{]})) else}}\label{handle__login_8php_a8ccfa260cf1b11e9f57f551d5e02f56e}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+\{                                          
+  header(\textcolor{stringliteral}{"Location: ../index.php"})
+\end{DoxyCode}
+username$\vert$ usertype $\vert$ password -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$\vert$-\/-\/-\/-\/-\/-\/--- mark $\vert$ A\-R $\vert$ arpass jenny $\vert$ E\-M $\vert$ empass joe $\vert$ Doctor $\vert$ docpass alice $\vert$ Nurse $\vert$ nursepass bob $\vert$ M\-R\-S $\vert$ mrspass
+
+Database Access username $\vert$ password -\/-\/-\/-\/-\/-\/---$\vert$-\/-\/-\/-\/-\/-\/-\/--- Login logpass Master $\vert$ Master 

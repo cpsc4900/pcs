@@ -1,9 +1,19 @@
-var availablePatSSN = new Array();
-var currAppsPerHour = new Array();
-var jsonAppsPerHour;
-var jsonPatInfo;
-var searchByCriteria = "";
-var thisDateTime ="";
+/**
+ * @file
+ *
+ * Handles the new appointment form (model/app_form.php),the
+ * appointment table (model/ar_app_table.php) models. Also, uses
+ * model/ar_patient_list.php and the calendar generated from
+ * model/calendar.js.
+ * 
+ */
+
+var availablePatSSN = new Array(); /*!< available patient SSN, used for autocomplete in search field */
+var currAppsPerHour = new Array(); /*!< array of current appointments belonging to the current hour */
+var jsonAppsPerHour;               /*!< a JSON formatted appointment list of the current hour */
+var jsonPatInfo;                   /*!< Stores Patient Info found after a SSN match has been found*/
+var searchByCriteria = "";         /*!< Not used*/
+var thisDateTime ="";              /*!< The time to use for the new apointment form. Note, this value is passed by the Calendar onclick*/
 
 $(document).ready(function(){
     // Clears fields in the New Appointment form (app_form.php)
@@ -44,7 +54,11 @@ $(document).ready(function(){
 =            Make this Global            =
 ========================================*/
 
-// removes an element by id or class and all of its children
+/**
+ * Removes an element by id or class and all of its children.
+ * Used to remove rows from the appointment table if there is
+ * less than 3 appointments
+ */
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }

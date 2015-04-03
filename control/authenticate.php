@@ -1,6 +1,7 @@
 <?php
 session_start();
 /**
+ * @file
 *
 * Authenticates a user who is attempting to login.  Login requires comparing a
 * supplied username and passwords against an entry in the LOGIN table.  The initial

@@ -1,8 +1,15 @@
 <?php
 session_start();
 /**
-* Displays a Login Form.
+* @file
 *
+* Handles initial logging in.  This file excepts a username and password,
+* checks for valigation using control/authenticate.php, and redirects the
+* user upon authentication to the correct user Dashboard.  This is where
+* the Session starts.  Session data includes: (a)EmployeeID, (b) UserType,
+* (c) ClinicID, (d) and a timestamp, for logging when a user has logged in.
+* This session data is persistant until a user logs out OR the session 
+* expires due to no activity (currently set to 10 minutes).
 **/
 include "authenticate.php";
 

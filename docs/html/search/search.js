@@ -7,18 +7,22 @@
 
 var indexSectionsWithContent =
 {
-  0: "acdimstv",
+  0: "acdeghilmrstuv",
   1: "a",
-  2: "t",
-  3: "acdimstv"
+  2: "adhl",
+  3: "cgrstuv",
+  4: "e",
+  5: "acdimstv"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "functions",
-  3: "pages"
+  2: "files",
+  3: "functions",
+  4: "variables",
+  5: "pages"
 };
 
 function convertToId(search)

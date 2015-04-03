@@ -1,4 +1,13 @@
 <?php
+/**
+ * @file
+ *
+ * Handles connecting to the pcs_db for getting and setting patient
+ * data.  A session must be started before this connection is made.
+ * After authentication (and the session has started) this connection
+ * is reused within global_query.php
+ * 
+ */
 session_start();
 require "global.php";
 

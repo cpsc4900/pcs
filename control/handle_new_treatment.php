@@ -1,4 +1,12 @@
 <?php
+/**
+ * @file
+ *
+ * Handles AJAX requests for creating treatment records. Also handles
+ * returning a list of doctors for treatments that include doctor referrals.
+ * 
+ * See control/handle_new_treatment.js for AJAX requests
+ */
 
 include "global_query.php";
 

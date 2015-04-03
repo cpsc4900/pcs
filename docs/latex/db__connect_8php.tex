@@ -1,0 +1,31 @@
+\hypertarget{db__connect_8php}{\section{control/db\-\_\-connect.php File Reference}
+\label{db__connect_8php}\index{control/db\-\_\-connect.\-php@{control/db\-\_\-connect.\-php}}
+}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{db__connect_8php_a6441cca8c9fa11e16d2017e8cb733c10}{{\bfseries \$dsn} = \char`\"{}mysql\-:host=127.\-0.\-0.\-1; dbname=pcs\-\_\-db\char`\"{}}\label{db__connect_8php_a6441cca8c9fa11e16d2017e8cb733c10}
+
+\item 
+\hypertarget{db__connect_8php_a0eb82aa5f81cf845de4b36cd653c42cf}{{\bfseries \$username} = \char`\"{}Master\char`\"{}}\label{db__connect_8php_a0eb82aa5f81cf845de4b36cd653c42cf}
+
+\item 
+\hypertarget{db__connect_8php_a87911b6664e118fbbfa8da7bb7a04b0f}{{\bfseries \$passwd} = \char`\"{}masterpass\char`\"{}}\label{db__connect_8php_a87911b6664e118fbbfa8da7bb7a04b0f}
+
+\item 
+{\bfseries try}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles connecting to the pcs\-\_\-db for getting and setting patient data. A session must be started before this connection is made. After authentication (and the session has started) this connection is reused within global\-\_\-query.\-php 
+
+\subsection{Variable Documentation}
+\hypertarget{db__connect_8php_abe4cc9788f52e49485473dc699537388}{\index{db\-\_\-connect.\-php@{db\-\_\-connect.\-php}!try@{try}}
+\index{try@{try}!db_connect.php@{db\-\_\-connect.\-php}}
+\subsubsection[{try}]{\setlength{\rightskip}{0pt plus 5cm}try}}\label{db__connect_8php_abe4cc9788f52e49485473dc699537388}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+\{
+    $db\_conn = \textcolor{keyword}{new} PDO($dsn, $username, $passwd)
+\end{DoxyCode}

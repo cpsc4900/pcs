@@ -1,0 +1,93 @@
+\hypertarget{handle__apps_8php}{\section{control/handle\-\_\-apps.php File Reference}
+\label{handle__apps_8php}\index{control/handle\-\_\-apps.\-php@{control/handle\-\_\-apps.\-php}}
+}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{handle__apps_8php_aa7125df730591e3d6e127d0c82ecf05a}{create\-Date\-Bounds} (\$year, \$month, \$upper\-Bound=false)
+\item 
+\hyperlink{handle__apps_8php_ae5489b1800879e5690ee1591bcd51989}{get\-\_\-apps\-\_\-per\-\_\-month} (\$year, \$month)
+\item 
+\hyperlink{handle__apps_8php_a3743147b4aa5a810e2658668b7b738c3}{reformat\-\_\-month\-\_\-apps} (\$app\-\_\-array)
+\item 
+\hypertarget{handle__apps_8php_af939a69fecfbeb4e55fa0d83f4a4306e}{{\bfseries jsonfy\-\_\-apps\-\_\-per\-\_\-month} (\$app\-\_\-array)}\label{handle__apps_8php_af939a69fecfbeb4e55fa0d83f4a4306e}
+
+\item 
+\hyperlink{handle__apps_8php_a64d720df3ce7ec0d8dfcc6bacca5ba0d}{set\-\_\-new\-\_\-app} (\$date\-\_\-time, \$pat\-\_\-id, \$doc\-\_\-id)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles retrieving and setting appointments for the A\-R Dashboard's app\-\_\-form module. See model/app\-\_\-form.\-php for the model details. 
+
+\subsection{Function Documentation}
+\hypertarget{handle__apps_8php_aa7125df730591e3d6e127d0c82ecf05a}{\index{handle\-\_\-apps.\-php@{handle\-\_\-apps.\-php}!create\-Date\-Bounds@{create\-Date\-Bounds}}
+\index{create\-Date\-Bounds@{create\-Date\-Bounds}!handle_apps.php@{handle\-\_\-apps.\-php}}
+\subsubsection[{create\-Date\-Bounds}]{\setlength{\rightskip}{0pt plus 5cm}create\-Date\-Bounds (
+\begin{DoxyParamCaption}
+\item[{}]{\$year, }
+\item[{}]{\$month, }
+\item[{}]{\$upper\-Bound = {\ttfamily false}}
+\end{DoxyParamCaption}
+)}}\label{handle__apps_8php_aa7125df730591e3d6e127d0c82ecf05a}
+Helper function\-: Creates either the upper or lower bounds for querying a table that contains a datetime field. Use the \$uppper\-Bound param to determine if the return datetime is upper bound or not. 
+\begin{DoxyParams}[1]{Parameters}
+integer & {\em \$year} & \\
+\hline
+integer & {\em \$month} & 0-\/11 \\
+\hline
+boolean & {\em \$upper\-Bound} & default (false) returns the lower bound of the month. If true, returns the upper bound of the month. For lower bound, the first day of the month with H\-H\-:\-M\-M\-:S\-S = 00\-:00\-:00. For upper bound, uses the last day of the month with H\-H\-:\-M\-M\-:S\-S = 23\-:59\-:59 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string returns a datetime format ready for querying a My\-S\-Q\-L datetime column. 
+\end{DoxyReturn}
+\hypertarget{handle__apps_8php_ae5489b1800879e5690ee1591bcd51989}{\index{handle\-\_\-apps.\-php@{handle\-\_\-apps.\-php}!get\-\_\-apps\-\_\-per\-\_\-month@{get\-\_\-apps\-\_\-per\-\_\-month}}
+\index{get\-\_\-apps\-\_\-per\-\_\-month@{get\-\_\-apps\-\_\-per\-\_\-month}!handle_apps.php@{handle\-\_\-apps.\-php}}
+\subsubsection[{get\-\_\-apps\-\_\-per\-\_\-month}]{\setlength{\rightskip}{0pt plus 5cm}get\-\_\-apps\-\_\-per\-\_\-month (
+\begin{DoxyParamCaption}
+\item[{}]{\$year, }
+\item[{}]{\$month}
+\end{DoxyParamCaption}
+)}}\label{handle__apps_8php_ae5489b1800879e5690ee1591bcd51989}
+Returns an array of appointments belonging to the month 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}int\mbox{]}} & \$month the month to retrieve appointments for (0-\/11) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}tuple array\mbox{]} returns an associative array with a hiearchy of\-:
+\end{DoxyReturn}
+'Appointment\-I\-D' =$>$ string '2' (length=1) 'App\-Time' =$>$ string '2015-\/03-\/17 11\-:15\-:00' (length=19) 'Showed\-Up' =$>$ string '0' (length=1) 'Clinic\-I\-D' =$>$ string '2' (length=1) 'Patient\-I\-D' =$>$ string '2' (length=1) 'Employee\-I\-D' =$>$ string '1' (length=1) \hypertarget{handle__apps_8php_a3743147b4aa5a810e2658668b7b738c3}{\index{handle\-\_\-apps.\-php@{handle\-\_\-apps.\-php}!reformat\-\_\-month\-\_\-apps@{reformat\-\_\-month\-\_\-apps}}
+\index{reformat\-\_\-month\-\_\-apps@{reformat\-\_\-month\-\_\-apps}!handle_apps.php@{handle\-\_\-apps.\-php}}
+\subsubsection[{reformat\-\_\-month\-\_\-apps}]{\setlength{\rightskip}{0pt plus 5cm}reformat\-\_\-month\-\_\-apps (
+\begin{DoxyParamCaption}
+\item[{}]{\$app\-\_\-array}
+\end{DoxyParamCaption}
+)}}\label{handle__apps_8php_a3743147b4aa5a810e2658668b7b738c3}
+Formats the monthly report of appointments into an array of arrays, structured as\-: array('Appointment\-I\-D' =$>$ '2' , \char`\"{}\-App\-Time\char`\"{} =$>$ \char`\"{}2015-\/03-\/17 13\-:00\-:00\char`\"{}, \char`\"{}\-Patient\-I\-D\char`\"{} =$>$ \char`\"{}1\char`\"{}, \char`\"{}\-Employee\-I\-D\char`\"{} =$>$ \char`\"{}2\char`\"{}) 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}type\mbox{]}} & \$app\-\_\-array the array returned by get\-\_\-apps\-\_\-per\-\_\-month \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}type\mbox{]} \mbox{[}description\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{handle__apps_8php_a64d720df3ce7ec0d8dfcc6bacca5ba0d}{\index{handle\-\_\-apps.\-php@{handle\-\_\-apps.\-php}!set\-\_\-new\-\_\-app@{set\-\_\-new\-\_\-app}}
+\index{set\-\_\-new\-\_\-app@{set\-\_\-new\-\_\-app}!handle_apps.php@{handle\-\_\-apps.\-php}}
+\subsubsection[{set\-\_\-new\-\_\-app}]{\setlength{\rightskip}{0pt plus 5cm}set\-\_\-new\-\_\-app (
+\begin{DoxyParamCaption}
+\item[{}]{\$date\-\_\-time, }
+\item[{}]{\$pat\-\_\-id, }
+\item[{}]{\$doc\-\_\-id}
+\end{DoxyParamCaption}
+)}}\label{handle__apps_8php_a64d720df3ce7ec0d8dfcc6bacca5ba0d}
+Adds a new appointment to the database. Returns true if the appointment was added. Otherwise, returns false; 
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}string\mbox{]}} & \$date\-\_\-time my\-S\-Q\-L formatted datetime string \\
+\hline
+{\em \mbox{[}int\mbox{]}} & \$pat\-\_\-id the patients id \\
+\hline
+{\em \mbox{[}int\mbox{]}} & \$doc\-\_\-id the doctors\-\_\-id , user must be logged in for clinic\-\_\-id retrieval. \\
+\hline
+\end{DoxyParams}

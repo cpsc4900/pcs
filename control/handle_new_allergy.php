@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * Handles AJAX request related to creating new allergy records.
+ * See control/handle_new_allergy.js for AJAX requests
+ */
 
 include "global_query.php";
 
