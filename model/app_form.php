@@ -28,7 +28,7 @@ include "../control/global.php";
   <div class="control-group">
     <div class="controls ">
     <label class="control-label" for="pat_id">Patient ID:</label>
-      <input id="pat_id" name="pat_id" placeholder="abc###" class="input-medium" type="text" required="">
+      <input id="app-pat_id" name="pat_id" placeholder="abc###" class="input-medium" type="text" required="">
     </div>
   </div>
   
@@ -36,7 +36,7 @@ include "../control/global.php";
   <div class="control-group">
     <div class="controls">
     <label class="control-label" for="fname">Patient's First Name:</label>
-      <input id="fname" name="fname" placeholder="name" class="input-medium" type="text">
+      <input id="app-fname" name="fname" placeholder="name" class="input-medium" type="text">
     </div>
   </div>
   
@@ -44,7 +44,7 @@ include "../control/global.php";
   <div class="control-group">
     <div class="controls">
     <label class="control-label" for="lname">Patient's Last Name:</label>
-      <input id="lname" name="lname" placeholder="name" class="input-medium" type="text">
+      <input id="app-lname" name="lname" placeholder="name" class="input-medium" type="text">
     </div>
   </div>
   

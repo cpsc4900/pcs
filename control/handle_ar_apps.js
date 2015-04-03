@@ -171,9 +171,9 @@ function docIdSelect(docID) {
 function autoFillAppForm(pat_ssn) {
     for (var field in jsonPatInfo) {
       if (jsonPatInfo[field].SSN == pat_ssn) {
-        document.getElementById("fname").value = jsonPatInfo[field].Fname;
-        document.getElementById("lname").value = jsonPatInfo[field].Lname;
-        document.getElementById("pat_id").value = jsonPatInfo[field].PatientID;
+        document.getElementById("app-fname").value = jsonPatInfo[field].Fname;
+        document.getElementById("app-lname").value = jsonPatInfo[field].Lname;
+        document.getElementById("app-pat_id").value = jsonPatInfo[field].PatientID;
       }
     }
 }
