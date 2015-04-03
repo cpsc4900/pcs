@@ -66,7 +66,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 function getApps(datetime) {
     thisDateTime = datetime;            // update datetime for refreshing
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+    xmlhttp.open("POST", "https://pcs/model/ar_patient_list.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("datetime="+ datetime);
     jsonAppsPerHour = JSON.parse(xmlhttp.responseText);
@@ -129,7 +129,7 @@ function removeAndUpdateAppTable(app_id) {
 function removeAppFromDatabase(app_id) {
   console.log("removeAppFrom(app_id) =" + app_id);
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+  xmlhttp.open("POST", "https://pcs/model/ar_patient_list.php", false);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send("removeApp="+ app_id);
   return xmlhttp.responseText;
@@ -171,17 +171,16 @@ function docIdSelect(docID) {
 function autoFillAppForm(pat_ssn) {
     for (var field in jsonPatInfo) {
       if (jsonPatInfo[field].SSN == pat_ssn) {
-        document.getElementById("fname").value = jsonPatInfo[field].Fname;
-        document.getElementById("lname").value = jsonPatInfo[field].Lname;
-        console.log(jsonPatInfo[field].Lname);
-        document.getElementById("pat_id").value = jsonPatInfo[field].PatientID;
+        document.getElementById("app-fname").value = jsonPatInfo[field].Fname;
+        document.getElementById("app-lname").value = jsonPatInfo[field].Lname;
+        document.getElementById("app-pat_id").value = jsonPatInfo[field].PatientID;
       }
     }
 }
 // gets a JSON of all patient ID, Lname, and SSN. For searching
 function getPatients() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/ar_patient_list.php", false);
+    xmlhttp.open("POST", "https://pcs/model/ar_patient_list.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("patreq="+"patreq");
     localjsonPatInfo = JSON.parse(xmlhttp.responseText);

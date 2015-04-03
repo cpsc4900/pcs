@@ -58,7 +58,7 @@ function patientRecordSearch(value) {
 // gets a JSON of matched search
 function queryForPrimaryRecords(criteria, value) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/control/handle_edit_pat_rec.php", false);
+    xmlhttp.open("POST", "https://pcs/control/handle_edit_pat_rec.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("criteria="+ criteria+"&value="+value);
     jsonSearchResults = JSON.parse(xmlhttp.responseText);
@@ -160,7 +160,7 @@ function set_edit_fields(pat_rec) {
  */
 function handle_edit_pat_record() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/control/handle_edit_pat_rec.php", false);
+    xmlhttp.open("POST", "https://pcs/control/handle_edit_pat_rec.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     
     var url_string = "";

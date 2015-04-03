@@ -1,0 +1,53 @@
+\subsection*{General Notes}
+
+This is the main repository for our school project. Note\-: This description will be deleted in a few weeks.
+
+\subsection*{Markdown}
+
+This is a markdown file. They are very simple to make. We should include one in each folder to give a description of what the folder contains.
+
+For each folder create a file named readme.\-md
+
+``` readme.\-md
+
+This is a literal section. Use these sections to give code examples, terminal command examples, etc ```
+
+\subsection*{Folder structure}
+
+We have a very basic folder structure here with pcs being the root (main) folder. Place the {\itshape pcs} folder in your webserver's host root folder. For Linux, this would be \-\_\-/var/www/pcs.
+
+You will need to configure apache to recognize this folder as being root. If in Linux, go to \-\_\-/etc/apache2\-\_\-. There are two folders named {\itshape sites-\/available} and {\itshape sites-\/enabled}. create a \-\_\-.\-conf\-\_\- file in {\itshape sites-\/available} called {\itshape pcs.\-conf}. Insert the following\-:
+
+``` \section*{P\-C\-S (cpsc4900 project) configuration}
+
+Alias /pcs /var/www/pcs/ $<$Directory \char`\"{}/var/www/pcs/\char`\"{}$>$ Allow\-Override None $<$/\-Directory$>$ ```
+
+Copy this same file into {\itshape sites-\/enabled}
+
+Then, you'll need to restart your server. You can now access the local website with\-:
+
+``` localhost/pcs ```
+
+The first index.\-php page contains a generic greeting to make sure your php and apache server are working properly.
+
+Note\-: Configuration is different for M\-A\-C and Windows, but there should be a httd.\-config file where the above can be accomplished.
+
+\subsection*{P\-H\-P Requirements}
+
+
+\begin{DoxyEnumerate}
+\item For unit testing, see {\itshape tests} folder. You will need to install P\-H\-P\-Unit test Framework.
+\item Sessions must be enabled in the php.\-ini file. In Linux, this file is located at\-:
+
+``` /etc/php5/apache2/php.ini ```
+
+You'll need to open the file with root (admin) priveleges...google !
+
+The following need to be set in this folder\-:
+
+``` session.\-save\-\_\-handler = files session.\-save\-\_\-path = \char`\"{}/tmp\char`\"{} session.\-use\-\_\-cookies = 1 ``` Note\-: the save\-\_\-path. You will need to create this folder O\-R use a pre-\/ existing one. I just use the /tmp because cookies are only temporary.
+
+For Unix\-: /tmp is popular For Windows\-: C\-:W\-I\-N\-D\-O\-W\-S\-T\-E\-M\-P is popular
+
+These are the basic settings, I'll make note if/when php.\-ini changes will be required for security. 
+\end{DoxyEnumerate}

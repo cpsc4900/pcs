@@ -64,7 +64,7 @@ function updateSearchByHiddenField(searchType) {
 
 // Searches for medical records by either SSN | Lname | PatID
 function getSearchResults() {
-    xmlhttpSearchRequest.open("POST", "http://pcs/model/search_for_med_recs.php", false);
+    xmlhttpSearchRequest.open("POST", "https://pcs/model/search_for_med_recs.php", false);
     xmlhttpSearchRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttpSearchRequest.send("searchBy=" + searchByCriteria + "&searchValue=" + 
                   searchForValue);
@@ -150,7 +150,7 @@ function formatRecToTable() {
 // then places result in global jsonMedicalRecords
 function getJsonMedRecords(patid) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/model/search_for_med_recs.php", false);
+    xmlhttp.open("POST", "https://pcs/model/search_for_med_recs.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("patid=" + patid);
     jsonMedicalRecords = JSON.parse(xmlhttp.responseText);

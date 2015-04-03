@@ -77,7 +77,7 @@ function hideAllSubFields() {
  * @postcondition: jsonDocList is updated.
  */
 function getDocList() {
-    xmlReq.open("POST", "http://pcs/control/handle_new_treatment.php", false);
+    xmlReq.open("POST", "https://pcs/control/handle_new_treatment.php", false);
     xmlReq.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlReq.send("getDocList=" + "true" );
     jsonDocList = JSON.parse(xmlReq.responseText); 
@@ -192,7 +192,7 @@ function generalSubmissionInfo() {
 }
 
 function updateTreatmentTable(urlData) {
-    xmlReq.open("POST", "http://pcs/control/handle_new_treatment.php", false);
+    xmlReq.open("POST", "https://pcs/control/handle_new_treatment.php", false);
     xmlReq.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlReq.send(urlData);
     result = xmlReq.responseText;

@@ -13,7 +13,7 @@ include_once "control/global.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>PCS Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap-3.3.4-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/pcs_style.css">
   <script>
     function validateForm() {  // Check for empty fields
@@ -91,7 +91,9 @@ include_once "control/global.php";
 
   <!-- Load scripts last, speeds up loading -->	
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  <script src="../assets/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+  <script src="../assets/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

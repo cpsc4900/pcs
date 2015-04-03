@@ -1,0 +1,38 @@
+\subsection*{Installing the pcs\-\_\-db}
+
+Login to your local mysql from the command line as root user, supply password, then run the \char`\"{}install\-\_\-pcs\-\_\-schema\char`\"{} script. The example below is my linux file path. Your file path will be different.
+
+``` $>$mysql -\/u root -\/p
+
+\begin{quotation}
+supply password
+
+\end{quotation}
+
+
+mysql$>$ . /var/www/pcs/db/db\-\_\-install\-\_\-scripts/install\-\_\-schema\-\_\-v1.0.\-3.\-sql
+
+``` Note\-: The first install should not produce any errors. As Mike edits the database, the install script needs to be updated. So, two options\-:
+
+In the script itself insert a command to delete the old {\bfseries pcs\-\_\-db} and install a fresh new copy.
+
+Or, we'll manually have to delete our local copy and re-\/install.
+
+, just let us know which method to use. , make sure you change the version number of the script....easier to keep track of updates.
+
+\paragraph*{Version Control}
+
+{\bfseries install\-\_\-pcs\-\_\-schema\-\_\-v1.\-0.\-0}\-: \begin{DoxyVerb}* All foreign keys are integer values now.
+* Only two user types created:
+    - Master  password: masterpass (can access all tables)
+    - Login   password: loginpass  (can only read all tables) 
+\end{DoxyVerb}
+
+
+\subsection*{Installing \char`\"{}\-Dummy Data\char`\"{}}
+
+Run the {\itshape dump\-\_\-data.\-sql} script to load up records to the database\-:
+
+``` mysql$>$ . /var/www/pcs/db/db\-\_\-install\-\_\-scripts/dump\-\_\-data.sql
+
+``` Once again, your file path will be different then mine depending on your O\-S and filesystem. 

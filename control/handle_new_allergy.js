@@ -40,7 +40,7 @@ function handleNewAllergySubmission() {
 // Note: jsonMedicalRecords is pulled from handle_medical_rec_search.js
 function submitAllergy(allergyName, severity) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://pcs/control/handle_new_allergy.php", false);
+    xmlhttp.open("POST", "https://pcs/control/handle_new_allergy.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("allergyName=" + allergyName + "&severity=" + severity + 
                  "&patid=" + jsonMedicalRecords[0].PatientID);

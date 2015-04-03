@@ -43,10 +43,10 @@ function update_activity_log($activityType, $empID, $recID = 0) {
             $statement = gen_activity_user_logout_query($empID);
             break;
         case 'TreatmentNew':
-            gen_activity_treat_new_rec_query($empID, $recID);
+            $statement = gen_activity_treat_new_rec_query($empID, $recID);
             break;
         case 'TreatmentRemove':
-            gen_activity_treat_remove_rec_query($empID, $recID);
+            $statement = gen_activity_treat_remove_rec_query($empID, $recID);
             break;
         default:
             return 0;
@@ -65,6 +65,7 @@ function update_activity_log($activityType, $empID, $recID = 0) {
     }
 }
 
+update_activity_log('TreatmentNew', 2, 4);
 // private: prepare insert query for primary new log
 function gen_activity_pat_new_rec_query($empID, $primRecID){
     global $db_conn;
