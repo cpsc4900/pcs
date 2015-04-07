@@ -106,3 +106,12 @@ button.delApp {
   display: none;
 }
 
+#daily-appnt-table {
+  min-height: 500px;
+}
+
+
+#doctor_appointments_table td, a{
+  max-width: 200px;
+
+}

@@ -15,3 +15,5 @@ sudo apt-get install vsftpd
 
 Configuration file is located at _/etc/vsftpd.conf_
 Log files are at _/var/log/vsftpd.log_
+Default FTP dir _/srv/ftp_
+/etc/ftpusers is a blacklist of users

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Depends on handle_new_pat_prim_rec.js
+ */
 
 ?>
 
@@ -110,7 +113,7 @@
     <div class="form-group pull-right">
       <div class="controls form-inline">
         <button id="submit" onclick="handle_new_pat_record()"class="btn btn-success btn-sm clearFields">Submit</button>
-        <button id="formCancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
+        <button id="new-pat-prim-cancel" name="cancel" class="btn btn-danger btn-sm">Cancel</button>
       </div>
     </div>
     </div>

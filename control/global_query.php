@@ -20,7 +20,7 @@ include "../model/num_gen.php";
 // get a single value from an array of tuples (key => value)
 // precondition must only contain a single tuple relationship
 function pull_single_element($index, $statement_array) {
-	return $statement_array[$index];
+    return $statement_array[$index];
 }
 
 /**
@@ -101,17 +101,6 @@ function get_user_type($id) {
 
 
 /**
- * Returns an array of the appointments per week
- * @param  [type] $year  [description]
- * @param  [type] $month [description]
- * @param  [type] $week  1-5   (1st through 5th week)
- * @return [type]        [description]
- */
-function get_weekly_appointments($year, $month, $week) {
-    global $db_conn;
-}
-
-/**
  * Gets all the appointments between the begin and end date.
  * @param  [int] $year the year
  * @param  [int] $month the month (0-11)
@@ -119,9 +108,42 @@ function get_weekly_appointments($year, $month, $week) {
  * @param  [int] $end_date   the last date to end retrieving apps (inclusive)
  * @return [tuple array] returns an associative array (see get_apps_per_month)
  */
-function get_apps_per_time_span($year, $month, $begin_date, $end_date) {
+function get_apps_per_doc_id_and_date($doc_id, $datetime = "empty") {
     global $db_conn;
-    
+    if ($datetime == "empty") {
+        $datetime = date("Y-m-d");
+        $date_begin = $datetime . " 00:00:00";
+        $date_end = $datetime . " 23:59:59";
+    } else {
+        $temp = date_create($datetime);
+        $date_begin = date_format($temp, "Y-m-d") . " 00:00:00";
+        $date_end = date_format($temp, "Y-m-d") . " 23:59:59";
+    }
+
+    $query = 'SELECT pat.PatientID, pat.Lname, pat.Fname, 
+              app.AppTime, app.AppointmentID, app.EmployeeID 
+              FROM PATIENT pat 
+              INNER JOIN APPOINTMENT app 
+              ON app.AppTime BETWEEN ? AND ?
+              AND pat.PatientID = app.PatientID AND app.EmployeeID = ?
+              ORDER BY AppTime DESC';
+
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $date_begin);
+        $statement->bindValue( 2 , $date_end);
+        $statement->bindValue( 3 , $doc_id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        return helper_filter_result($result);
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving APPOINTMENT: 
+             $e </p>";
+        } 
+        return "Patient DnE";  // error 
+    }
 }
 
 /**

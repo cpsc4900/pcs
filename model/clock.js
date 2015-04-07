@@ -75,6 +75,5 @@ updateClock = function() {
 
 //run script only when page has fully loaded
 $( document ).ready(function() {
-	console.log( "ready!");   //debug
 	updateClock()
 });
