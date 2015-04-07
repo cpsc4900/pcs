@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ *
+ * Handles most of the queries to the database.  Queries are organized
+ * based on functionality.  Functions labeled as 'private' should not be
+ * called directly.
+ */
+
 include "db_connect.php";
 include "handle_activity_log.php";
 include "../model/date_formatter.php";
@@ -1313,6 +1321,8 @@ function get_med_record_id($patID) {
     }     
 }
 /*-----               End of Set Treatment Records                      ------*/
+
+
 
 
 

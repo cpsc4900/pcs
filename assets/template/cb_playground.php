@@ -146,3 +146,20 @@ suggestive fill
     </div>
   </div>
 </div>
+
+
+
+// KEEP THIS
+function parseJsonToArray(jsonObj) {
+    var new_array = [];
+    var keys = Object.keys(jsonObj[0]);
+    for (var i = 0; i < jsonObj.length; i++) {
+        var log = [];
+        var jsonLog = jsonObj[i];
+        for (var idx = 0; idx < keys.length; idx++) {
+            log[keys[idx]] = jsonLog[keys[idx]];
+        }
+    new_array[i] = log;
+    }
+    return new_array;
+}

@@ -55,9 +55,9 @@ if($_SESSION['UserType'] != 'MRS') {
         <li>
           <a href="#activity_log_view" data-toggle="tab">Activity Logs</a>
         </li>
-        <li>
+<!--         <li>
           <a href="#backup_rec_view" data-toggle="tab">Backup Records</a>
-        </li>
+        </li> -->
       </ul>                                                <!-- End Nav tabs -->
        
       <!-- **************          Tab Content              ****************** -->
@@ -84,7 +84,7 @@ if($_SESSION['UserType'] != 'MRS') {
 
         <!-- *************       Activity Logs View       ****************** -->
         <div class="tab-pane fade" id="activity_log_view">
-          <h3> Add Activity Logs Here </h3>
+          <?php include "../model/activity_log_model.php"; ?>
         </div>
         <!-- *************     End Activity Logs View         ************** -->
 
@@ -131,6 +131,7 @@ if($_SESSION['UserType'] != 'MRS') {
   <script src="../control/handle_medical_rec_search.js"></script>
   <script src="../control/handle_new_allergy.js"></script> <!-- depends on the script right above -->
   <script src="../control/handle_new_treatment.js"></script>
+  <script src="../control/handle_activity_log.js"></script>
 
 
 

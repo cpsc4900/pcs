@@ -1,4 +1,5 @@
 /**
+ * @file
  * Handles the creation of a new primary patient record.  New primary patient
  * records include F & L nmae, SSN, phone number, gender, Bday, and Address info.
  * The creation of a new primary record is handled by handle_new_pat_rec.php
@@ -105,29 +106,3 @@ function handle_new_pat_record() {
     get_values();
     set_new_pat_record();
 }
-
-
-// Testing purposes
-function print_vars() {
-    console.log(firstName);
-    console.log(lastName);
-    console.log(patSSN);
-    console.log(phoneNum);
-    console.log(genderChk);
-    console.log(patBday);
-    console.log(patStAdd);
-    console.log(patCity);
-    console.log(patState);
-    console.log(patZip);
-}
-
-
-
-
-
-
-// Getting inner html
-/*    $('#searchBy').children().click(function() {
-        var searchValue = $(this).children().html();
-        console.log($(this).children().html());
-        console.log(searchValue);*/

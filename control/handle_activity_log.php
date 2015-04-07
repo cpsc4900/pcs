@@ -8,8 +8,10 @@ include "db_connect.php";
  * an id of the record that the user changed, deleted, or created.  See the function
  * description for update_activity_log for activities that get logged.
  */
+
+
 /*==============================================================================
-=                           Activity Log Queries                               =
+=                           Set Activity Log Queries                           =
 ==============================================================================*/
 /**
  * Updates the activity logs. Activity logs include:
@@ -217,8 +219,99 @@ function gen_activity_treat_remove_rec_query($empID, $treatID){
 
     return $statement;
 }
+/*----------------------  End of Set Activity Log Queries  -------------------*/
+
+/*==============================================================================
+=                        Get Activity Log Queries                              =
+==============================================================================*/
+
+/**
+ * Gets all activities that have been logged in the ACTIVITY_LOG table
+ * @return [array] returns an array of key, value (tuples) of the activities.
+ */
+function get_activity_logs($start, $end) {
+    global $db_conn;
+
+    $query = 'SELECT * from ACTIVITY_LOG where TimeStamp >= ? AND 
+              TimeStamp <= ?';
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $start);
+        $statement->bindValue( 2 , $end);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_the_result($result);
+        if (is_null($result)) $result = 0;
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Med Record ID: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }     
+}
 
 
-/*----------------------  End of Activity Log Queries  -----------------------*/
+
+
+/*-----------------    End of Get Activity Log Queries      ------------------*/
+
+
+
+/*==============================================================================
+=                           Handle AJAX Requests                               =
+==============================================================================*/
+if (isset($_POST['start_time']) && isset($_POST['end_time'])) {
+    $result = get_activity_logs($_POST['start_time'], $_POST['end_time']);
+    echo json_encode($result);
+}
+
+
+/*----------------------  End of Handle AJAX Requests  -----------------------*/
+
+
+/*===============================
+=            Helpers            =
+===============================*/
+
+/**
+ * Removes the double entries given by all PHP Queries. PDO objects return arrays
+ * with double entries.  One form of the entry is "key => value" and the other is
+ * int => value.  This function removes the int => value.  So, the returned array
+ * has only the key => value pairs.
+ *
+ * @precondition a single layer of arrays must be passed. For example:
+ *
+ *      Array[                <=== Will Work
+ *          array1[]
+ *          array2[]
+ *      ]
+ *
+ *      Array[                  <=== Will Not Work
+ *          array1[
+ *              array2[]
+ *          ]
+ *      ]
+ */
+function helper_filter_the_result($result) {
+    $filtered = array();
+    $temp = array();
+    $i = 0;
+    foreach($result as $child) {
+        foreach ($child as $key => $value) {
+            if (is_int($key)) {continue;}
+            $temp[$key] = $value;
+        }
+        $filtered[$i] = $temp;
+        unset($temp);
+        $i += 1;
+    }
+    return $filtered;
+}
+
+/*-----  End of Helpers  ------*/
+
 
 ?>

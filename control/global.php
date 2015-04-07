@@ -8,10 +8,10 @@
 * Set true if in developement, if release set to false.
 * This is used throughout the models for easier debugging messages enabled.
 */
-$is_dev = true;
+$is_dev = false;
 
 if($is_dev) {
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	error_reporting(E_ALL | E_ERROR | E_WARNING | E_PARSE);
 } else {
 	error_reporting(0);
 }
