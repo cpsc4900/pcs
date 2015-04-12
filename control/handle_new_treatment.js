@@ -159,10 +159,6 @@ function submitNewMedicationTreat() {
     var dosage = $('#dosage').val();
     var timesPerDay = $('#timesPerDay').val();
     var docID = $('#prescribingDoc').val();
-    console.log("name=" + name);
-    console.log("sideEffects=" + sideEffects);
-    console.log("dosage=" + dosage);
-    console.log("docID=" + docID);
 
     if(name == "" || sideEffects == "" || dosage == "" || docID == "") {
         alert("Please fill out all fields with valid values");

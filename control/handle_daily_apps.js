@@ -1,8 +1,22 @@
+/**
+ * @file
+ *
+ * Handles displaying the daily appointments for docotr's and nurses.
+ */
+
+
 var jsonDailyApp = "";  // Holds the appointments for the current day
 
 $(document).ready(function(){
     get_daily_apps();
     parse_json_daily_app();
+
+    $('#sec-select').click(function() {
+        $('#daily_appnt').hide();
+    });
+    $('#appt-select').click(function() {
+        $('#daily_appnt').show();
+    });
 
 });
 
@@ -46,10 +60,6 @@ function draw_app_obj(appObj, hourSelector) {
 function get_app_hour(jsonObj) {
     var timeOfApp = jsonObj["AppTime"];
     timeOfApp = timeOfApp.substring(11, 13);  
-
-    if (parseInt(timeOfApp) < 10) {
-        timeOfApp = timeOfApp.substring(1,1);
-    }
     timeOfApp = parse_app_hour_id_for_table(timeOfApp);
     return timeOfApp;
 }
@@ -80,7 +90,7 @@ function parse_appointment_obj(appidx) {
     var appModel = "";
     var appJsonObj = jsonDailyApp[appidx];
 
-    appModel += "<a href=\"javascript:displayPatientInfo()\"";
+    appModel += "<a href=\"javascript:displayPatientInfo(\'" + appJsonObj['PatientID'] + "\')\"";
     appModel += "class=\"list-group-item list-group-item-info\">";
     appModel += "<h5 class=\"list-group-item-heading\">";
     appModel += appJsonObj["Lname"] + ", " + appJsonObj["Fname"];
@@ -90,6 +100,10 @@ function parse_appointment_obj(appidx) {
 }
 
 // TODO display patient info: see medical_rec_model.php
-function displayPatientInfo() {
-
+function displayPatientInfo(patID) {
+    // hide the search bar table, this is default
+    $('#pat_table_med_search_results').hide();
+    currentPatientID = patID;
+    selectedPatient(patID);
+    $('#med-rec-drop-down').modal('toggle');
 }

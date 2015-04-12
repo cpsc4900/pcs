@@ -4,6 +4,8 @@
  * Depends On;  model/medical_rec_search_bar.php
  */
   include "new_allergy_model.php";
+  include "treatment_model.php";
+
 ?>
 
 <!-- **************          Search Results                      *********** -->
@@ -106,7 +108,7 @@
             </div>
             <div class="row">
              <div class="col-sm-4 col-sm-offset-7">
-              <a data-toggle="modal" role="button" class="btn btn-info btn-xs" id="new-allergy-option" 
+              <a data-toggle="modal" role="button" class="btn btn-info btn-xs" id="new-treatment-option" 
                  href="#" data-target="#newTreatmentModal">
                 New Treatment/Medication Record
               </a>

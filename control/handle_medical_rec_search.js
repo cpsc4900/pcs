@@ -169,7 +169,6 @@ function selectedPatient(patid) {
   showPatientGeneralInfo();                       // display gen info of patient
   showPatientKnownAllergies(numOfAll);            // display known allergies
   showPatientPreviousTreatments(numOfAll, numOfTreats, numOfMeds);
-  //testPrintJson();  // test: remove me
 }
 
 /************************************

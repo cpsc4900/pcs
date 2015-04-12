@@ -53,13 +53,10 @@ if($UserType != 'Doctor') {
     <div class="col-sm-8">  <!-- Center Column -->
       <ul class="nav nav-pills"> 
         <li class="active">
-          <a href="#daily_appnt" data-toggle="tab">View Daily Appointments</a>
+          <a  id="appt-select"href="#daily_appnt" data-toggle="tab">View Daily Appointments</a>
         </li>
         <li>
-          <a href="#patient_rec" data-toggle="tab">View Patient Medical Records</a>
-        </li>
-        <li>
-          <a href="#patient_treat" data-toggle="tab">New Patient Treatment</a>
+          <a id ="sec-select"href="#sectioned-pat" data-toggle="tab">Sectioned Patients</a>
         </li>
       </ul>                  
       <!-- ********************   Content   ***************  -->
@@ -68,34 +65,33 @@ if($UserType != 'Doctor') {
         <!-- ***************    Daily Appointments   *********  -->
         <div class="tab-pane active fade in" id="daily_appnt">
           <div class="row" id="spacer"></div>
+          <div class="row">
             <div class="panel panel-primary" id="daily-appnt-table">
-              <div class="panel-heading" style="text-align: center">
+              <div class="panel-heading">
                 <h3>Doctor Daily Appointments</h3>
               </div>
               <div class="panel-body">
-                <?php include "../model/daily_apps_model.php"; ?>
               </div>
+                <?php include "../model/daily_apps_model.php"; ?>
             </div>  <!-- End Panel -->
+        </div>
         </div>
  <!-- **************   End Daily Appointment    ***************  -->
 
- <!-- ***********   View Patient Medical Record   ************** -->
-        <div class="tab-pane fade" id="patient_rec">
-
+ <!-- *************   Add Patient Sectioned   **************** -->
+        <div class="tab-pane fade" id="sectioned-pat">
+           <div class="row" id="spacer"></div>
+          <?php include "../model/sectioned_pat_model.php" ?>
         </div>
- <!-- ***********   End View Patient Medical Record    ***********  -->
-
- <!-- *************   Add Patient Treatment   **************** -->
-        <div class="tab-pane fade" id="patient_treat">
-
-        </div>
- <!-- *************   End Add Patient Treatment   **************** -->
-
+ <!-- *************   End Add Patient Sectioned   **************** -->
 
       </div> <!-- End Tab Content -->
     </div> <!-- End main column -->
+    <div class="col-sm-3"></div> <!-- end of third column -->
   </div> <!-- End main row -->
 </div> <!-- End Container -->
+
+
 
 
   <!-- *****************     Scripts     ****************************  -->
@@ -104,8 +100,12 @@ if($UserType != 'Doctor') {
   <script src="../assets/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
   <script src="../model/global.js"></script>
   <script src="../model/clock.js"></script>
-  <script src="../model/clock.js"></script>
+  <script src="../control/handle_medical_rec_search.js"></script>
+  <script src="../control/handle_new_allergy.js"></script> <!-- depends on the script right above -->
+  <script src="../control/handle_new_treatment.js"></script>
   <script src="../control/handle_daily_apps.js"></script>
+  <script src="../control/handle_sectioned_pat.js"></script>
+
 
 
 </body>

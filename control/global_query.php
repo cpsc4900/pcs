@@ -1344,6 +1344,35 @@ function get_med_record_id($patID) {
 }
 /*-----               End of Set Treatment Records                      ------*/
 
+/*==============================================
+=            Get Sectioned Patients            =
+==============================================*/
+function get_sectioned_pat_array() {
+
+    global $db_conn;
+
+    $query = 'SELECT * from PATIENT WHERE isSectioned = 1';
+    try {
+        $statement = $db_conn->prepare($query);
+        $statement->bindValue( 1 , $patID);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+        $result = helper_filter_result($result);
+        if (is_null($result)) $result = 0;
+        return $result;
+    } catch (Exception $e) {
+        if($is_dev) {
+            echo "<p>Error retrieving Sectioned Patients: 
+             $e </p>";
+        }   
+        return 0;  // error 
+    }    
+}
+
+
+/*-----  End of Get Sectioned Patients  ------*/
+
 
 
 
