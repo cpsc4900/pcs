@@ -1122,10 +1122,9 @@ function set_new_medication_record($patID, $diagnosis, $descript, $medName, $sid
     global $db_conn;
 
     $medRecID = get_med_record_id($patID);
-    if ($medRecID == 0) {                           // create new med rec if DNE
-        $medRecID = create_new_med_record($patid);
+    if (intval($medRecID) == 0) {                           // create new med rec if DNE
+        $medRecID = create_new_med_record($patID);
     }
-
     // get current date
     $date = date('y-m-d');
 
@@ -1299,8 +1298,8 @@ function create_new_med_record($patID) {
         $statement = $db_conn->prepare($query);
         $statement->bindValue( 1 , $patID);
         $statement->execute();
-        $recordID = $db_conn->lastInsertID();
         $statement->closeCursor();
+        $recordID = get_med_record_id($patID);
         return $recordID;
     } catch (Exception $e) {
         if($is_dev) {
@@ -1342,19 +1341,22 @@ function get_med_record_id($patID) {
         return 0;  // error 
     }     
 }
+
 /*-----               End of Set Treatment Records                      ------*/
 
 /*==============================================
 =            Get Sectioned Patients            =
 ==============================================*/
-function get_sectioned_pat_array() {
+function get_sectioned_pat_array($clinic_id) {
 
     global $db_conn;
 
-    $query = 'SELECT * from PATIENT WHERE isSectioned = 1';
+    $query = 'select p.PatientID, p.SSN, p.Fname, p.Lname, p.Sex, s.DateSectioned, s.RoomNumber 
+              from PATIENT as p inner join SECTIONED as s  
+              ON p.PatientID = s.PatientID and s.ClinicID = ? ORDER BY p.Lname';
     try {
         $statement = $db_conn->prepare($query);
-        $statement->bindValue( 1 , $patID);
+        $statement->bindValue( 1 , $clinic_id);
         $statement->execute();
         $result = $statement->fetchAll();
         $statement->closeCursor();

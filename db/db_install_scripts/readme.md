@@ -33,6 +33,8 @@ Or, we'll manually have to delete our local copy and re-install.
 		- Master  password: masterpass (can access all tables)
 		- Login   password: loginpass  (can only read all tables) 
 
+**IMPORTANT** You must add the two listed users above to your local mysql users table !!!
+
 ## Installing "Dummy Data"
 
 Run the _dump\_data.sql_ script to load up records to the database:
