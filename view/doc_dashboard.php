@@ -1,6 +1,7 @@
 
 <?php
 session_start();
+include "../control/global.php";
 include "../control/access_control.php";
 include "../control/handle_apps.php";
 

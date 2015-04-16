@@ -80,7 +80,6 @@ function get_values() {
 
 // set a new patient record
 function set_new_pat_record() {
-    print_vars();
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "https://pcs/control/handle_new_pat_rec.php", false);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
